@@ -52,6 +52,7 @@ def run_eval(
     if not plugins and "skill" in case["case"]:
         # Backwards compat: derive plugin name from old skill path
         plugins = [Path(case["case"]["skill"]).stem.replace("_", "-")]
+    expected_skills = case["case"].get("expected_skills", plugins)
     prompt = case["prompt"]["text"]
     criteria = case.get("rubric", {}).get("criteria", [])
     checks_cfg = case.get("checks", {})
@@ -71,10 +72,10 @@ def run_eval(
     )) if criteria else []
 
     check_rows_baseline = list(check_output(
-        baseline, linters, scripts, expected_skills=plugins,
+        baseline, linters, scripts, expected_skills=expected_skills,
     ))
     check_rows_skill = list(check_output(
-        with_skill, linters, scripts, expected_skills=plugins,
+        with_skill, linters, scripts, expected_skills=expected_skills,
     ))
     all_check_rows = check_rows_baseline + check_rows_skill
 

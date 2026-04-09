@@ -1,0 +1,8 @@
+{
+  "name": "skill-orchestration",
+  "description": "Meta-skill that instructs the agent to invoke all relevant skills, not just the first match",
+  "version": "0.1.0",
+  "author": {
+    "name": "willi"
+  }
+}

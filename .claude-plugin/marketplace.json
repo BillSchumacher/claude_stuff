@@ -19,6 +19,12 @@
       "source": "./plugins/python-style",
       "description": "Python style conventions: type annotations, docstrings, PEP 8, streaming patterns",
       "version": "0.1.0"
+    },
+    {
+      "name": "skill-orchestration",
+      "source": "./plugins/skill-orchestration",
+      "description": "Meta-skill that instructs the agent to invoke all relevant skills, not just the first match",
+      "version": "0.1.0"
     }
   ]
 }
