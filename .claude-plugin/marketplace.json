@@ -1,7 +1,7 @@
 {
   "name": "claude-stuff",
   "owner": {
-    "name": "willi"
+    "name": "BillSchumacher"
   },
   "metadata": {
     "description": "Reusable Claude Code skills with built-in evaluation framework",
