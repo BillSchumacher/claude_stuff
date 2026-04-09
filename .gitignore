@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.venv/
+venv/
+env/
+
+# Pipenv (keep Pipfile and Pipfile.lock)
+.env
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+
+# Testing & linting
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Eval results (keep directory via .gitkeep)
+results/*
+!results/.gitkeep
+
+# OS
+.DS_Store
+Thumbs.db

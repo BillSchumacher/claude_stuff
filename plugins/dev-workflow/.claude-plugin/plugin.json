@@ -1,0 +1,8 @@
+{
+  "name": "dev-workflow",
+  "description": "Development workflow guidance: planning, TDD with Gherkin, code quality, git discipline",
+  "version": "0.1.0",
+  "author": {
+    "name": "willi"
+  }
+}

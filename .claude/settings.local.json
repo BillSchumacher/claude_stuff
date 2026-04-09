@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pipenv run:*)",
+      "Bash(claude -p --bare --output-format json --model sonnet --max-budget-usd 0.5 \"Say hello\")",
+      "Bash(python -c ':*)",
+      "Bash(claude -p --output-format stream-json --verbose --model haiku --max-budget-usd 0.10 --disable-slash-commands --dangerously-skip-permissions \"Write a file called /tmp/test_hello.py with a test that asserts 1+1==2, then run it with pytest\")",
+      "Bash(head -20 /tmp/eval_stack/*.py)",
+      "Bash(head -30 \"C:/Users/willi/PycharmProjects/claude_stuff/eval_workdir/stack_task/\"*.py)",
+      "Bash(rm -f skills/python_style.md skills/dev_workflow.md)",
+      "Bash(rmdir skills:*)"
+    ]
+  }
+}

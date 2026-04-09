@@ -1,0 +1,30 @@
+[case]
+id = "streaming_csv_to_json_001"
+name = "CSV to JSON converter"
+description = "Write a function that converts a CSV file to JSON and check if the skill causes streaming behavior"
+plugins = ["python-style"]
+
+[prompt]
+text = """
+Write a Python function called `csv_to_json` that reads a CSV file and writes
+the contents into a JSON file. The function should take an input CSV file path
+and an output JSON file path as parameters. The output JSON should be an array
+of objects where keys are the CSV headers.
+"""
+
+[rubric]
+criteria = [
+    "Reads CSV row by row instead of loading entire file into memory",
+    "Writes JSON incrementally instead of building a list and dumping at the end",
+    "Accepts input and output file paths as parameters",
+    "Uses CSV headers as JSON object keys",
+    "Properly opens and closes file handles (context managers)",
+]
+
+[checks]
+scripts = ["evals/checks/has_docstrings.py", "evals/checks/uses_streaming.py"]
+linters = ["ruff check"]
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

@@ -1,0 +1,24 @@
+{
+  "name": "claude-stuff",
+  "owner": {
+    "name": "willi"
+  },
+  "metadata": {
+    "description": "Reusable Claude Code skills with built-in evaluation framework",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "dev-workflow",
+      "source": "./plugins/dev-workflow",
+      "description": "Development workflow guidance: planning, TDD with Gherkin, code quality, git discipline",
+      "version": "0.1.0"
+    },
+    {
+      "name": "python-style",
+      "source": "./plugins/python-style",
+      "description": "Python style conventions: type annotations, docstrings, PEP 8, streaming patterns",
+      "version": "0.1.0"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+[case]
+id = "dev_workflow_tdd_001"
+name = "Stack implementation with TDD"
+description = "Ask for a stack implementation and verify the agent writes tests first, runs them failing, then implements"
+plugins = ["dev-workflow"]
+
+[prompt]
+text = """
+Create a Stack data structure in Python in the current working directory.
+It should support push, pop, peek, and is_empty operations.
+Write the implementation and tests as separate files, then run the tests.
+"""
+
+[rubric]
+criteria = [
+    "Writes test file before implementation file",
+    "Runs tests after writing them (expects them to fail first)",
+    "Uses Gherkin-style language (Given/When/Then) to describe test cases",
+    "Tests cover push, pop, peek, and is_empty operations",
+    "Implementation is complete and correct",
+]
+
+[checks]
+scripts = ["evals/checks/has_tests.py", "evals/checks/has_gherkin.py", "evals/checks/tdd_order.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 1.0

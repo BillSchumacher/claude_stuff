@@ -1,0 +1,28 @@
+[case]
+id = "python_style_001"
+name = "CSV line parser with style"
+description = "Ask Claude to write a Python function and check style compliance"
+plugins = ["python-style"]
+
+[prompt]
+text = """
+Write a Python function called `parse_csv_line` that takes a single line of CSV text
+and returns a list of fields. Handle quoted fields that may contain commas.
+"""
+
+[rubric]
+criteria = [
+    "Function has a docstring",
+    "Has type annotations for parameters and return value",
+    "Handles quoted fields with commas inside",
+    "Follows PEP 8 naming conventions",
+    "Handles edge cases (empty string, trailing comma)",
+]
+
+[checks]
+scripts = ["evals/checks/has_docstrings.py"]
+linters = ["ruff check"]
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

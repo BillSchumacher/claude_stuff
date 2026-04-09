@@ -1,0 +1,35 @@
+[case]
+id = "combined_skills_001"
+name = "Queue with TDD and Python style"
+description = "A task that should trigger both dev-workflow (TDD) and python-style (type hints, docstrings) skills"
+plugins = ["dev-workflow", "python-style"]
+
+[prompt]
+text = """
+Create a Queue data structure in Python in the current working directory.
+It should support enqueue, dequeue, peek, and size operations.
+Write the implementation and tests as separate files, then run the tests.
+"""
+
+[rubric]
+criteria = [
+    "Writes test file before implementation file",
+    "Runs tests failing before writing implementation",
+    "Test functions have Gherkin-style docstrings (Given/When/Then)",
+    "Implementation has type annotations on parameters and return values",
+    "Implementation has docstrings on public functions",
+    "Uses functions over classes where reasonable",
+]
+
+[checks]
+scripts = [
+    "evals/checks/has_tests.py",
+    "evals/checks/has_gherkin.py",
+    "evals/checks/tdd_order.py",
+    "evals/checks/skills_invoked.py",
+]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 1.5

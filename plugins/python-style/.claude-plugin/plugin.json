@@ -1,0 +1,8 @@
+{
+  "name": "python-style",
+  "description": "Python style conventions: type annotations, docstrings, PEP 8, streaming patterns",
+  "version": "0.1.0",
+  "author": {
+    "name": "willi"
+  }
+}
