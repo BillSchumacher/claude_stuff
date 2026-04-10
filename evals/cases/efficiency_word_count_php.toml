@@ -1,6 +1,6 @@
 [case]
 id = "efficiency_word_count_php_001"
-name = "PHP: Uses dict.get(k, 0), Counter, or defaultdict — NOT 'if word "
+name = "PHP: Uses ?? or ??= — NOT isset/array_key_exists with separate access"
 description = "Tests core efficient-code rule coverage"
 plugins = ["skill-orchestration", "efficient-code", "efficient-code-php"]
 expected_skills = ["efficient-code", "efficient-code-php"]
@@ -11,7 +11,7 @@ Write a function that takes a string and returns a dict of word frequencies.
 """
 
 [rubric]
-criteria = ["Uses dict.get(k, 0), Counter, or defaultdict — NOT 'if word in counts: counts[word]' (two lookups)", 'Returns correct frequencies']
+criteria = ["Uses null coalescing (??) or compound assignment (??=) — NOT isset/array_key_exists with separate access (two lookups)", 'Returns correct frequencies']
 
 [checks]
 scripts = ["evals/checks/no_double_lookup.py"]

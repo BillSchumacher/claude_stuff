@@ -239,18 +239,20 @@ Run ID `20260410_060431` — all 68 cases, Opus 4.6 judge, Sonnet agent.
 | `dev_workflow_tdd` | Dev workflow | +3 |
 | `efficiency_log_report_rust` | Efficiency (Rust) | +3 |
 
-### Degraded cases
+### Degraded cases (fixed)
 
-| Case | Baseline | With skill | Δ | Issue |
-|---|---|---|---|---|
-| `efficiency_find_cheapest_go` | 1/1 | 0/1 | -1 | `no_sorted_for_minmax` check uses Python regex on Go code — false positive |
-| `efficiency_stair_climbing_js` | 1/1 | 0/1 | 0 | `no_naive_recursion` check matches JS function names incorrectly when the skill variant uses a different recursion pattern |
-| `efficiency_word_count_php` | 1/1 | 0/1 | 0 | `no_double_lookup` check uses Python dict syntax (`if k in d: d[k]`) which doesn't match PHP — false positive on PHP code |
-| `efficiency_event_count_cpp` | — | — | -1 | Rubric noise: both use `const auto&`, skill variant's prose scored slightly lower |
-| `sdlc_acceptance_criteria` | — | — | -3 | Non-deterministic: with-skill variant asked clarifying questions instead of producing spec (correct per skill, but scored lower) |
-| `python_style_001` | 1/2 | 0/2 | +1 | `ruff`/`has_docstrings` check regressed while rubric improved — check scripts matched against agent prose not just code |
+Six cases showed degradation in the initial run. Root causes and fixes:
 
-**Root cause for negative check flips:** Three of the check scripts (`no_sorted_for_minmax`, `no_naive_recursion`, `no_double_lookup`) were written for Python and use Python-specific regex patterns. When applied to Go, JavaScript, or PHP output, they produce false positives. These checks need language-aware variants or should be restricted to Python-only cases.
+| Case | Issue | Fix |
+|---|---|---|
+| `efficiency_find_cheapest_go` | `no_sorted_for_minmax` used Python regex on Go code — false positive | Made multi-language: detects Go `sort.Slice` + `[0]` pattern; requires language tag to skip bare blocks with anti-pattern examples |
+| `efficiency_stair_climbing_js` | `no_naive_recursion` split on function name, caught test calls as "recursion" | Rewrote with brace-counting for JS function scope; added arrow function support |
+| `efficiency_word_count_php` | `no_double_lookup` used Python `if k in d:` pattern on PHP code | Added PHP patterns: `isset`/`array_key_exists` + separate access, suggests `??`/`??=` |
+| `efficiency_event_count_cpp` | Rubric noise: both variants use `const auto&`, prose scored -1 | No fix needed — inherent LLM judging variance |
+| `sdlc_acceptance_criteria` | Agent asked clarifying questions instead of producing spec | Prompt now says "assume reasonable defaults, note them explicitly"; rubric rewards noting assumptions over stopping to ask |
+| `python_style_001` | `has_docstrings` failed when agent used Write tool instead of code blocks | Check now falls back to written `.py` files when no code blocks found |
+
+**Shared fix:** Added `require_language_tag` parameter to `_security_lib.py` and `detect_target_language()` helper. Check scripts now extract only explicitly tagged code blocks for the target language, preventing false positives from anti-pattern examples in prose and cross-language written file content.
 
 ### Results by skill category
 
@@ -275,4 +277,4 @@ Run ID `20260410_060431` — all 68 cases, Opus 4.6 judge, Sonnet agent.
 
 4. **Multi-skill orchestration requires the `skill-orchestration` meta-skill.** Without it, the agent invokes only one skill even when multiple are relevant. With it, all relevant skills are invoked and their guidance composes.
 
-5. **Check scripts designed for one language produce false positives on others.** Three negative check flips trace to Python-centric regex being applied to Go/JS/PHP output. Language-specific checks should be restricted to their target language.
+5. **Check scripts must be language-aware.** Three initial negative check flips traced to Python-centric regex being applied to Go/JS/PHP output. Fixed by adding `detect_target_language()` and `require_language_tag` to the shared helper, so each check extracts only the target language's code blocks and applies language-appropriate patterns.

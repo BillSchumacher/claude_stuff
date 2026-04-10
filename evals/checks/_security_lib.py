@@ -60,20 +60,41 @@ def strip_c_style_comments(code: str) -> str:
     return code
 
 
+def detect_target_language() -> str | None:
+    """Detect target language from EVAL_EXPECTED_SKILLS env var.
+
+    Returns the language suffix (e.g. "go", "python", "php") or None.
+    """
+    skills = os.environ.get("EVAL_EXPECTED_SKILLS", "")
+    for skill in skills.split(","):
+        skill = skill.strip()
+        if skill.startswith("efficient-code-"):
+            return skill[len("efficient-code-"):]
+    if "python-style" in skills:
+        return "python"
+    return None
+
+
 def get_all_code(
     stdin_text: str,
     *,
     languages: tuple[str, ...] = ("python", "py"),
     strip_docs: bool = True,
+    require_language_tag: bool = False,
 ) -> str:
     """Combine code from stdin code blocks and any written files.
 
     `languages` controls which fenced-code-block language tags are extracted.
     `strip_docs=True` runs the Python-style stripper (docstrings + # comments +
     regular string literals). For non-Python code use `get_all_code_c_style()`.
+    `require_language_tag=True` skips bare ``` blocks (only matches explicitly
+    tagged blocks), preventing false positives from anti-pattern examples in prose.
     """
     fence_langs = "|".join(re.escape(lang) for lang in languages)
-    pattern = rf"```(?:{fence_langs})?\n(.*?)```"
+    if require_language_tag:
+        pattern = rf"```(?:{fence_langs})\n(.*?)```"
+    else:
+        pattern = rf"```(?:{fence_langs})?\n(.*?)```"
     blocks = re.findall(pattern, stdin_text, re.DOTALL)
     code = "\n".join(blocks)
 
@@ -92,14 +113,19 @@ def get_all_code_c_style(
     stdin_text: str,
     *,
     languages: tuple[str, ...],
+    require_language_tag: bool = False,
 ) -> str:
     """Like get_all_code but uses the C-style comment/string stripper.
 
     Use for JS, TS, Go, Rust, C, C++, C#, PHP. Pass the language tags you
     expect in the fenced code blocks (e.g., ("javascript", "js", "typescript", "ts")).
+    `require_language_tag=True` skips bare ``` blocks.
     """
     fence_langs = "|".join(re.escape(lang) for lang in languages)
-    pattern = rf"```(?:{fence_langs})?\n(.*?)```"
+    if require_language_tag:
+        pattern = rf"```(?:{fence_langs})\n(.*?)```"
+    else:
+        pattern = rf"```(?:{fence_langs})?\n(.*?)```"
     blocks = re.findall(pattern, stdin_text, re.DOTALL)
     code = "\n".join(blocks)
 
