@@ -6,21 +6,37 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Two things in one repo:
 
-1. **Claude Code plugin marketplace** — `.claude-plugin/marketplace.json` lists plugins under `plugins/`. Each plugin contains skills as `plugins/<plugin>/skills/<skill>/SKILL.md` with YAML frontmatter. Owner: `BillSchumacher`.
-2. **Evaluation framework** — Python 3.12 (Pipenv, stdlib only). Runs `claude -p` twice per test case (baseline vs with-skill), captures the full message stream, then scores via rubric judge, automated check scripts, and before/after diffs. Results are TSVs in `results/`.
+1. **Claude Code plugin marketplace** — `.claude-plugin/marketplace.json` lists 17 plugins under `plugins/`. Each plugin contains skills as `plugins/<plugin>/skills/<skill>/SKILL.md` with YAML frontmatter. Owner: `BillSchumacher`.
+2. **Evaluation framework** — Python 3.12 (Pipenv, stdlib only). Runs `claude -p` twice per test case (baseline vs with-skill), captures the full message stream, then scores via Opus 4.6 rubric judge, automated check scripts, and before/after diffs. Results are TSVs in `results/`. Currently 68 eval cases.
+
+## Plugins
+
+| Plugin | Purpose |
+|---|---|
+| `dev-workflow` | TDD with Gherkin, code quality, git discipline |
+| `python-style` | Type annotations, docstrings, PEP 8, streaming |
+| `secure-coding` | OWASP Top 10:2025, ASVS 5.0, NIST SSDF/CSF 2.0 |
+| `api-design` | REST contracts: OpenAPI 3.1, RFC 9457, pagination, idempotency |
+| `observability` | OpenTelemetry, structured logging, SLI/SLO |
+| `acceptance-criteria` | Requirements specification: ISO 29148, BDD |
+| `skill-orchestration` | Meta-skill for invoking ALL relevant skills, not just one |
+| `efficient-code` | Language-neutral algorithmic efficiency (core) |
+| `efficient-code-{c,cpp,csharp,go,javascript,php,python,rust,typescript}` | Language-specific efficiency: stdlib helpers + syntax/compiler/runtime gotchas |
 
 ## Commands
 
 ```bash
 pipenv install --dev
-pipenv run python -m src.cli list                         # list test cases
-pipenv run python -m src.cli run                          # run all
+pipenv run python -m src.cli list                         # list test cases (68)
+pipenv run python -m src.cli run                          # run all (~2-3 hours)
 pipenv run python -m src.cli run --cases "security_*"     # glob filter
 pipenv run python -m src.cli report --run-id <ID>         # view a past run
-pipenv run pytest tests/ -v                               # unit tests
+pipenv run python -m src.cli new-plugin my-plugin \       # scaffold a plugin
+  --description "One-line description"
+pipenv run pytest tests/ -v                               # unit tests (18)
 ```
 
-Eval runs are slow: each case spawns at least 2 `claude -p` invocations plus a judge call and a diff-summary call. Budget 1–5 minutes per case. Use `run_in_background: true` when running suites.
+Full suite is 68 cases at ~2 min each. Use `run_in_background: true` when running from Claude Code.
 
 ## Plugin marketplace layout
 
@@ -36,11 +52,16 @@ plugins/
         SKILL.md                   # YAML frontmatter + content
 ```
 
-Skills are auto-invoked by Claude based on the frontmatter `description`. Critical finding: **the agent only invokes ONE skill by default**, even when multiple match. The `skill-orchestration` plugin is a meta-skill that explicitly instructs the agent to invoke every relevant skill — load it alongside the worker skills if a task should use multiple.
+### Key behaviors
+
+- Skills are auto-invoked by Claude based on the frontmatter `description`.
+- **The agent only invokes ONE skill by default**, even when multiple match. Load `skill-orchestration` alongside worker skills for multi-skill tasks.
+- Skills can influence how the agent WRITES new code but **cannot reliably make the agent REWRITE existing code** it wasn't asked to change. The system prompt's "don't change what you weren't asked to change" rule is stronger than skill directives.
+- When given existing inefficient code to EXTEND, the skill sometimes overrides the existing pattern (Go `string +=` → `Builder`, Python list → set) and sometimes doesn't (C++ `auto` → `const auto&`, Python `sorted[:k]` → `heapq`). Patterns that look like "idiomatic correct code" are hardest to override.
 
 ### Adding a new plugin
 
-Prefer the scaffold command — it writes the manifest, skill stub, and marketplace entry in one step, and detects the author from the git remote so contributors get their own attribution automatically:
+Use the scaffold command — detects author from git remote:
 
 ```bash
 pipenv run python -m src.cli new-plugin my-plugin \
@@ -49,19 +70,17 @@ pipenv run python -m src.cli new-plugin my-plugin \
   [--author Name]     # override the detected author
 ```
 
-Author detection (`src/git_meta.py`): parses `git remote get-url origin` — owner segment of github/gitlab/bitbucket/ssh URLs wins. Falls back to `git config user.name`, then to `"unknown"`. The result is cached for the life of the process.
-
-After scaffolding, fill in the SKILL.md rules and (optionally) add eval cases under `evals/cases/`.
+Author detection (`src/git_meta.py`): parses `git remote get-url origin` owner segment (GitHub/GitLab/Bitbucket/SSH). Falls back to `git config user.name`, then `"unknown"`.
 
 ## Eval framework architecture
 
 `src/cli.py` orchestrates the pipeline per case:
 
-1. **`runner.py`** — builds the `claude -p` command. Uses `--output-format stream-json --verbose --dangerously-skip-permissions`. Baseline uses `--disable-slash-commands`; with-skill uses repeated `--plugin-dir <abs path>`. Each variant runs in an isolated `tempfile.gettempdir()/skill_eval/<case_id>_<variant>/` directory so they don't contaminate each other. `run_claude()` returns `(text, messages)` — `messages` is the full stream-json message list including all tool_use and tool_result events.
-2. **`scorer.py`** — judge call via `run_claude_json()` (separate helper for `--output-format json` calls; **don't use `run_claude` here**, that one is for stream-json). Uses `--append-system-prompt` to instruct the judge to return JSON; the response is parsed by `parse_judge_response()` which handles raw JSON, fenced JSON, and embedded JSON. **Do not use `--json-schema`** — it caused API errors and unreliable formatting. `enrich_with_written_files()` appends `Write` tool contents to the agent's text response before sending to the judge, otherwise the judge only sees a summary and gives unfair partial scores.
-3. **`checker.py`** — runs linters and check scripts. Each check script gets the agent's text on stdin plus a JSON file with the full message stream at `$EVAL_MESSAGES_FILE` and a comma-separated `$EVAL_EXPECTED_SKILLS`.
-4. **`differ.py`** — `difflib.unified_diff` + an AI-generated diff summary.
-5. **`results.py`** — streams rows to TSV incrementally so partial results survive crashes.
+1. **`runner.py`** — builds the `claude -p` command. Uses `--output-format stream-json --verbose --dangerously-skip-permissions`. Subprocess calls use `encoding="utf-8", errors="replace"` (required on Windows — default cp1252 crashes on emojis/em-dashes). Baseline uses `--disable-slash-commands`; with-skill uses repeated `--plugin-dir <abs path>`. Each variant runs in an isolated temp dir. `run_claude()` returns `(text, messages)`. There is a separate `run_claude_json()` for `--output-format json` calls (scorer/differ use this).
+2. **`scorer.py`** — Opus 4.6 judge call via `run_claude_json()`. Uses `--append-system-prompt` to instruct JSON output; parsed by `parse_judge_response()`. **Do not use `--json-schema`** — it caused API errors. `enrich_with_written_files()` appends `Write` tool contents so the judge sees actual code, not just the agent's summary.
+3. **`checker.py`** — runs linters (per code block) and check scripts. Sets `PYTHONIOENCODING=utf-8` and `PYTHONUTF8=1` in child env. Passes `$EVAL_MESSAGES_FILE` (JSON path) and `$EVAL_EXPECTED_SKILLS` (comma-separated) to check scripts.
+4. **`differ.py`** — `difflib.unified_diff` + Opus 4.6 diff summary.
+5. **`results.py`** — streams rows to TSV incrementally.
 
 `config.py` holds `RunResult(case_id, variant, raw_output, model, timestamp, messages)` and path constants.
 
@@ -74,47 +93,64 @@ name = "Human-readable name"
 description = "What the test measures"
 plugins = ["plugin-name"]               # Plugins to load via --plugin-dir
 expected_skills = ["plugin-name"]       # Optional; defaults to plugins.
-                                         # Used by skills_invoked.py check.
 
 [prompt]
 text = """Neutral prompt that doesn't mention the skill area."""
 
 [rubric]
-criteria = ["Criterion 1", "Criterion 2"]   # Judge scores 0-2 per criterion
+criteria = ["Criterion 1", "Criterion 2"]   # Opus judge scores 0-2 each
 
 [checks]
 scripts = ["evals/checks/has_X.py"]
-linters = ["ruff check"]                # Optional; runs per code block
+linters = ["ruff check"]
 
 [options]
-model = "sonnet"                        # or opus, haiku
+model = "sonnet"                        # Agent model (judge is always Opus)
 max_budget_usd = 1.0
-timeout_seconds = 600                   # Optional, default 300. Increase for
-                                         # open-ended prompts where the baseline
-                                         # may run long.
+timeout_seconds = 600                   # Default 300
 ```
+
+## Test case categories
+
+Cases follow naming conventions:
+- `efficiency_*` — write code from scratch, check for efficient patterns
+- `refactor_*` — given inefficient existing code, extend it (tests if agent copies vs improves)
+- `review_*` — given inefficient code, review and suggest fixes
+- `security_*` — security-focused code generation
+- `sdlc_*` — SDLC practices (API design, observability, acceptance criteria)
+- `dev_workflow_*` / `combined_*` / `orchestrated_*` — workflow and multi-skill tests
+- `python_style_*` / `streaming_*` — Python-specific style and streaming
 
 ## Check script conventions
 
-- Live in `evals/checks/`. Filenames start with `_` for shared helpers (not auto-discovered).
-- Receive the agent's text response on stdin. Read `EVAL_MESSAGES_FILE` env var (path to JSON) for the full message stream, and `EVAL_EXPECTED_SKILLS` for the expected skill list.
+- Live in `evals/checks/`. Files starting with `_` are shared helpers.
+- Receive agent text on stdin. Read `$EVAL_MESSAGES_FILE` for full message stream, `$EVAL_EXPECTED_SKILLS` for expected skill list.
 - Exit 0 = pass, non-zero = fail. Diagnostics to stderr.
-- Import `_security_lib` (not security-only despite the name) for `get_all_code()`, `get_written_content()`, `strip_docstrings_and_comments()`, and `fail()`. Use `sys.path.insert(0, str(Path(__file__).parent))` before importing.
-- `get_all_code()` strips docstrings, comments, and non-f-string literals by default — patterns inside prose like `"never use verify=False"` won't false-positive. F-strings are preserved so SQL injection detection on f"SELECT..." still works.
-- For checks that need to inspect markdown structure (OpenAPI specs, acceptance criteria sections), use `get_written_content()` directly so the strip pass doesn't run.
+- Import `_security_lib` for helpers: `get_all_code()` (Python, strips docs/comments), `get_all_code_c_style()` (C-family languages, strips `//` and `/* */`), `get_written_content()`, `fail()`.
+- `get_all_code(languages=("python", "py"))` — set `languages` to match the fenced-code-block language tags you want.
+- `get_all_code_c_style(languages=("go", "golang"))` — for JS/TS/Go/Rust/C/C++/C#/PHP.
+- Stripping logic: `strip_docstrings_and_comments()` removes triple-quoted strings, non-f-string literals, and `#` comments. `strip_c_style_comments()` removes `//`, `/* */`, and string literals. This prevents false positives on patterns like `"never use verify=False"` in docstrings.
+
+### Known check script issues
+
+- **Python-centric checks produce false positives on other languages.** `no_sorted_for_minmax`, `no_naive_recursion`, and `no_double_lookup` use Python-specific regex. When attached to Go/JS/PHP cases, they can false-positive. Restrict these checks to Python-only cases, or write language-aware variants.
+- **Review cases quote the original anti-pattern.** When the agent reviews code, it quotes the original (bad) code and then shows the fix. Checks that scan ALL code blocks will match the quoted original and fail. The C++ `no_range_for_copy_cpp` check hits this. For review cases, consider checking only the last code block or accepting "at least one block passes."
 
 ## Important gotchas
 
-- **`--bare` flag has auth issues**: it skips OAuth/keychain reads and only honors `ANTHROPIC_API_KEY`, so subprocess calls fail with "Not logged in." Use `--disable-slash-commands` instead for clean baselines.
-- **The judge sees only the agent's final text response unless we enrich it.** Agents that use `Write` tool calls produce a short summary in `result` and the actual code in tool input. `enrich_with_written_files()` in `scorer.py` fixes this.
-- **Stale eval results** between variants: each variant must run in its own working dir. `_make_workdir()` in `runner.py` creates and cleans them.
-- **Agent gets confused by `/tmp/` paths on Windows** because of WSL/MSYS path translation. Prefer relative paths or `tempfile.gettempdir()` based dirs.
-- **Pyright shows "Import _security_lib could not be resolved"** for check scripts — this is because they use runtime `sys.path` manipulation. Ignore the warning; the imports work at runtime.
-- **Open-ended prompts** ("build feature X") cause the baseline to dive into a full implementation and time out. Either increase `timeout_seconds` or constrain the prompt to "describe what you would build" so the eval measures specification quality, not code-writing speed.
+- **`--bare` flag has auth issues**: skips OAuth/keychain, only honors `ANTHROPIC_API_KEY`. Use `--disable-slash-commands` instead.
+- **The judge sees only the agent's text response unless enriched.** `enrich_with_written_files()` in `scorer.py` fixes this by appending Write tool contents.
+- **Each variant must run in its own working dir.** `_make_workdir()` in `runner.py` handles this. Without it, the with-skill variant inherits files from the baseline.
+- **Windows path issues**: agent gets confused between `/tmp/` and `C:\Users\...\AppData\Local\Temp\`. Use relative paths or `tempfile.gettempdir()`.
+- **Encoding**: `runner.py` and `checker.py` force `encoding="utf-8", errors="replace"` on all subprocess calls. `checker.py` also sets `PYTHONIOENCODING=utf-8` and `PYTHONUTF8=1` in child env. Without this, cp1252 on Windows crashes on emojis and em-dashes.
+- **Open-ended prompts** cause baseline to dive into full implementation and time out. Either increase `timeout_seconds` or constrain the prompt.
+- **Pyright "Import _security_lib could not be resolved"** on check scripts is expected — they use runtime `sys.path` manipulation. Ignore it.
 
 ## Conventions
 
 - Functional style, no classes. Small focused functions.
 - Memory-efficient: stream rows to TSV, don't accumulate.
 - Result TSVs are gitignored except `results/.gitkeep`.
-- All plugin authors are `BillSchumacher`.
+- All plugin authors detected from git remote (currently `BillSchumacher`).
+- Judge model is Opus 4.6 (hardcoded default in `scorer.py` and `differ.py`). Agent model is set per case in TOML (default: sonnet).
+- Efficiency eval cases target 4 per language (from-scratch, extend-existing, review, rule-coverage) across 9 languages: C, C++, C#, Go, JavaScript, PHP, Python, Rust, TypeScript.
