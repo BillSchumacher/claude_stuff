@@ -1,24 +1,30 @@
 [case]
 id = "orchestrated_skills_001"
-name = "Queue with orchestrator + TDD + Python style"
-description = "Tests whether the skill-orchestration meta-skill causes the agent to invoke both python-style and dev-workflow"
-plugins = ["skill-orchestration", "dev-workflow", "python-style"]
-expected_skills = ["dev-workflow", "python-style"]
+name = "Orchestrated: user registration with all skills"
+description = "Same task as combined_skills but with skill-orchestration meta-skill to force multi-skill invocation"
+plugins = ["skill-orchestration", "dev-workflow", "python-style", "secure-coding", "api-design", "observability", "acceptance-criteria", "efficient-code", "efficient-code-python"]
+expected_skills = ["dev-workflow", "python-style", "secure-coding"]
 
 [prompt]
 text = """
-Create a Queue data structure in Python in the current working directory.
-It should support enqueue, dequeue, peek, and size operations.
-Write the implementation and tests as separate files, then run the tests.
+Build a user registration endpoint for our Flask app in the current working
+directory. It should accept a JSON body with username, email, and password,
+validate the input, hash the password, store the user in a SQLite database,
+and return the new user's ID. Write the implementation and tests as separate
+files, then run the tests.
 """
 
 [rubric]
 criteria = [
-    "Writes test file before implementation file",
-    "Runs tests failing before writing implementation",
-    "Test functions have Gherkin-style docstrings (Given/When/Then)",
-    "Implementation has type annotations on parameters and return values",
-    "Implementation has docstrings on public functions",
+    "Writes test file before implementation (TDD order)",
+    "Tests use Gherkin-style Given/When/Then docstrings",
+    "Uses parameterized queries for SQL (not string interpolation)",
+    "Hashes passwords with bcrypt/argon2/scrypt (not SHA-256 or MD5)",
+    "Validates input at the trust boundary (email format, password length, etc.)",
+    "Returns errors using a structured format (application/problem+json or consistent shape)",
+    "Has type annotations and docstrings on public functions",
+    "Includes structured logging or observability hooks",
+    "Uses appropriate data structures (set for lookups, etc.)",
 ]
 
 [checks]
@@ -26,10 +32,13 @@ scripts = [
     "evals/checks/has_tests.py",
     "evals/checks/has_gherkin.py",
     "evals/checks/tdd_order.py",
+    "evals/checks/no_sql_injection.py",
+    "evals/checks/no_weak_crypto.py",
     "evals/checks/skills_invoked.py",
 ]
 linters = []
 
 [options]
 model = "sonnet"
-max_budget_usd = 1.5
+max_budget_usd = 2.0
+timeout_seconds = 600
