@@ -1,0 +1,38 @@
+[case]
+id = "review_in_array_loop_php_001"
+name = "PHP: review permission check with in_array in loop"
+description = "Code review: given inefficient code, identify and fix the performance issue"
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-php"]
+expected_skills = ["efficient-code", "efficient-code-php"]
+
+[prompt]
+text = """
+Review this code and suggest improvements:
+
+```php
+function getAllowedUsers(array $users, array $allowedIds): array {
+    $result = [];
+    foreach ($users as $user) {
+        if (in_array($user["id"], $allowedIds)) {
+            $result[] = $user;
+        }
+    }
+    return $result;
+}
+```
+"""
+
+[rubric]
+criteria = [
+    "Identifies that in_array() inside foreach is O(n*m)",
+    "Recommends array_flip + isset or converting to a hash lookup",
+    "Shows corrected code with O(1) membership check",
+]
+
+[checks]
+scripts = ["evals/checks/no_in_array_loop_php.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

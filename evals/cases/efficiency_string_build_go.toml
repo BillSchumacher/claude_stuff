@@ -1,0 +1,29 @@
+[case]
+id = "efficiency_string_build_go_001"
+name = "Go CSV row builder"
+description = "Ask for building a CSV string in Go and check whether the agent uses strings.Builder instead of += concatenation"
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-go"]
+expected_skills = ["efficient-code", "efficient-code-go"]
+
+[prompt]
+text = """
+Write a Go function `RenderCSV(rows [][]string) string` that renders rows of
+cells as CSV. Each row is a slice of string cells; cells are joined with commas
+and rows are joined with newlines. Don't worry about quoting for this exercise —
+assume cells have no commas or newlines.
+"""
+
+[rubric]
+criteria = [
+    "Uses strings.Builder (or bytes.Buffer, or strings.Join) — NOT string += in a loop",
+    "Does not allocate quadratic time in the total output size",
+    "Function signature matches the spec",
+]
+
+[checks]
+scripts = ["evals/checks/no_string_concat_loop_go.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

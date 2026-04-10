@@ -1,0 +1,37 @@
+[case]
+id = "refactor_includes_loop_js_001"
+name = "JavaScript: extend ban filter with role-based access"
+description = "Existing code uses .includes() in a filter to check a ban list. Ask to add a second list check (admin roles), doubling the linear scan cost."
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-javascript"]
+expected_skills = ["efficient-code", "efficient-code-javascript"]
+
+[prompt]
+text = """
+Here's our user filter:
+
+```javascript
+function getActiveUsers(users, bannedIds) {
+  return users.filter(u => !bannedIds.includes(u.id));
+}
+```
+
+We need to extend this. In addition to filtering out banned users, we also
+have a `privilegedRoleIds` array. Add a `getRegularActiveUsers` function
+that returns users who are NOT banned AND whose `roleId` is NOT in the
+privileged list. Users have `{ id, name, email, roleId }` shape.
+"""
+
+[rubric]
+criteria = [
+    "Adds getRegularActiveUsers that filters on both bannedIds and privilegedRoleIds",
+    "Does NOT use .includes() inside the filter callback for either list (O(n*m))",
+    "Converts both filter lists to Sets for O(1) has() lookups",
+]
+
+[checks]
+scripts = ["evals/checks/no_array_includes_loop.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

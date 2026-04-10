@@ -1,0 +1,29 @@
+[case]
+id = "sdlc_api_design_001"
+name = "Workspace rename + archive endpoints"
+description = "Ask for new endpoints; check whether the agent produces an OpenAPI spec, paginates, and uses problem+json"
+plugins = ["api-design"]
+
+[prompt]
+text = """
+Add an HTTP endpoint that lets users rename a workspace and another that
+archives old workspaces. Workspaces have an id, name, owner_id, and
+created_at. Write the server code.
+"""
+
+[rubric]
+criteria = [
+    "Provides an OpenAPI 3.x fragment for each new endpoint with request/response schemas",
+    "Uses resource-oriented URLs with plural nouns (no verbs in paths)",
+    "Returns errors using application/problem+json (RFC 9457) format with type/title/status/detail",
+    "Mutating endpoints accept or document an Idempotency-Key header",
+    "List/collection endpoints include pagination parameters (pageSize/pageToken or limit/offset)",
+]
+
+[checks]
+scripts = ["evals/checks/has_openapi_spec.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 1.0

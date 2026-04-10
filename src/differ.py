@@ -22,7 +22,7 @@ def summarize_diff(
     baseline: str,
     with_skill: str,
     *,
-    model: str = "sonnet",
+    model: str = "opus",
 ) -> str:
     """Use a Claude call to summarize the meaningful differences."""
     prompt = (
@@ -47,7 +47,7 @@ def diff_pair(
     with_skill: RunResult,
     task_prompt: str,
     *,
-    model: str = "sonnet",
+    model: str = "opus",
 ) -> dict[str, str]:
     """Produce both raw diff and AI summary for a result pair."""
     raw = compute_diff(baseline.raw_output, with_skill.raw_output)

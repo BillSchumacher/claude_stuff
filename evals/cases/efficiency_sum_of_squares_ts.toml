@@ -1,0 +1,22 @@
+[case]
+id = "efficiency_sum_of_squares_ts_001"
+name = "TypeScript: Uses a generator expression sum(x*x for x in nums) — NOT sum"
+description = "Tests core efficient-code rule coverage"
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-typescript"]
+expected_skills = ["efficient-code", "efficient-code-typescript"]
+
+[prompt]
+text = """
+Write a function that takes a list of numbers and returns the sum of their squares.
+"""
+
+[rubric]
+criteria = ['Uses a generator expression sum(x*x for x in nums) — NOT sum([x*x for x in nums]) with a list', 'Returns the correct sum']
+
+[checks]
+scripts = ["evals/checks/no_list_in_aggregate.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

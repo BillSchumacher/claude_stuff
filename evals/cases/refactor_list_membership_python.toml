@@ -1,0 +1,44 @@
+[case]
+id = "refactor_list_membership_python_001"
+name = "Python: batch token revocation check"
+description = "Existing code uses a list for token lookup. Agent must add batch checking which amplifies the O(n) cost. Skill should recognize and fix."
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-python"]
+expected_skills = ["efficient-code", "efficient-code-python"]
+
+[prompt]
+text = """
+Here's our token revocation module:
+
+```python
+revoked_tokens = []
+
+def load_revoked():
+    global revoked_tokens
+    with open("/etc/app/revoked.txt") as f:
+        revoked_tokens = [line.strip() for line in f]
+
+def is_token_revoked(token):
+    return token in revoked_tokens
+
+load_revoked()
+```
+
+We need to add a `check_batch(tokens: list[str]) -> list[str]` function that
+takes a list of tokens and returns which ones are revoked. We're calling this
+from a background job that processes thousands of tokens at a time.
+"""
+
+[rubric]
+criteria = [
+    "Adds a check_batch function that returns the revoked tokens from the input list",
+    "Uses a set for the revoked_tokens collection (not a list) since batch lookup amplifies the O(n) cost",
+    "Does not use nested loops to check each token against the list",
+]
+
+[checks]
+scripts = ["evals/checks/uses_hash_set_for_membership.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

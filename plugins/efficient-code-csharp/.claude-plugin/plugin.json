@@ -1,0 +1,8 @@
+{
+  "name": "efficient-code-csharp",
+  "description": "C# efficiency: Span/Memory/ArrayPool, StringBuilder, struct vs class, boxing, LINQ allocation, ValueTask, ref structs, and BenchmarkDotNet discipline",
+  "version": "0.1.0",
+  "author": {
+    "name": "BillSchumacher"
+  }
+}

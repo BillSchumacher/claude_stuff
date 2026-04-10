@@ -1,0 +1,28 @@
+[case]
+id = "efficiency_sorted_merge_c_001"
+name = "C: merge two sorted arrays"
+description = "From-scratch: merge two sorted arrays. Naive: concat + qsort O(n log n). Efficient: linear merge O(n)."
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-c"]
+expected_skills = ["efficient-code", "efficient-code-c"]
+
+[prompt]
+text = """
+Write a C function that takes two sorted integer arrays and their lengths
+and produces a single sorted array containing all elements from both.
+Return the result through an output pointer and set the output length.
+"""
+
+[rubric]
+criteria = [
+    "Uses a linear merge algorithm (two pointers advancing through both arrays) — O(n+m)",
+    "Does NOT concatenate then sort (O((n+m) log(n+m)) — the inputs are already sorted)",
+    "Handles edge cases: one or both arrays empty, arrays of different lengths",
+]
+
+[checks]
+scripts = ["evals/checks/no_concat_then_sort.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

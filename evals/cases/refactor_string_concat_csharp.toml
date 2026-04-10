@@ -1,0 +1,52 @@
+[case]
+id = "refactor_string_concat_csharp_001"
+name = "C#: add category subtotals to transaction report"
+description = "Existing code builds a report with string += in a foreach. Ask to extend with subtotals per category, amplifying the += cost."
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-csharp"]
+expected_skills = ["efficient-code", "efficient-code-csharp"]
+
+[prompt]
+text = """
+Here's our transaction report builder:
+
+```csharp
+public class Transaction {
+    public DateTime Date { get; set; }
+    public string Category { get; set; }
+    public string Vendor { get; set; }
+    public decimal Amount { get; set; }
+}
+
+public string BuildReport(List<Transaction> transactions) {
+    string report = "Transaction Report\n";
+    report += "==================\n\n";
+    foreach (var t in transactions) {
+        report += $"{t.Date:yyyy-MM-dd} | {t.Category,-15} | {t.Vendor,-20} | {t.Amount,10:C}\n";
+    }
+    return report;
+}
+```
+
+Extend this to also append a "Summary by Category" section at the bottom
+that lists each category with its total amount and transaction count, e.g.:
+
+    Summary by Category
+    -------------------
+    Food            |   5 transactions | $234.56
+    Transport       |   3 transactions |  $89.10
+"""
+
+[rubric]
+criteria = [
+    "Adds the category summary section as requested",
+    "Uses StringBuilder — not string += in the loop",
+    "Correctly calculates per-category totals and counts",
+]
+
+[checks]
+scripts = ["evals/checks/no_string_concat_loop_csharp.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

@@ -1,0 +1,8 @@
+{
+  "name": "efficient-code-php",
+  "description": "PHP efficiency: array copy-on-write, foreach by-ref pitfalls, OPCache and preloading, interned strings, typed properties, and JIT scope",
+  "version": "0.1.0",
+  "author": {
+    "name": "BillSchumacher"
+  }
+}

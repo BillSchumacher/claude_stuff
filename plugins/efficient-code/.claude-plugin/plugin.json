@@ -1,0 +1,8 @@
+{
+  "name": "efficient-code",
+  "description": "Language-neutral algorithmic efficiency: data structure selection, Big-O awareness, space complexity, and profile-before-optimize discipline",
+  "version": "0.1.0",
+  "author": {
+    "name": "BillSchumacher"
+  }
+}

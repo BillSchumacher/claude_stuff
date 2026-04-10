@@ -1,0 +1,22 @@
+[case]
+id = "efficiency_matrix_search_c_001"
+name = "C: Does not call strlen or compute row/col lengths inside the i"
+description = "Tests core efficient-code rule coverage"
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-c"]
+expected_skills = ["efficient-code", "efficient-code-c"]
+
+[prompt]
+text = """
+Write a C function that takes a 2D array (rows x cols) and a target value, returning 1 if found, 0 otherwise.
+"""
+
+[rubric]
+criteria = ['Does not call strlen or compute row/col lengths inside the inner loop', 'Correctly searches the matrix']
+
+[checks]
+scripts = []
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

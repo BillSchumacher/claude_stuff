@@ -75,7 +75,7 @@ def score_output(
     case_id: str,
     variant: str,
     *,
-    model: str = "sonnet",
+    model: str = "opus",
 ) -> list[ScoreRow]:
     """Score a single output against the rubric."""
     prompt = build_judge_prompt(task_prompt, output, criteria)
@@ -101,20 +101,40 @@ def score_output(
     ]
 
 
+def enrich_with_written_files(result: RunResult) -> str:
+    """Combine the agent's text response with any files it wrote via the Write tool.
+
+    Without this, the judge only sees the summary text and gives partial scores
+    for code it can't directly verify.
+    """
+    parts = [result.raw_output]
+    for msg in result.messages:
+        if msg.get("type") != "assistant":
+            continue
+        for content in msg.get("message", {}).get("content", []):
+            if content.get("type") == "tool_use" and content.get("name") == "Write":
+                inp = content.get("input", {})
+                path = inp.get("file_path", "")
+                file_content = inp.get("content", "")
+                if file_content:
+                    parts.append(f"\n\n## File: {path}\n```\n{file_content}\n```")
+    return "\n".join(parts)
+
+
 def score_pair(
     task_prompt: str,
     with_skill: RunResult,
     baseline: RunResult,
     criteria: list[str],
     *,
-    model: str = "sonnet",
+    model: str = "opus",
 ) -> Iterator[ScoreRow]:
     """Score both variants of a case, yielding ScoreRows."""
     yield from score_output(
-        task_prompt, baseline.raw_output, criteria,
+        task_prompt, enrich_with_written_files(baseline), criteria,
         baseline.case_id, baseline.variant, model=model,
     )
     yield from score_output(
-        task_prompt, with_skill.raw_output, criteria,
+        task_prompt, enrich_with_written_files(with_skill), criteria,
         with_skill.case_id, with_skill.variant, model=model,
     )

@@ -1,0 +1,32 @@
+[case]
+id = "review_includes_loop_js_001"
+name = "JavaScript: review filter with includes in loop"
+description = "Code review: given inefficient code, identify and fix the performance issue"
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-javascript"]
+expected_skills = ["efficient-code", "efficient-code-javascript"]
+
+[prompt]
+text = """
+Review this code and suggest improvements:
+
+```javascript
+function removeBlacklisted(items, blacklist) {
+  return items.filter(item => !blacklist.includes(item.id));
+}
+```
+"""
+
+[rubric]
+criteria = [
+    "Identifies that .includes() inside .filter() is O(n*m)",
+    "Recommends converting blacklist to a Set for O(1) .has() lookups",
+    "Shows corrected code with Set creation before the filter",
+]
+
+[checks]
+scripts = ["evals/checks/no_array_includes_loop.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

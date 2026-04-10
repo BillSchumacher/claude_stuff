@@ -36,6 +36,8 @@ def run_linter(
             linter_cmd,
             capture_output=True,
             text=True,
+            encoding="utf-8",
+            errors="replace",
             timeout=timeout_seconds,
         )
         return CheckRow(
@@ -66,12 +68,17 @@ def run_check_script(
     The EVAL_EXPECTED_SKILLS env var contains comma-separated expected skill names.
     """
     env = {**os.environ}
+    # Force the child python interpreter to use UTF-8 for stdin/stdout/stderr
+    # so check scripts can call sys.stdin.read() without crashing on non-ASCII
+    # characters (emojis, em-dashes, smart quotes) emitted by the agent.
+    env["PYTHONIOENCODING"] = "utf-8"
+    env["PYTHONUTF8"] = "1"
     msgs_path = None
     if messages:
         msgs_file = tempfile.NamedTemporaryFile(
             mode="w", suffix=".json", delete=False, encoding="utf-8",
         )
-        json.dump(messages, msgs_file)
+        json.dump(messages, msgs_file, ensure_ascii=False)
         msgs_file.close()
         msgs_path = msgs_file.name
         env["EVAL_MESSAGES_FILE"] = msgs_path
@@ -83,6 +90,8 @@ def run_check_script(
             input=output,
             capture_output=True,
             text=True,
+            encoding="utf-8",
+            errors="replace",
             timeout=timeout_seconds,
             env=env,
         )

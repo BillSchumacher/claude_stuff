@@ -1,0 +1,49 @@
+[case]
+id = "review_range_copy_cpp_001"
+name = "C++: review event loop with value copy"
+description = "Code review: given inefficient code, identify and fix the performance issue"
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-cpp"]
+expected_skills = ["efficient-code", "efficient-code-cpp"]
+
+[prompt]
+text = """
+Review this code and suggest improvements:
+
+```cpp
+#include <vector>
+#include <string>
+
+struct LogEntry {
+    std::string timestamp;
+    std::string level;
+    std::string message;
+    std::string source;
+    std::string trace_id;
+};
+
+std::vector<LogEntry> filterErrors(const std::vector<LogEntry>& logs) {
+    std::vector<LogEntry> errors;
+    for (auto entry : logs) {
+        if (entry.level == "error") {
+            errors.push_back(entry);
+        }
+    }
+    return errors;
+}
+```
+"""
+
+[rubric]
+criteria = [
+    "Identifies that for (auto entry : logs) copies each LogEntry (5 strings)",
+    "Recommends for (const auto& entry : logs) to avoid the copy",
+    "May also suggest reserving capacity or using emplace_back",
+]
+
+[checks]
+scripts = ["evals/checks/no_range_for_copy_cpp.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

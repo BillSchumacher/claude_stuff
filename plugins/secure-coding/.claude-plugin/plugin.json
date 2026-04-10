@@ -1,0 +1,8 @@
+{
+  "name": "secure-coding",
+  "description": "Secure coding rules from OWASP Top 10:2025, ASVS 5.0, Proactive Controls 2024, NIST SSDF (SP 800-218 / 800-218A), and CSF 2.0",
+  "version": "0.1.0",
+  "author": {
+    "name": "BillSchumacher"
+  }
+}

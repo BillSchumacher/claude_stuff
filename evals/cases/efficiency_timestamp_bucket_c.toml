@@ -1,0 +1,22 @@
+[case]
+id = "efficiency_timestamp_bucket_c_001"
+name = "C: Uses bisect.bisect_right or bisect_left — NOT a linear for-l"
+description = "Tests core efficient-code rule coverage"
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-c"]
+expected_skills = ["efficient-code", "efficient-code-c"]
+
+[prompt]
+text = """
+Given a sorted list of session start timestamps and a query timestamp, return which session the query falls into (the index of the last start time <= query).
+"""
+
+[rubric]
+criteria = ['Uses bisect.bisect_right or bisect_left — NOT a linear for-loop scan', 'Returns the correct session index']
+
+[checks]
+scripts = []
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

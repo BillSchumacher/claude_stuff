@@ -1,0 +1,28 @@
+[case]
+id = "efficiency_topk_python_001"
+name = "Python top-k API calls"
+description = "Ask for top-5 slowest API calls in Python and check whether the agent uses heapq.nlargest instead of sorting"
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-python"]
+expected_skills = ["efficient-code", "efficient-code-python"]
+
+[prompt]
+text = """
+I have a list of tuples `(endpoint, duration_ms)` representing recent API calls.
+Write a Python function `slowest(calls, n)` that returns the n endpoints with
+the largest duration. Include the imports.
+"""
+
+[rubric]
+criteria = [
+    "Uses heapq.nlargest (O(n log k)) instead of sorted(...)[:n] (O(n log n))",
+    "Function has a clear signature with type annotations",
+    "Handles the edge case where n >= len(calls)",
+]
+
+[checks]
+scripts = ["evals/checks/no_sort_for_topk.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

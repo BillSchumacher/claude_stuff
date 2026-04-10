@@ -1,0 +1,8 @@
+{
+  "name": "efficient-code-go",
+  "description": "Go efficiency: slice growth and leaks, strings.Builder, interface boxing, escape analysis, defer cost, and sync.Pool for transient allocations",
+  "version": "0.1.0",
+  "author": {
+    "name": "BillSchumacher"
+  }
+}

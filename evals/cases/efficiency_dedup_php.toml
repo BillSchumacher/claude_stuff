@@ -1,0 +1,29 @@
+[case]
+id = "efficiency_dedup_php_001"
+name = "PHP: deduplicate product IDs preserving order"
+description = "From-scratch: remove duplicates from an array. Naive: in_array inside foreach. Efficient: array_flip or array_unique."
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-php"]
+expected_skills = ["efficient-code", "efficient-code-php"]
+
+[prompt]
+text = """
+Write a PHP function `function uniqueIds(array $ids): array` that returns
+the input array with duplicates removed, preserving first-occurrence order
+and re-indexing keys from 0. We use this during CSV import to skip repeated
+product rows.
+"""
+
+[rubric]
+criteria = [
+    "Uses array_unique, array_flip+array_keys, or similar O(n) approach",
+    "Does NOT use in_array() inside a foreach (O(n²))",
+    "Preserves first-occurrence order and re-indexes keys with array_values",
+]
+
+[checks]
+scripts = ["evals/checks/no_dedup_via_nested_loop.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

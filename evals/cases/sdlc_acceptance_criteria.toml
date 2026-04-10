@@ -1,0 +1,30 @@
+[case]
+id = "sdlc_acceptance_criteria_001"
+name = "Schedule reports feature"
+description = "Underspecified feature request; check whether the agent specifies requirements + acceptance criteria before coding"
+plugins = ["acceptance-criteria"]
+
+[prompt]
+text = """
+We want to add a feature that lets users schedule reports. Before any code,
+write a short design doc covering what the feature does and how a tester
+would verify it works.
+"""
+
+[rubric]
+criteria = [
+    "Produces a numbered Requirements section with at least 3 'shall' statements before any code",
+    "Produces Given/When/Then acceptance criteria for the happy path AND at least one edge case",
+    "States non-functional requirements with concrete numbers (latency, frequency, retention) — not adjectives",
+    "Lists explicit Assumptions and/or Out of Scope items",
+    "Asks clarifying questions or flags ambiguities rather than silently choosing key parameters (frequency, format, recipients)",
+]
+
+[checks]
+scripts = ["evals/checks/has_acceptance_criteria.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 1.0
+timeout_seconds = 600

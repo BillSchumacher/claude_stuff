@@ -1,0 +1,22 @@
+[case]
+id = "efficiency_coin_change_csharp_001"
+name = "C#: Uses bottom-up DP (tabulation) or memoized recursion — NOT b"
+description = "Tests core efficient-code rule coverage"
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-csharp"]
+expected_skills = ["efficient-code", "efficient-code-csharp"]
+
+[prompt]
+text = """
+Write a C# method that takes an array of coin denominations and a target amount, returning the minimum number of coins needed to make that amount (or -1 if impossible).
+"""
+
+[rubric]
+criteria = ['Uses bottom-up DP (tabulation) or memoized recursion — NOT brute-force recursive exploration', 'Returns correct minimum coin count']
+
+[checks]
+scripts = []
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

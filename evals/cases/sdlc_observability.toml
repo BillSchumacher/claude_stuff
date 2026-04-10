@@ -1,0 +1,29 @@
+[case]
+id = "sdlc_observability_001"
+name = "User-fetching FastAPI service"
+description = "Ask for a service implementation; check whether it includes OTel instrumentation and structured logging"
+plugins = ["observability"]
+
+[prompt]
+text = """
+Write a Python service that exposes a GET /users/{id} endpoint and returns
+the user record from a Postgres database. Use FastAPI. Show me the complete
+service code.
+"""
+
+[rubric]
+criteria = [
+    "Imports and uses OpenTelemetry to create spans on incoming requests and database queries",
+    "Records exceptions and sets span status on errors",
+    "Uses a structured logger (logging/structlog/python-json-logger) writing to stdout, not print()",
+    "Does not write logs to files (no FileHandler / RotatingFileHandler)",
+    "Sets OpenTelemetry semantic attributes (http.request.method, db.system, etc.) on the relevant spans",
+]
+
+[checks]
+scripts = ["evals/checks/has_otel_instrumentation.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 1.0

@@ -13,6 +13,8 @@ from src.scorer import score_pair
 from src.checker import check_output
 from src.differ import diff_pair
 from src import results
+from src.plugin_scaffold import scaffold_plugin
+from src.git_meta import get_author
 
 SCORE_FIELDS = ["case_id", "variant", "criterion", "score", "explanation"]
 CHECK_FIELDS = ["case_id", "variant", "check_name", "passed", "detail"]
@@ -61,10 +63,12 @@ def run_eval(
     opts = case.get("options", {})
     case_model = opts.get("model", model)
     case_budget = opts.get("max_budget_usd", max_budget_usd)
+    case_timeout = opts.get("timeout_seconds", 300)
 
     with_skill, baseline = run_case(
         prompt, plugins, case_id,
         model=case_model, max_budget_usd=case_budget,
+        timeout_seconds=case_timeout,
     )
 
     score_rows = list(score_pair(
@@ -177,6 +181,24 @@ def cmd_list(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_new_plugin(args: argparse.Namespace) -> int:
+    """Scaffold a new plugin in the marketplace with the author detected from git."""
+    author = args.author or get_author()
+    skill_name = args.skill or args.name
+    created = scaffold_plugin(
+        plugin_name=args.name,
+        skill_name=skill_name,
+        description=args.description,
+        author=author,
+        version=args.version,
+    )
+    print(f"Created plugin '{args.name}' (author: {author})")
+    print(f"  manifest:    {created['manifest']}")
+    print(f"  skill stub:  {created['skill']}")
+    print(f"  registered:  {created['marketplace']}")
+    return 0
+
+
 def cmd_report(args: argparse.Namespace) -> int:
     """Print summary from a results TSV."""
     path = results.summary_path(args.run_id)
@@ -219,12 +241,36 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     report_parser = sub.add_parser("report", help="View results")
     report_parser.add_argument("--run-id", required=True, help="Run ID to display")
 
+    new_parser = sub.add_parser(
+        "new-plugin",
+        help="Scaffold a new plugin in the marketplace (author detected from git remote)",
+    )
+    new_parser.add_argument("name", help="Plugin name (kebab-case)")
+    new_parser.add_argument(
+        "--description", required=True,
+        help="One-line description used in plugin.json, marketplace.json, and SKILL.md frontmatter",
+    )
+    new_parser.add_argument(
+        "--skill", default=None,
+        help="Skill name (defaults to the plugin name)",
+    )
+    new_parser.add_argument(
+        "--author", default=None,
+        help="Override the author (by default, detected from git remote)",
+    )
+    new_parser.add_argument("--version", default="0.1.0", help="Initial version")
+
     return parser.parse_args(argv)
 
 
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
-    commands = {"run": cmd_run, "list": cmd_list, "report": cmd_report}
+    commands = {
+        "run": cmd_run,
+        "list": cmd_list,
+        "report": cmd_report,
+        "new-plugin": cmd_new_plugin,
+    }
     return commands[args.command](args)
 
 

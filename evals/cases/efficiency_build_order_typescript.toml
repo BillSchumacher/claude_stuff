@@ -1,0 +1,22 @@
+[case]
+id = "efficiency_build_order_typescript_001"
+name = "TypeScript: Uses topological sort (Kahn's algorithm or DFS-based) — NOT "
+description = "Tests core efficient-code rule coverage"
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-typescript"]
+expected_skills = ["efficient-code", "efficient-code-typescript"]
+
+[prompt]
+text = """
+Write a TypeScript function that takes a list of tasks with dependencies (each task has an id and a list of dependency ids) and returns a valid execution order, or throws if there's a cycle.
+"""
+
+[rubric]
+criteria = ["Uses topological sort (Kahn's algorithm or DFS-based) — NOT brute-force permutation checking", 'Detects cycles and throws']
+
+[checks]
+scripts = []
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

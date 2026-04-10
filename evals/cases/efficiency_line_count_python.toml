@@ -1,0 +1,22 @@
+[case]
+id = "efficiency_line_count_python_001"
+name = "Python: Iterates the file line-by-line (for line in f:) — NOT .readl"
+description = "Tests core efficient-code rule coverage"
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-python"]
+expected_skills = ["efficient-code", "efficient-code-python"]
+
+[prompt]
+text = """
+Write a function that counts how many lines in a log file contain the word 'ERROR'.
+"""
+
+[rubric]
+criteria = ['Iterates the file line-by-line (for line in f:) — NOT .readlines() or .read().split()', 'Returns the correct count']
+
+[checks]
+scripts = ["evals/checks/no_readlines.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

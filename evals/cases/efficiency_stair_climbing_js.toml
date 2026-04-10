@@ -1,0 +1,22 @@
+[case]
+id = "efficiency_stair_climbing_js_001"
+name = "JavaScript: Uses memoization (Map, cache object) or iterative DP — NOT n"
+description = "Tests core efficient-code rule coverage"
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-javascript"]
+expected_skills = ["efficient-code", "efficient-code-javascript"]
+
+[prompt]
+text = """
+Write a function that returns the number of distinct ways to climb n stairs taking 1 or 2 steps at a time.
+"""
+
+[rubric]
+criteria = ['Uses memoization (Map, cache object) or iterative DP — NOT naive recursion', 'Returns correct results for n=1 through n=10']
+
+[checks]
+scripts = ["evals/checks/no_naive_recursion.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

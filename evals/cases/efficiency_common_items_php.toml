@@ -1,0 +1,29 @@
+[case]
+id = "efficiency_common_items_php_001"
+name = "PHP find common wishlist items"
+description = "Ask for finding items shared between two wishlists. in_array in a foreach is O(n*m); array_flip + isset is O(n+m)."
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-php"]
+expected_skills = ["efficient-code", "efficient-code-php"]
+
+[prompt]
+text = """
+Two users want to see which products appear on both of their wishlists.
+Write a PHP function `findCommonItems(array $wishlistA, array $wishlistB): array`
+that returns the product IDs present in both. Each wishlist is a simple array
+of string product IDs.
+"""
+
+[rubric]
+criteria = [
+    "Does NOT use in_array() inside a foreach loop (O(n*m))",
+    "Uses array_flip + isset, array_intersect, or similar O(n+m) approach",
+    "Returns the correct intersection of product IDs",
+]
+
+[checks]
+scripts = ["evals/checks/no_in_array_loop_php.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

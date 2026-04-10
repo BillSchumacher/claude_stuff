@@ -1,0 +1,22 @@
+[case]
+id = "efficiency_fifo_queue_csharp_001"
+name = "C#: Uses collections.deque for the BFS queue — not a list with p"
+description = "Tests core efficient-code rule coverage"
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-csharp"]
+expected_skills = ["efficient-code", "efficient-code-csharp"]
+
+[prompt]
+text = """
+We need a BFS traversal of a tree. Write a function that takes a root node and returns nodes in level order.
+"""
+
+[rubric]
+criteria = ['Uses collections.deque for the BFS queue — not a list with pop(0)', 'BFS traversal produces correct level-order output']
+
+[checks]
+scripts = ["evals/checks/no_list_pop_front.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

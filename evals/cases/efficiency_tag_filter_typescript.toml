@@ -1,0 +1,30 @@
+[case]
+id = "efficiency_tag_filter_typescript_001"
+name = "Product tag filter"
+description = "Framed as a product-search UI feature. The literal implementation uses .every() with .includes() → O(products × tags × productTags). Efficient: build Sets."
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-typescript", "efficient-code-javascript"]
+expected_skills = ["efficient-code", "efficient-code-typescript"]
+
+[prompt]
+text = """
+Add a tag filter to our product listing page. Users check off multiple tags
+in the sidebar and the list narrows to products that have ALL the selected
+tags. A product is `{ id, name, tags: string[], price }`. Write the filter
+function in TypeScript.
+"""
+
+[rubric]
+criteria = [
+    "Does NOT use .includes() inside a nested iteration (per-product, per-tag)",
+    "Builds a Set from at least one of the two tag collections for O(1) membership",
+    "Returns products matching ALL selected tags (not ANY)",
+    "Handles the empty selectedTags case (returns all products)",
+]
+
+[checks]
+scripts = ["evals/checks/no_nested_includes_ts.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

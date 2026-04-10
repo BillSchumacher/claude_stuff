@@ -1,0 +1,55 @@
+[case]
+id = "refactor_range_copy_cpp_001"
+name = "C++: aggregate stats over events"
+description = "Existing code iterates with for(auto event :) copying structs. Agent must add an aggregation that iterates the same way. Skill should use const auto&."
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-cpp"]
+expected_skills = ["efficient-code", "efficient-code-cpp"]
+
+[prompt]
+text = """
+Here's our event processor:
+
+```cpp
+#include <vector>
+#include <string>
+#include <map>
+
+struct Event {
+    std::string id;
+    std::string type;
+    std::string message;
+    std::string source;
+    std::string timestamp;
+    std::string metadata;
+};
+
+int countErrors(const std::vector<Event>& events) {
+    int count = 0;
+    for (auto event : events) {
+        if (event.type == "error") {
+            count++;
+        }
+    }
+    return count;
+}
+```
+
+Add a `summarize` function that iterates the events and returns a
+`std::map<std::string, int>` counting how many events there are per `type`
+(e.g., {"error": 42, "warning": 17, "info": 300}).
+"""
+
+[rubric]
+criteria = [
+    "Adds a summarize function that returns a map of type counts",
+    "Uses `const auto&` in the range-for — not `auto` by value which copies each Event",
+    "Takes the vector by const reference",
+]
+
+[checks]
+scripts = ["evals/checks/no_range_for_copy_cpp.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

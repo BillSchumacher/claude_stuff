@@ -1,0 +1,22 @@
+[case]
+id = "efficiency_transform_pipeline_js_001"
+name = "JavaScript: Uses a single pass (reduce, for loop, or chained lazy iterat"
+description = "Tests core efficient-code rule coverage"
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-javascript"]
+expected_skills = ["efficient-code", "efficient-code-javascript"]
+
+[prompt]
+text = """
+Given an array of user objects, return the email addresses of active users whose accounts are older than 30 days. Users have {email, isActive, createdAt} shape.
+"""
+
+[rubric]
+criteria = ['Uses a single pass (reduce, for loop, or chained lazy iteration) — NOT multiple .filter().map().filter() creating intermediate arrays for each step', 'Returns correct email list']
+
+[checks]
+scripts = []
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

@@ -1,0 +1,51 @@
+[case]
+id = "refactor_format_loop_rust_001"
+name = "Rust: add summary stats to log report"
+description = "Existing code uses format! in a for loop to build a log report. Ask to extend with per-level counts at the bottom, amplifying the allocation cost."
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-rust"]
+expected_skills = ["efficient-code", "efficient-code-rust"]
+
+[prompt]
+text = """
+Here's our log report builder:
+
+```rust
+struct LogEntry {
+    timestamp: String,
+    level: String,
+    message: String,
+}
+
+fn render_report(entries: &[LogEntry]) -> String {
+    let mut report = String::new();
+    for entry in entries {
+        report = format!("{report}[{ts}] {lvl}: {msg}\n",
+            ts = entry.timestamp,
+            lvl = entry.level,
+            msg = entry.message,
+        );
+    }
+    report
+}
+```
+
+Extend this to also append a summary section at the bottom showing the count
+per log level (e.g., "ERROR: 12, WARN: 45, INFO: 300"). The summary should
+be separated from the log entries by a blank line and a "--- Summary ---"
+header.
+"""
+
+[rubric]
+criteria = [
+    "Adds the per-level summary section as requested",
+    "Uses write! or push_str — not format! inside the loop to build the report",
+    "Counts levels efficiently (HashMap or similar)",
+]
+
+[checks]
+scripts = ["evals/checks/no_format_in_loop_rust.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

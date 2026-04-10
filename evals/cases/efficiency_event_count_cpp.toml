@@ -1,0 +1,28 @@
+[case]
+id = "efficiency_event_count_cpp_001"
+name = "C++ count events by status"
+description = "Ask for iterating a vector of events. Range-for by value copies each struct; const auto& avoids the copy."
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-cpp"]
+expected_skills = ["efficient-code", "efficient-code-cpp"]
+
+[prompt]
+text = """
+We have a `std::vector<Event>` where each Event has a `status` field. Write
+a C++ function that counts how many events have status "error". Event is a
+struct with string fields (id, status, message, timestamp, source).
+"""
+
+[rubric]
+criteria = [
+    "Uses `for (const auto& e : events)` — NOT `for (auto e : events)` which copies each Event",
+    "Uses an efficient container or approach for counting (simple counter is fine for a single status)",
+    "Function signature takes the vector by const reference",
+]
+
+[checks]
+scripts = ["evals/checks/no_range_for_copy_cpp.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

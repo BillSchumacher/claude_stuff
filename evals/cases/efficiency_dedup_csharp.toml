@@ -1,0 +1,28 @@
+[case]
+id = "efficiency_dedup_csharp_001"
+name = "C#: deduplicate order line items"
+description = "From-scratch: remove duplicate product IDs from a list. Naive: nested Contains check. Efficient: HashSet."
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-csharp"]
+expected_skills = ["efficient-code", "efficient-code-csharp"]
+
+[prompt]
+text = """
+Write a C# method `List<string> DeduplicateProducts(List<string> productIds)`
+that returns a new list with duplicates removed, preserving first-occurrence
+order. We use this during checkout to merge duplicate line items.
+"""
+
+[rubric]
+criteria = [
+    "Uses a HashSet<string> to track seen IDs — NOT nested loops or List.Contains (O(n²))",
+    "Preserves first-occurrence insertion order",
+    "Returns a new list without modifying the input",
+]
+
+[checks]
+scripts = ["evals/checks/no_dedup_via_nested_loop.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

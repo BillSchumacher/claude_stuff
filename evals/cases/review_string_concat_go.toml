@@ -1,0 +1,36 @@
+[case]
+id = "review_string_concat_go_001"
+name = "Go: review log formatter with string +="
+description = "Code review: given inefficient code, identify and fix the performance issue"
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-go"]
+expected_skills = ["efficient-code", "efficient-code-go"]
+
+[prompt]
+text = """
+Review this code and suggest improvements:
+
+```go
+func FormatLogs(entries []LogEntry) string {
+    var output string
+    for _, e := range entries {
+        output += fmt.Sprintf("[%s] %s: %s\n", e.Timestamp, e.Level, e.Message)
+    }
+    return output
+}
+```
+"""
+
+[rubric]
+criteria = [
+    "Identifies that string += in a for loop is O(n squared) because Go strings are immutable",
+    "Recommends strings.Builder or bytes.Buffer",
+    "Shows corrected code using Builder.WriteString or fmt.Fprintf to a Builder",
+]
+
+[checks]
+scripts = ["evals/checks/no_string_concat_loop_go.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

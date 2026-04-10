@@ -1,0 +1,42 @@
+[case]
+id = "refactor_in_array_loop_php_001"
+name = "PHP: extend wishlist comparison with exclusion list"
+description = "Existing code uses in_array inside foreach. Ask to add an exclusion filter, doubling the linear scan cost."
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-php"]
+expected_skills = ["efficient-code", "efficient-code-php"]
+
+[prompt]
+text = """
+Here's our wishlist comparison:
+
+```php
+function findCommon(array $listA, array $listB): array {
+    $common = [];
+    foreach ($listA as $item) {
+        if (in_array($item, $listB)) {
+            $common[] = $item;
+        }
+    }
+    return $common;
+}
+```
+
+Extend this: we now also have an `$excludedIds` array of product IDs that
+have been discontinued. Write `findCommonAvailable($listA, $listB, $excludedIds)`
+that returns items in both wishlists that are NOT in the excluded list.
+"""
+
+[rubric]
+criteria = [
+    "Adds findCommonAvailable that checks all three lists correctly",
+    "Does NOT use in_array() inside a foreach for any of the list checks (O(n*m*k))",
+    "Uses array_flip + isset, array_intersect, or similar O(n+m+k) approach",
+]
+
+[checks]
+scripts = ["evals/checks/no_in_array_loop_php.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

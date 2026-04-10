@@ -1,0 +1,22 @@
+[case]
+id = "efficiency_max_subarray_sum_go_001"
+name = "Go: Uses a sliding window (add new element, subtract old) — NOT "
+description = "Tests core efficient-code rule coverage"
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-go"]
+expected_skills = ["efficient-code", "efficient-code-go"]
+
+[prompt]
+text = """
+Write a Go function that takes an integer slice and a window size k, and returns the maximum sum of any k consecutive elements.
+"""
+
+[rubric]
+criteria = ['Uses a sliding window (add new element, subtract old) — NOT nested loops recomputing each window sum', 'Returns the correct maximum sum']
+
+[checks]
+scripts = []
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

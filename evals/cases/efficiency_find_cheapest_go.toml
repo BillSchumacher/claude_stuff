@@ -1,0 +1,22 @@
+[case]
+id = "efficiency_find_cheapest_go_001"
+name = "Go: Uses min() with a key function — NOT sorted(...)[0]"
+description = "Tests core efficient-code rule coverage"
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-go"]
+expected_skills = ["efficient-code", "efficient-code-go"]
+
+[prompt]
+text = """
+Write a function that takes a list of product dicts (each with 'name' and 'price') and returns the cheapest product.
+"""
+
+[rubric]
+criteria = ['Uses min() with a key function — NOT sorted(...)[0]', 'Returns the full product dict, not just the price']
+
+[checks]
+scripts = ["evals/checks/no_sorted_for_minmax.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

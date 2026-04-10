@@ -1,0 +1,28 @@
+[case]
+id = "efficiency_dedup_rust_001"
+name = "Rust: deduplicate a Vec of strings"
+description = "From-scratch: remove duplicate strings from a Vec. Naive: nested loop or repeated contains(). Efficient: HashSet."
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-rust"]
+expected_skills = ["efficient-code", "efficient-code-rust"]
+
+[prompt]
+text = """
+Write a Rust function `fn unique(items: &[String]) -> Vec<String>` that
+returns a new Vec with duplicates removed, preserving first-occurrence
+order. We use this to clean up user-submitted tag lists.
+"""
+
+[rubric]
+criteria = [
+    "Uses a HashSet to track seen items — O(n)",
+    "Does NOT use nested loops or repeated .contains() on a Vec (O(n²))",
+    "Preserves first-occurrence order and borrows input (does not take ownership)",
+]
+
+[checks]
+scripts = ["evals/checks/no_dedup_via_nested_loop.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

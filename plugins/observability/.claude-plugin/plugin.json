@@ -1,0 +1,8 @@
+{
+  "name": "observability",
+  "description": "OpenTelemetry instrumentation, structured logging, and SLI/SLO practices from OTel semantic conventions, Google SRE workbook, and 12-Factor App methodology",
+  "version": "0.1.0",
+  "author": {
+    "name": "BillSchumacher"
+  }
+}

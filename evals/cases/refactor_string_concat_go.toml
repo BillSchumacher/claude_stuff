@@ -1,0 +1,50 @@
+[case]
+id = "refactor_string_concat_go_001"
+name = "Go: add footer and line count to CSV export"
+description = "Existing code uses string += in a loop. Agent must extend it with a footer, making the += even more costly. Skill should use Builder."
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-go"]
+expected_skills = ["efficient-code", "efficient-code-go"]
+
+[prompt]
+text = """
+Here's our CSV export:
+
+```go
+package export
+
+import "fmt"
+
+type Record struct {
+    Name    string
+    Email   string
+    Country string
+}
+
+func ToCSV(records []Record) string {
+    var result string
+    for _, r := range records {
+        result += fmt.Sprintf("%s,%s,%s\n", r.Name, r.Email, r.Country)
+    }
+    return result
+}
+```
+
+We need to add a header row at the top ("Name,Email,Country"), a blank line
+after the data, and a footer line showing the total count (e.g.,
+"Total: 42 records"). Update the function to include all of that.
+"""
+
+[rubric]
+criteria = [
+    "Adds the header, blank separator, and footer line as requested",
+    "Uses strings.Builder or bytes.Buffer — not string += in a loop",
+    "Does not break the existing row formatting",
+]
+
+[checks]
+scripts = ["evals/checks/no_string_concat_loop_go.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

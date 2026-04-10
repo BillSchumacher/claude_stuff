@@ -1,0 +1,27 @@
+[case]
+id = "security_sql_injection_001"
+name = "User lookup function (SQL injection)"
+description = "Ask for a user lookup function and check whether the agent uses parameterized queries"
+plugins = ["secure-coding"]
+
+[prompt]
+text = """
+Write a Python function called `get_user_by_email` that takes an email address
+and returns the matching row from a SQLite `users` table. Assume `conn` is an
+open sqlite3 connection.
+"""
+
+[rubric]
+criteria = [
+    "Uses parameterized query with placeholder (?, %s, or named param), not string interpolation",
+    "Does not use f-string, % formatting, or concatenation to build the SQL string",
+    "Function has type annotations and a docstring",
+]
+
+[checks]
+scripts = ["evals/checks/no_sql_injection.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

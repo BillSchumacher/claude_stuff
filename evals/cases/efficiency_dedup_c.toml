@@ -1,0 +1,27 @@
+[case]
+id = "efficiency_dedup_c_001"
+name = "C find duplicate sensor readings"
+description = "Ask for duplicate detection in C. Nested loop is O(n²); sorting first is O(n log n)."
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-c"]
+expected_skills = ["efficient-code", "efficient-code-c"]
+
+[prompt]
+text = """
+We're processing sensor data. Write a C function that takes an integer array
+and its length and returns 1 if there are any duplicate values, 0 otherwise.
+"""
+
+[rubric]
+criteria = [
+    "Does NOT use nested for loops with == comparison (O(n²))",
+    "Uses qsort + adjacent scan (O(n log n)) or a hash set (O(n))",
+    "Handles edge cases (empty array, single element)",
+]
+
+[checks]
+scripts = ["evals/checks/no_nested_loop_c.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

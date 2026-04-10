@@ -1,0 +1,22 @@
+[case]
+id = "efficiency_next_greater_rust_001"
+name = "Rust: Uses a monotonic stack for O(n) — NOT nested loops for O(n s"
+description = "Tests core efficient-code rule coverage"
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-rust"]
+expected_skills = ["efficient-code", "efficient-code-rust"]
+
+[prompt]
+text = """
+Write a Rust function that takes a Vec<i32> and returns a Vec<i32> where each element is the next greater element to the right, or -1 if none exists.
+"""
+
+[rubric]
+criteria = ['Uses a monotonic stack for O(n) — NOT nested loops for O(n squared)', 'Returns correct next-greater values']
+
+[checks]
+scripts = []
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

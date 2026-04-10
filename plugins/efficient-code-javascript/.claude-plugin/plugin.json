@@ -1,0 +1,8 @@
+{
+  "name": "efficient-code-javascript",
+  "description": "JavaScript efficiency: Map/Set over arrays, TypedArrays, V8 hidden classes, monomorphic call sites, holey arrays, and for-loop vs forEach gotchas",
+  "version": "0.1.0",
+  "author": {
+    "name": "BillSchumacher"
+  }
+}

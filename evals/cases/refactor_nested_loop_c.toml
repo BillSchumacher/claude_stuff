@@ -1,0 +1,46 @@
+[case]
+id = "refactor_nested_loop_c_001"
+name = "C: extend duplicate finder to return all dupes"
+description = "Existing code uses nested for loop O(n²) to detect if any duplicate exists. Ask to extend it to collect ALL duplicates."
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-c"]
+expected_skills = ["efficient-code", "efficient-code-c"]
+
+[prompt]
+text = """
+Here's our duplicate detector:
+
+```c
+#include <stdbool.h>
+
+bool has_duplicates(const int *arr, int n) {
+    for (int i = 0; i < n; i++) {
+        for (int j = i + 1; j < n; j++) {
+            if (arr[i] == arr[j]) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+```
+
+We now need a function `int find_duplicates(const int *arr, int n, int *out)`
+that writes all values that appear more than once into `out` and returns the
+count. Each duplicate value should appear only once in the output.
+"""
+
+[rubric]
+criteria = [
+    "Implements find_duplicates with correct signature",
+    "Does NOT use nested for loops with == comparison (O(n²))",
+    "Uses qsort + adjacent scan or a hash table for O(n log n) or O(n)",
+    "Each duplicate value appears only once in the output",
+]
+
+[checks]
+scripts = ["evals/checks/no_nested_loop_c.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

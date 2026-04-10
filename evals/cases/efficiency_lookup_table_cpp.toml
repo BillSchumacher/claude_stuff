@@ -1,0 +1,29 @@
+[case]
+id = "efficiency_lookup_table_cpp_001"
+name = "C++: config lookup by key"
+description = "From-scratch: look up config values by string key. Naive: vector of pairs + linear scan. Efficient: unordered_map."
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-cpp"]
+expected_skills = ["efficient-code", "efficient-code-cpp"]
+
+[prompt]
+text = """
+Write a C++ class `Config` that loads key-value pairs from a vector of
+`std::pair<std::string, std::string>` at construction and provides a
+`std::optional<std::string> get(const std::string& key) const` method.
+We call `get` frequently in a request-processing hot loop.
+"""
+
+[rubric]
+criteria = [
+    "Stores entries in a hash map (std::unordered_map) — NOT a vector of pairs with linear scan",
+    "get() is O(1) average, not O(n)",
+    "Takes the vector by const reference at construction and the key by const reference in get()",
+]
+
+[checks]
+scripts = ["evals/checks/uses_hash_map_lookup.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

@@ -1,0 +1,22 @@
+[case]
+id = "efficiency_friend_groups_php_001"
+name = "PHP: Uses union-find or BFS/DFS for connected components — NOT ne"
+description = "Tests core efficient-code rule coverage"
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-php"]
+expected_skills = ["efficient-code", "efficient-code-php"]
+
+[prompt]
+text = """
+Write a PHP function that takes an array of friendship pairs [[0,1],[1,2],[3,4]] and returns the number of distinct friend groups (connected components).
+"""
+
+[rubric]
+criteria = ['Uses union-find or BFS/DFS for connected components — NOT nested loop checking all-pairs connectivity', 'Returns correct group count']
+
+[checks]
+scripts = []
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

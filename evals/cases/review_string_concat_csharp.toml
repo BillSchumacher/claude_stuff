@@ -1,0 +1,36 @@
+[case]
+id = "review_string_concat_csharp_001"
+name = "C#: review report builder with string +="
+description = "Code review: given inefficient code, identify and fix the performance issue"
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-csharp"]
+expected_skills = ["efficient-code", "efficient-code-csharp"]
+
+[prompt]
+text = """
+Review this code and suggest improvements:
+
+```csharp
+public string GenerateReport(List<Order> orders) {
+    string report = "Order Report\n============\n";
+    foreach (var order in orders) {
+        report += $"{order.Date:yyyy-MM-dd} | {order.Customer,-20} | {order.Total,10:C}\n";
+    }
+    return report;
+}
+```
+"""
+
+[rubric]
+criteria = [
+    "Identifies that string += in a foreach loop is O(n squared) due to immutable strings",
+    "Recommends StringBuilder",
+    "Shows the corrected code using StringBuilder",
+]
+
+[checks]
+scripts = ["evals/checks/no_string_concat_loop_csharp.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

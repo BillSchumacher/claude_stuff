@@ -25,6 +25,90 @@
       "source": "./plugins/skill-orchestration",
       "description": "Meta-skill that instructs the agent to invoke all relevant skills, not just the first match",
       "version": "0.1.0"
+    },
+    {
+      "name": "secure-coding",
+      "source": "./plugins/secure-coding",
+      "description": "Secure coding rules from OWASP Top 10:2025, ASVS 5.0, Proactive Controls 2024, NIST SSDF (SP 800-218 / 800-218A), and CSF 2.0",
+      "version": "0.1.0"
+    },
+    {
+      "name": "api-design",
+      "source": "./plugins/api-design",
+      "description": "REST API contract design rules from Google AIP, Microsoft Azure REST Guidelines, OpenAPI 3.1, and RFC 9457",
+      "version": "0.1.0"
+    },
+    {
+      "name": "observability",
+      "source": "./plugins/observability",
+      "description": "OpenTelemetry instrumentation, structured logging, and SLI/SLO practices from OTel semantic conventions, Google SRE workbook, and 12-Factor App",
+      "version": "0.1.0"
+    },
+    {
+      "name": "acceptance-criteria",
+      "source": "./plugins/acceptance-criteria",
+      "description": "Requirements specification and acceptance criteria practices from ISO/IEC/IEEE 29148, BDD, and ISO 25010",
+      "version": "0.1.0"
+    },
+    {
+      "name": "efficient-code",
+      "source": "./plugins/efficient-code",
+      "description": "Language-neutral algorithmic efficiency: data structure selection, Big-O awareness, space complexity, and profile-before-optimize discipline",
+      "version": "0.1.0"
+    },
+    {
+      "name": "efficient-code-python",
+      "source": "./plugins/efficient-code-python",
+      "description": "Python-specific efficiency: stdlib helpers (set, dict, collections, heapq, bisect, functools.cache) and idioms that apply the efficient-code principles",
+      "version": "0.1.0"
+    },
+    {
+      "name": "efficient-code-c",
+      "source": "./plugins/efficient-code-c",
+      "description": "C efficiency: stdlib (memcpy/memmove/qsort/bsearch), pass-by-value copies, strict aliasing, VLAs, restrict, signed overflow UB, and LTO/perf flags",
+      "version": "0.1.0"
+    },
+    {
+      "name": "efficient-code-cpp",
+      "source": "./plugins/efficient-code-cpp",
+      "description": "C++ efficiency: STL containers (vector/unordered_map/span), copy/move semantics, reserve, virtual dispatch, string_view, RVO, and compiler optimizations",
+      "version": "0.1.0"
+    },
+    {
+      "name": "efficient-code-csharp",
+      "source": "./plugins/efficient-code-csharp",
+      "description": "C# efficiency: Span/Memory/ArrayPool, StringBuilder, struct vs class, boxing, LINQ allocation, ValueTask, ref structs, and BenchmarkDotNet discipline",
+      "version": "0.1.0"
+    },
+    {
+      "name": "efficient-code-javascript",
+      "source": "./plugins/efficient-code-javascript",
+      "description": "JavaScript efficiency: Map/Set over arrays, TypedArrays, V8 hidden classes, monomorphic call sites, holey arrays, and for-loop vs forEach gotchas",
+      "version": "0.1.0"
+    },
+    {
+      "name": "efficient-code-typescript",
+      "source": "./plugins/efficient-code-typescript",
+      "description": "TypeScript efficiency: type erasure, const enum vs enum, decorator cost, tsc target impact, and JS runtime gotchas that all TS code inherits",
+      "version": "0.1.0"
+    },
+    {
+      "name": "efficient-code-rust",
+      "source": "./plugins/efficient-code-rust",
+      "description": "Rust efficiency: Vec::with_capacity, String vs &str, iterator chains as zero-cost, Box/Rc/Arc tradeoffs, bounds check elision, and release-build discipline",
+      "version": "0.1.0"
+    },
+    {
+      "name": "efficient-code-php",
+      "source": "./plugins/efficient-code-php",
+      "description": "PHP efficiency: array copy-on-write, foreach by-ref pitfalls, OPCache and preloading, interned strings, typed properties, and JIT scope",
+      "version": "0.1.0"
+    },
+    {
+      "name": "efficient-code-go",
+      "source": "./plugins/efficient-code-go",
+      "description": "Go efficiency: slice growth and leaks, strings.Builder, interface boxing, escape analysis, defer cost, and sync.Pool for transient allocations",
+      "version": "0.1.0"
     }
   ]
 }

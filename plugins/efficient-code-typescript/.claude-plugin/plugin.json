@@ -1,0 +1,8 @@
+{
+  "name": "efficient-code-typescript",
+  "description": "TypeScript efficiency: type erasure, const enum vs enum, decorator cost, tsc target impact, and JS runtime gotchas that all TS code inherits",
+  "version": "0.1.0",
+  "author": {
+    "name": "BillSchumacher"
+  }
+}

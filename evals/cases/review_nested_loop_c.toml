@@ -1,0 +1,41 @@
+[case]
+id = "review_nested_loop_c_001"
+name = "C: review array intersection with nested loops"
+description = "Code review: given inefficient code, identify and fix the performance issue"
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-c"]
+expected_skills = ["efficient-code", "efficient-code-c"]
+
+[prompt]
+text = """
+Review this code and suggest improvements:
+
+```c
+int count_common(const int *a, int na, const int *b, int nb) {
+    int count = 0;
+    for (int i = 0; i < na; i++) {
+        for (int j = 0; j < nb; j++) {
+            if (a[i] == b[j]) {
+                count++;
+                break;
+            }
+        }
+    }
+    return count;
+}
+```
+"""
+
+[rubric]
+criteria = [
+    "Identifies the nested loop is O(n*m)",
+    "Recommends sorting one array and using binary search O((n+m) log m) or a hash set",
+    "Shows a corrected approach with qsort + bsearch or a hash table",
+]
+
+[checks]
+scripts = ["evals/checks/no_nested_loop_c.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

@@ -1,0 +1,8 @@
+{
+  "name": "efficient-code-rust",
+  "description": "Rust efficiency: Vec::with_capacity, String vs &str, iterator chains as zero-cost, Box/Rc/Arc tradeoffs, bounds check elision, and release-build discipline",
+  "version": "0.1.0",
+  "author": {
+    "name": "BillSchumacher"
+  }
+}

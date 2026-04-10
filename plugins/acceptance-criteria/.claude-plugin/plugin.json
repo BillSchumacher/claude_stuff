@@ -1,0 +1,8 @@
+{
+  "name": "acceptance-criteria",
+  "description": "Requirements specification and acceptance criteria practices from ISO/IEC/IEEE 29148, BDD, and ISO 25010 (non-functional requirements)",
+  "version": "0.1.0",
+  "author": {
+    "name": "BillSchumacher"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "efficient-code-c",
+  "description": "C efficiency: stdlib (memcpy/memmove/qsort/bsearch), pass-by-value copies, strict aliasing, VLAs, restrict, signed overflow UB, and LTO/perf flags",
+  "version": "0.1.0",
+  "author": {
+    "name": "BillSchumacher"
+  }
+}

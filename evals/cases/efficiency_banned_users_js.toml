@@ -1,0 +1,28 @@
+[case]
+id = "efficiency_banned_users_js_001"
+name = "JavaScript banned user filter"
+description = "Ask for filtering users against a ban list. Array.includes inside filter is O(n*m); Set.has is O(n+m)."
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-javascript"]
+expected_skills = ["efficient-code", "efficient-code-javascript"]
+
+[prompt]
+text = """
+We have an array of active user objects and a separate array of banned user
+IDs. Write a JavaScript function that returns only the active users who are
+NOT banned. Users have { id, name, email } shape.
+"""
+
+[rubric]
+criteria = [
+    "Does NOT use Array.includes or indexOf inside filter/loop for banned-list lookup (O(n*m))",
+    "Converts the banned list to a Set for O(1) has() lookup",
+    "Returns user objects, not just IDs",
+]
+
+[checks]
+scripts = ["evals/checks/no_array_includes_loop.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

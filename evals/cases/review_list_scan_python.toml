@@ -1,0 +1,35 @@
+[case]
+id = "review_list_scan_python_001"
+name = "Python: review blocklist with list scan"
+description = "Code review: given inefficient code, identify and fix the performance issue"
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-python"]
+expected_skills = ["efficient-code", "efficient-code-python"]
+
+[prompt]
+text = """
+Review this code and suggest improvements:
+
+```python
+def find_blocked(user_ids: list[str], blocklist: list[str]) -> list[str]:
+    result = []
+    for uid in user_ids:
+        if uid in blocklist:
+            result.append(uid)
+    return result
+```
+"""
+
+[rubric]
+criteria = [
+    "Identifies that uid in blocklist is O(n) per call, making the function O(n*m)",
+    "Recommends converting blocklist to a set for O(1) membership",
+    "Suggests a set intersection or comprehension with set as the fix",
+]
+
+[checks]
+scripts = ["evals/checks/uses_hash_set_for_membership.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

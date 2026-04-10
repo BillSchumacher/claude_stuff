@@ -1,0 +1,29 @@
+[case]
+id = "efficiency_report_csharp_001"
+name = "C# transaction report builder"
+description = "Ask for building a text report from a list. String += in a loop is O(n²); StringBuilder is O(n)."
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-csharp"]
+expected_skills = ["efficient-code", "efficient-code-csharp"]
+
+[prompt]
+text = """
+We need to export transactions as a plain-text report. Write a C# method
+`string BuildReport(List<Transaction> transactions)` that formats each
+transaction as a line like "2026-04-10 | ACME Corp | $1,234.56" and returns
+the full report as a single string.
+"""
+
+[rubric]
+criteria = [
+    "Uses StringBuilder (or string.Join) — NOT string += in a loop",
+    "Builds lines efficiently without quadratic string copying",
+    "Formats currency and dates correctly",
+]
+
+[checks]
+scripts = ["evals/checks/no_string_concat_loop_csharp.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

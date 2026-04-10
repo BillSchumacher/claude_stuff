@@ -76,11 +76,18 @@ def _exec(
     timeout_seconds: int = 300,
     cwd: str | None = None,
 ) -> subprocess.CompletedProcess[str]:
-    """Run a subprocess and return the result."""
+    """Run a subprocess and return the result.
+
+    Forces UTF-8 decoding of stdout/stderr. Without this, Windows defaults to
+    cp1252 and crashes on UTF-8 bytes emitted by claude (e.g., smart quotes,
+    emoji, non-ASCII names).
+    """
     return subprocess.run(
         cmd,
         capture_output=True,
         text=True,
+        encoding="utf-8",
+        errors="replace",
         timeout=timeout_seconds,
         cwd=cwd,
     )

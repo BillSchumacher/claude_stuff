@@ -1,0 +1,22 @@
+[case]
+id = "efficiency_pair_sum_cpp_001"
+name = "C++: Uses two-pointer technique (left/right converging) or hash s"
+description = "Tests core efficient-code rule coverage"
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-cpp"]
+expected_skills = ["efficient-code", "efficient-code-cpp"]
+
+[prompt]
+text = """
+Given a sorted vector of integers and a target sum, write a C++ function that returns true if any two distinct elements sum to the target.
+"""
+
+[rubric]
+criteria = ['Uses two-pointer technique (left/right converging) or hash set — NOT nested for loops', 'Works correctly on sorted input']
+
+[checks]
+scripts = []
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

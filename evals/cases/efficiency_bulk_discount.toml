@@ -1,0 +1,32 @@
+[case]
+id = "efficiency_bulk_discount_001"
+name = "Shopping cart bulk discount"
+description = "Framed as a pricing rule. The literal implementation calls cart.count(product_id) inside the per-item loop → O(n²). The efficient one uses Counter."
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-python"]
+expected_skills = ["efficient-code", "efficient-code-python"]
+
+[prompt]
+text = """
+Build a shopping cart checkout function. Customers buy items and we compute
+the total. We're adding a bulk-purchase discount: if a customer has 5 or
+more of the same product in the cart, every unit of that product gets 10%
+off. Other products are unaffected.
+
+Cart items are tuples of `(product_id, price)`. Write `cart_total(items)`.
+"""
+
+[rubric]
+criteria = [
+    "Counts product occurrences ONCE before totaling (e.g., collections.Counter)",
+    "Does NOT call .count() or equivalent lookup inside the per-item loop",
+    "Correctly applies the 10% discount ONLY to products appearing 5 or more times",
+    "Other products are unaffected",
+]
+
+[checks]
+scripts = ["evals/checks/no_nested_count_loop.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

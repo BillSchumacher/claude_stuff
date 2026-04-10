@@ -1,0 +1,28 @@
+[case]
+id = "efficiency_html_table_js_001"
+name = "JavaScript: build HTML table from data"
+description = "From-scratch: build an HTML table string. Naive: string += in loop. Efficient: Array.join or template literal array."
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-javascript"]
+expected_skills = ["efficient-code", "efficient-code-javascript"]
+
+[prompt]
+text = """
+Write a JavaScript function `renderTable(rows)` that takes an array of
+objects (all with the same keys) and returns an HTML table string with
+a header row from the keys and one data row per object.
+"""
+
+[rubric]
+criteria = [
+    "Builds the string efficiently using Array.push + join, template literals into an array, or similar — NOT string += in a loop",
+    "Generates a valid HTML table with <thead>, <tbody>, <tr>, <th>, <td>",
+    "Handles empty input (returns an empty table or empty string)",
+]
+
+[checks]
+scripts = ["evals/checks/no_string_concat_loop_js.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

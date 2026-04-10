@@ -1,0 +1,8 @@
+{
+  "name": "efficient-code-cpp",
+  "description": "C++ efficiency: STL containers (vector/unordered_map/span), copy/move semantics, reserve, virtual dispatch, string_view, RVO, and compiler optimizations",
+  "version": "0.1.0",
+  "author": {
+    "name": "BillSchumacher"
+  }
+}

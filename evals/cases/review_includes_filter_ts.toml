@@ -1,0 +1,40 @@
+[case]
+id = "review_includes_filter_ts_001"
+name = "TypeScript: review multi-tag filter with nested includes"
+description = "Code review: given inefficient code, identify and fix the performance issue"
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-typescript", "efficient-code-javascript"]
+expected_skills = ["efficient-code", "efficient-code-typescript"]
+
+[prompt]
+text = """
+Review this code and suggest improvements:
+
+```typescript
+interface Article {
+  id: string;
+  title: string;
+  tags: string[];
+}
+
+function filterArticles(articles: Article[], requiredTags: string[]): Article[] {
+  return articles.filter(a =>
+    requiredTags.every(tag => a.tags.includes(tag))
+  );
+}
+```
+"""
+
+[rubric]
+criteria = [
+    "Identifies the nested .every/.includes is O(articles * tags * articleTags)",
+    "Recommends converting requiredTags or article.tags to a Set",
+    "Shows corrected code using Set.has",
+]
+
+[checks]
+scripts = ["evals/checks/no_nested_includes_ts.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

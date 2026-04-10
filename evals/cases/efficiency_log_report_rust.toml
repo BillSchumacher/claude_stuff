@@ -1,0 +1,28 @@
+[case]
+id = "efficiency_log_report_rust_001"
+name = "Rust log entry report builder"
+description = "Ask for building a report string from log entries. format! in a loop allocates each time; write! to a buffer is O(n)."
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-rust"]
+expected_skills = ["efficient-code", "efficient-code-rust"]
+
+[prompt]
+text = """
+Write a Rust function that takes a `&[LogEntry]` (where LogEntry has
+`timestamp: &str`, `level: &str`, `message: &str`) and returns a String
+containing all entries formatted as "[timestamp] LEVEL: message\n".
+"""
+
+[rubric]
+criteria = [
+    "Uses write! or push_str on a single String buffer — NOT format! inside the loop",
+    "Pre-allocates String capacity with String::with_capacity when possible",
+    "Function signature borrows the slice (not takes ownership)",
+]
+
+[checks]
+scripts = ["evals/checks/no_format_in_loop_rust.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

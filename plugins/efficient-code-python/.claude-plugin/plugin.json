@@ -1,0 +1,8 @@
+{
+  "name": "efficient-code-python",
+  "description": "Python-specific efficiency: stdlib helpers (set, dict, collections, heapq, bisect, functools.cache) and idioms that apply the efficient-code principles",
+  "version": "0.1.0",
+  "author": {
+    "name": "BillSchumacher"
+  }
+}

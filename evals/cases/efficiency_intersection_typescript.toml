@@ -1,0 +1,29 @@
+[case]
+id = "efficiency_intersection_typescript_001"
+name = "TypeScript active + paying intersection"
+description = "Ask for a list intersection in TypeScript and check whether the agent uses a Set instead of Array.includes inside a loop"
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-typescript", "efficient-code-javascript"]
+expected_skills = ["efficient-code", "efficient-code-typescript"]
+
+[prompt]
+text = """
+I have two arrays of string user IDs: `activeUsers` and `payingCustomers`,
+each with up to 100,000 entries. Write a TypeScript function
+`activePayingCustomers(active: string[], paying: string[]): string[]` that
+returns the IDs that appear in both arrays.
+"""
+
+[rubric]
+criteria = [
+    "Does NOT use Array.includes or indexOf inside a loop (O(n*m))",
+    "Converts one side to a Set or Map for O(1) lookup",
+    "Uses TypeScript type annotations on parameters and return type",
+]
+
+[checks]
+scripts = ["evals/checks/no_array_includes_loop.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

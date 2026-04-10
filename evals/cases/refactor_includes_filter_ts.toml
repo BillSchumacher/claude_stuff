@@ -1,0 +1,50 @@
+[case]
+id = "refactor_includes_filter_ts_001"
+name = "TypeScript: add multi-filter with tag + brand + color"
+description = "Existing code uses .every/.includes for tag filtering. Agent must extend to filter by tags AND brands AND colors simultaneously, tripling the nested iteration cost. Skill should use Sets."
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-typescript", "efficient-code-javascript"]
+expected_skills = ["efficient-code", "efficient-code-typescript"]
+
+[prompt]
+text = """
+Here's our product tag filter:
+
+```typescript
+type Product = {
+  id: string;
+  name: string;
+  tags: string[];
+  brands: string[];
+  colors: string[];
+  price: number;
+};
+
+function filterByTags(products: Product[], selectedTags: string[]): Product[] {
+  if (selectedTags.length === 0) return products;
+  return products.filter(p =>
+    selectedTags.every(tag => p.tags.includes(tag))
+  );
+}
+```
+
+Users want to filter by tags, brands, AND colors all at once. Write a
+`filterProducts` function that takes `selectedTags`, `selectedBrands`, and
+`selectedColors` and returns products matching ALL criteria. Each filter
+should only apply if its array is non-empty.
+"""
+
+[rubric]
+criteria = [
+    "Implements combined filtering by tags, brands, and colors",
+    "Does NOT use nested .every/.includes for any of the three filters",
+    "Uses Sets for membership lookup instead of Array.includes",
+    "Only applies each filter when the corresponding selection is non-empty",
+]
+
+[checks]
+scripts = ["evals/checks/no_nested_includes_ts.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

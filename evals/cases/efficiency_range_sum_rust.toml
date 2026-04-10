@@ -1,0 +1,22 @@
+[case]
+id = "efficiency_range_sum_rust_001"
+name = "Rust: Pre-computes prefix sums at construction — NOT summing the r"
+description = "Tests core efficient-code rule coverage"
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-rust"]
+expected_skills = ["efficient-code", "efficient-code-rust"]
+
+[prompt]
+text = """
+Write a Rust struct RangeSum that takes a Vec<i64> at construction and supports a query(left, right) -> i64 method returning the sum of elements from index left to right inclusive.
+"""
+
+[rubric]
+criteria = ['Pre-computes prefix sums at construction — NOT summing the range on each query', 'query() runs in O(1), not O(n)']
+
+[checks]
+scripts = []
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

@@ -1,0 +1,36 @@
+[case]
+id = "review_format_loop_rust_001"
+name = "Rust: review report builder with format! in loop"
+description = "Code review: given inefficient code, identify and fix the performance issue"
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-rust"]
+expected_skills = ["efficient-code", "efficient-code-rust"]
+
+[prompt]
+text = """
+Review this code and suggest improvements:
+
+```rust
+fn build_report(items: &[Item]) -> String {
+    let mut report = String::new();
+    for item in items {
+        report = format!("{report}{} - ${:.2}\n", item.name, item.price);
+    }
+    report
+}
+```
+"""
+
+[rubric]
+criteria = [
+    "Identifies that format! allocates a new String each iteration",
+    "Recommends write! or push_str with a pre-allocated buffer",
+    "May suggest String::with_capacity for pre-allocation",
+]
+
+[checks]
+scripts = ["evals/checks/no_format_in_loop_rust.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5
