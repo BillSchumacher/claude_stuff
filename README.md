@@ -182,14 +182,21 @@ Expected but missing: ['dev-workflow']
 
 Adding the `skill-orchestration` meta-skill (case `orchestrated_skills_001`) flips this:
 
-| Check | Baseline | + `dev-workflow` + `python-style` | + `skill-orchestration` |
-|---|---|---|---|
-| `has_tests` | ✅ | ✅ | ✅ |
-| `has_gherkin` | ❌ | ❌ | ✅ |
-| `tdd_order` (full cycle) | ❌ | ❌ | ✅ |
-| `skills_invoked` (both) | ❌ | ❌ (only python-style) | ✅ (all 3) |
+| Metric | Baseline | With skills |
+|---|---|---|
+| Rubric score | 7 | 13 (+6) |
+| Checks passed | 3/6 | 6/6 |
 
-With the orchestrator, the agent invokes `combine-skills`, which routes to **both** worker skills, and the resulting code follows TDD discipline AND has type annotations and docstrings.
+| Check | Baseline | With `skill-orchestration` |
+|---|---|---|
+| `has_tests` | ✅ | ✅ |
+| `has_gherkin` | ❌ | ✅ |
+| `tdd_order` (full cycle) | ❌ | ✅ |
+| `no_sql_injection` | ✅ | ✅ |
+| `no_weak_crypto` | ❌ | ✅ |
+| `skills_invoked` (all expected) | ✅ | ✅ |
+
+With the orchestrator, the agent invokes `combine-skills`, which routes to **all** relevant worker skills, and the resulting code follows TDD discipline, has type annotations and docstrings, uses parameterized queries, and hashes passwords securely.
 
 **Takeaway:** Just making skills available isn't enough — the agent gravitates toward a single best-match skill by default. A meta-skill that explicitly instructs "invoke every relevant skill, not just one" reliably enables multi-skill composition.
 
@@ -214,7 +221,7 @@ Run ID `20260410_060431` — all 68 cases, Opus 4.6 judge, Sonnet agent.
 | `efficiency_tag_filter_typescript` | 0/1 | 1/1 | `.every(t => arr.includes(t))` → `Set.has()` |
 | `refactor_nested_loop_c` | 0/1 | 1/1 | Nested `for` with `==` → `qsort` + adjacent scan |
 | `refactor_string_concat_go` | 0/1 | 1/1 | `string +=` in loop → `strings.Builder` |
-| `orchestrated_skills` | 1/4 | 4/4 | Meta-skill caused invocation of both `dev-workflow` and `python-style` |
+| `orchestrated_skills` | 3/6 | 6/6 | Meta-skill caused invocation of all expected skills; added Gherkin, TDD cycle, secure crypto |
 | `sdlc_observability` | 0/1 | 1/1 | Added OpenTelemetry spans + structured logging |
 
 ### Top rubric improvements
