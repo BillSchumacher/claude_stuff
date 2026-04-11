@@ -1,5 +1,5 @@
 [case]
-id = "pkg_rabbitmq_messaging_001"
+id = "pkg_rabbitmq_001"
 name = "RabbitMQ: order processing pipeline"
 description = "Tests durable queues, manual ack, DLX, prefetch_count"
 plugins = ["skill-orchestration", "rabbitmq"]
@@ -30,3 +30,4 @@ linters = []
 [options]
 model = "sonnet"
 max_budget_usd = 0.5
+timeout_seconds = 600

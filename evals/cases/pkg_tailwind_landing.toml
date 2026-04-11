@@ -2,8 +2,7 @@
 id = "pkg_tailwind_landing_001"
 name = "Tailwind: responsive landing page"
 description = "Tests utility-first, mobile-first breakpoints, dark mode, no dynamic classes"
-plugins = ["skill-orchestration", "tailwind"]
-expected_skills = ["tailwind"]
+plugins = ["tailwind"]
 
 [prompt]
 text = """
@@ -29,3 +28,4 @@ linters = []
 [options]
 model = "sonnet"
 max_budget_usd = 0.5
+timeout_seconds = 600

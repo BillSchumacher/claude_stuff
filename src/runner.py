@@ -4,6 +4,7 @@ import json
 import shutil
 import subprocess
 import tempfile
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterator
@@ -75,15 +76,21 @@ def _exec(
     *,
     timeout_seconds: int = 300,
     cwd: str | None = None,
+    stdin_text: str | None = None,
 ) -> subprocess.CompletedProcess[str]:
     """Run a subprocess and return the result.
 
     Forces UTF-8 decoding of stdout/stderr. Without this, Windows defaults to
     cp1252 and crashes on UTF-8 bytes emitted by claude (e.g., smart quotes,
     emoji, non-ASCII names).
+
+    stdin_text: if provided, pipe this text to the process's stdin. Used by the
+    scorer and differ to avoid exceeding Windows command-line length limits when
+    passing large prompts.
     """
     return subprocess.run(
         cmd,
+        input=stdin_text,
         capture_output=True,
         text=True,
         encoding="utf-8",
@@ -99,8 +106,16 @@ def run_claude(
     timeout_seconds: int = 300,
     cwd: str | None = None,
 ) -> tuple[str, list[dict]]:
-    """Execute a claude command with stream-json output. Returns (response_text, messages)."""
-    result = _exec(cmd, timeout_seconds=timeout_seconds, cwd=cwd)
+    """Execute a claude command with stream-json output. Returns (response_text, messages).
+
+    Retries once on non-zero exit (transient init failures, API errors).
+    """
+    for attempt in range(2):
+        result = _exec(cmd, timeout_seconds=timeout_seconds, cwd=cwd)
+        if result.returncode == 0:
+            break
+        if attempt == 0:
+            time.sleep(5)
     if result.returncode != 0:
         raise RuntimeError(
             f"claude exited with code {result.returncode}: {result.stderr or result.stdout[:500]}"
@@ -108,9 +123,18 @@ def run_claude(
     return parse_stream(result.stdout)
 
 
-def run_claude_json(cmd: list[str], *, timeout_seconds: int = 300) -> str:
-    """Execute a claude command with json output. Returns response text only."""
-    result = _exec(cmd, timeout_seconds=timeout_seconds)
+def run_claude_json(
+    cmd: list[str],
+    *,
+    timeout_seconds: int = 300,
+    stdin_text: str | None = None,
+) -> str:
+    """Execute a claude command with json output. Returns response text only.
+
+    stdin_text: if provided, pipe as stdin (for large prompts that exceed
+    Windows command-line limits).
+    """
+    result = _exec(cmd, timeout_seconds=timeout_seconds, stdin_text=stdin_text)
     try:
         parsed = json.loads(result.stdout)
     except (json.JSONDecodeError, ValueError):
@@ -127,7 +151,11 @@ def _make_workdir(case_id: str, variant: str) -> str:
     """Create a fresh isolated working directory for a variant run."""
     workdir = Path(tempfile.gettempdir()) / "skill_eval" / f"{case_id}_{variant}"
     if workdir.exists():
-        shutil.rmtree(workdir)
+        try:
+            shutil.rmtree(workdir)
+        except PermissionError:
+            # Windows file lock from a prior claude child process — use alternate dir
+            workdir = workdir.with_name(f"{case_id}_{variant}_{int(time.time())}")
     workdir.mkdir(parents=True, exist_ok=True)
     return str(workdir)
 

@@ -85,9 +85,8 @@ def score_output(
         "--output-format", "json",
         "--model", model,
         "--append-system-prompt", JUDGE_SYSTEM_PROMPT,
-        prompt,
     ]
-    raw = run_claude_json(cmd)
+    raw = run_claude_json(cmd, stdin_text=prompt)
     scores = parse_judge_response(raw)
     return [
         ScoreRow(

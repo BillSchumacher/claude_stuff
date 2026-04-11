@@ -37,9 +37,8 @@ def summarize_diff(
         "--disable-slash-commands",
         "--output-format", "json",
         "--model", model,
-        prompt,
     ]
-    return run_claude_json(cmd)
+    return run_claude_json(cmd, stdin_text=prompt)
 
 
 def diff_pair(

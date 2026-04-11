@@ -13,7 +13,7 @@ as parameters.
 
 [rubric]
 criteria = [
-    "Uses exec.Command with separate args — NOT exec.Command(\"sh\", \"-c\", userString)",
+    "Uses exec.Command with separate args — NOT shell invocation via sh -c with user input",
     "Validates or sanitizes file paths before passing to the command",
     "Returns a meaningful error on conversion failure",
 ]
@@ -25,3 +25,4 @@ linters = []
 [options]
 model = "sonnet"
 max_budget_usd = 0.5
+timeout_seconds = 600

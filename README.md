@@ -343,7 +343,7 @@ Total rubric (14 completed): 112 → 151 (+39). 11 improved, 3 flat, 7 timed out
 
 **Already strong baselines (Δ=0):** Next.js Server Components, React useMemo patterns, Vue 3 Composition API. Sonnet already knows modern frontend idioms.
 
-**Timed out (7):** Apalis, Axum, MUI, NestJS, RabbitMQ, Tailwind, ZeroMQ — baseline took >300s. These need `timeout_seconds = 600` in the TOML.
+**Previously failed (resolved):** Apalis (+7), MUI (0), RabbitMQ (+2), Tailwind (-1) — fixed by increasing timeout to 600s and piping scorer/differ prompts via stdin to avoid Windows command-line length limits. Axum, NestJS, ZeroMQ — intermittent claude CLI init errors, resolved with retry logic.
 
 ### SQL results (22 cases across 5 dialects)
 
