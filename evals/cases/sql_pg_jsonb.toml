@@ -1,0 +1,33 @@
+[case]
+id = "sql_pg_jsonb_001"
+name = "PostgreSQL: JSONB document queries"
+description = "Tests JSONB usage with GIN indexes and containment operators"
+plugins = ["skill-orchestration", "sql", "sql-postgresql"]
+expected_skills = ["sql", "sql-postgresql"]
+
+[prompt]
+text = """
+Write PostgreSQL queries for a document store. Documents are stored in
+a table with an id and a JSONB data column. Write:
+1. A query to find documents where data contains {"status": "published"}
+2. A query to find documents where data has a "tags" array containing "sql"
+3. The appropriate index for these queries
+"""
+
+[rubric]
+criteria = [
+    "Uses JSONB (not JSON) column type",
+    "Uses @> containment operator for object matching",
+    "Creates a GIN index (with jsonb_path_ops for containment queries)",
+    "Does not extract and compare — uses native JSONB operators",
+]
+
+[checks]
+scripts = [
+    "evals/checks/sql_postgresql_quality.py",
+]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

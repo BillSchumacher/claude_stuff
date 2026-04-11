@@ -1,0 +1,33 @@
+[case]
+id = "cicd_go_001"
+name = "Go: CI/CD pipeline"
+description = "Tests whether the agent creates a GitHub Actions workflow with caching, coverage, and linting for Go"
+plugins = ["skill-orchestration", "ci-cd", "ci-cd-go"]
+expected_skills = ["ci-cd", "ci-cd-go"]
+
+[prompt]
+text = """
+Create a GitHub Actions workflow for a Go module that runs tests on
+pull requests to the main branch.
+"""
+
+[rubric]
+criteria = [
+    "Caches Go modules using setup-go cache parameter or actions/cache",
+    "Generates code coverage with -coverprofile flag",
+    "Uses -race flag for race condition detection",
+    "Runs golangci-lint as a separate step or job",
+    "Pins Go version explicitly",
+]
+
+[checks]
+scripts = [
+    "evals/checks/has_dependency_caching.py",
+    "evals/checks/has_code_coverage.py",
+    "evals/checks/has_ci_linting.py",
+]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

@@ -1,0 +1,32 @@
+[case]
+id = "security_input_validation_001"
+name = "Feedback endpoint with input validation"
+description = "Tests whether the agent validates user input at trust boundaries"
+plugins = ["secure-coding"]
+
+[prompt]
+text = """
+Write a Flask endpoint POST /feedback that accepts a JSON body with
+rating (integer 1-5), comment (string), and email (string). Store the
+feedback in a SQLite database.
+"""
+
+[rubric]
+criteria = [
+    "Validates rating is an integer in range 1-5",
+    "Validates email format (regex, email-validator, or similar)",
+    "Validates comment length or type",
+    "Returns structured error response (400) for invalid input",
+    "Uses parameterized queries for SQLite",
+]
+
+[checks]
+scripts = [
+    "evals/checks/has_input_validation.py",
+    "evals/checks/no_sql_injection.py",
+]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

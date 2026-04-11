@@ -1,0 +1,33 @@
+[case]
+id = "cicd_gotcha_go_race_001"
+name = "Go gotcha: race detector"
+description = "Tests whether the agent enables the race detector in Go CI tests"
+plugins = ["skill-orchestration", "ci-cd", "ci-cd-go"]
+expected_skills = ["ci-cd", "ci-cd-go"]
+
+[prompt]
+text = """
+Create a GitHub Actions workflow for a Go HTTP service that handles
+concurrent requests. Run tests on pull requests to the main branch.
+"""
+
+[rubric]
+criteria = [
+    "Uses -race flag with go test",
+    "Generates code coverage with -coverprofile",
+    "Runs golangci-lint in a separate job from tests",
+    "Caches Go modules",
+    "Sets GOFLAGS or uses -count=1 to avoid stale test cache",
+]
+
+[checks]
+scripts = [
+    "evals/checks/has_race_flag_go.py",
+    "evals/checks/has_dependency_caching.py",
+    "evals/checks/has_code_coverage.py",
+]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

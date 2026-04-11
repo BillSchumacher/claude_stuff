@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 Two things in one repo:
 
 1. **Claude Code plugin marketplace** — `.claude-plugin/marketplace.json` lists 17 plugins under `plugins/`. Each plugin contains skills as `plugins/<plugin>/skills/<skill>/SKILL.md` with YAML frontmatter. Owner: `BillSchumacher`.
-2. **Evaluation framework** — Python 3.12 (Pipenv, stdlib only). Runs `claude -p` twice per test case (baseline vs with-skill), captures the full message stream, then scores via Opus 4.6 rubric judge, automated check scripts, and before/after diffs. Results are TSVs in `results/`. Currently 68 eval cases.
+2. **Evaluation framework** — Python 3.12 (Pipenv, stdlib only). Runs `claude -p` twice per test case (baseline vs with-skill), captures the full message stream, then scores via Opus 4.6 rubric judge, automated check scripts, and before/after diffs. Results are TSVs in `results/`. Currently 170 eval cases.
 
 ## Plugins
 
@@ -22,12 +22,16 @@ Two things in one repo:
 | `skill-orchestration` | Meta-skill for invoking ALL relevant skills, not just one |
 | `efficient-code` | Language-neutral algorithmic efficiency (core) |
 | `efficient-code-{c,cpp,csharp,go,javascript,php,python,rust,typescript}` | Language-specific efficiency: stdlib helpers + syntax/compiler/runtime gotchas |
+| `ci-cd` | Language-neutral CI/CD pipeline best practices: caching, coverage, fast feedback, security scanning |
+| `ci-cd-{cpp,csharp,go,javascript,php,python,rust}` | Language-specific CI/CD: setup actions, cache paths, coverage tools, linters, dependency audit |
+| `sql` | Dialect-neutral SQL: query performance, schema design, naming, transactions, migrations, anti-patterns |
+| `sql-{mysql,postgresql,oracle,mssql}` | Dialect-specific SQL: data types, indexes, upsert patterns, pitfalls |
 
 ## Commands
 
 ```bash
 pipenv install --dev
-pipenv run python -m src.cli list                         # list test cases (68)
+pipenv run python -m src.cli list                         # list test cases (170)
 pipenv run python -m src.cli run                          # run all (~2-3 hours)
 pipenv run python -m src.cli run --cases "security_*"     # glob filter
 pipenv run python -m src.cli report --run-id <ID>         # view a past run
@@ -36,7 +40,7 @@ pipenv run python -m src.cli new-plugin my-plugin \       # scaffold a plugin
 pipenv run pytest tests/ -v                               # unit tests (18)
 ```
 
-Full suite is 68 cases at ~2 min each. Use `run_in_background: true` when running from Claude Code.
+Full suite is 170 cases at ~2 min each. Use `run_in_background: true` when running from Claude Code.
 
 ## Plugin marketplace layout
 
@@ -126,14 +130,16 @@ Cases follow naming conventions:
 - Live in `evals/checks/`. Files starting with `_` are shared helpers.
 - Receive agent text on stdin. Read `$EVAL_MESSAGES_FILE` for full message stream, `$EVAL_EXPECTED_SKILLS` for expected skill list.
 - Exit 0 = pass, non-zero = fail. Diagnostics to stderr.
-- Import `_security_lib` for helpers: `get_all_code()` (Python, strips docs/comments), `get_all_code_c_style()` (C-family languages, strips `//` and `/* */`), `get_written_content()`, `fail()`.
+- Import `_security_lib` for helpers: `get_all_code()` (Python, strips docs/comments), `get_all_code_c_style()` (C-family languages, strips `//` and `/* */`), `get_written_content()`, `detect_target_language()`, `fail()`.
+- `detect_target_language()` — reads `$EVAL_EXPECTED_SKILLS` and returns the language suffix (e.g. `"go"`, `"php"`, `"javascript"`) from skills like `efficient-code-go`. Returns `None` if no language-specific skill is present. Use this to branch on language in multi-language check scripts.
 - `get_all_code(languages=("python", "py"))` — set `languages` to match the fenced-code-block language tags you want.
 - `get_all_code_c_style(languages=("go", "golang"))` — for JS/TS/Go/Rust/C/C++/C#/PHP.
+- **`require_language_tag=True`** — pass to `get_all_code()` or `get_all_code_c_style()` to skip bare ``` blocks. Without this, agents that explain anti-patterns in untagged code blocks cause false positives. Always use for multi-language checks.
 - Stripping logic: `strip_docstrings_and_comments()` removes triple-quoted strings, non-f-string literals, and `#` comments. `strip_c_style_comments()` removes `//`, `/* */`, and string literals. This prevents false positives on patterns like `"never use verify=False"` in docstrings.
+- **Written file content is always included** by `get_all_code`/`get_all_code_c_style` regardless of the `languages` filter. This means a Go check will also see written Python files and vice versa. Combine `detect_target_language()` with language-specific patterns so cross-language file content doesn't cause false matches.
 
 ### Known check script issues
 
-- **Python-centric checks produce false positives on other languages.** `no_sorted_for_minmax`, `no_naive_recursion`, and `no_double_lookup` use Python-specific regex. When attached to Go/JS/PHP cases, they can false-positive. Restrict these checks to Python-only cases, or write language-aware variants.
 - **Review cases quote the original anti-pattern.** When the agent reviews code, it quotes the original (bad) code and then shows the fix. Checks that scan ALL code blocks will match the quoted original and fail. The C++ `no_range_for_copy_cpp` check hits this. For review cases, consider checking only the last code block or accepting "at least one block passes."
 
 ## Important gotchas

@@ -1,0 +1,31 @@
+[case]
+id = "pkg_redis_caching_001"
+name = "Redis: caching layer with rate limiting"
+description = "Tests connection pool, pipelining, TTL, key namespacing, no KEYS"
+plugins = ["skill-orchestration", "redis"]
+expected_skills = ["redis"]
+
+[prompt]
+text = """
+Implement a Redis caching layer for a web API. Include functions for
+caching user profiles, a rate limiter for API endpoints, and cache
+invalidation for user updates. Use Python with the redis-py library.
+"""
+
+[rubric]
+criteria = [
+    "Uses connection pooling (Redis with connection_pool or single client)",
+    "Sets TTL on all cached keys",
+    "Uses pipelining for batch operations",
+    "Uses colon-separated key namespaces (app:cache:users:42)",
+    "Rate limiter uses atomic operations (Lua script or INCR+EXPIRE)",
+    "Does not use KEYS command — uses SCAN for iteration",
+]
+
+[checks]
+scripts = []
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

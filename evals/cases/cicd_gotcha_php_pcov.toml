@@ -1,0 +1,34 @@
+[case]
+id = "cicd_gotcha_php_pcov_001"
+name = "PHP gotcha: pcov vs xdebug"
+description = "Tests whether the agent uses pcov instead of xdebug for CI coverage"
+plugins = ["skill-orchestration", "ci-cd", "ci-cd-php"]
+expected_skills = ["ci-cd", "ci-cd-php"]
+
+[prompt]
+text = """
+Create a GitHub Actions workflow for a large PHP application with
+PHPUnit tests. Include code coverage reporting and static analysis.
+The workflow should run on pull requests.
+"""
+
+[rubric]
+criteria = [
+    "Uses pcov (not xdebug) as the coverage driver for CI speed",
+    "Sets memory_limit=-1 for PHPStan on large codebases",
+    "Caches Composer vendor/ directory keyed on composer.lock",
+    "Uses --prefer-dist for faster package downloads",
+    "Runs PHPStan or Psalm as a separate analysis step",
+]
+
+[checks]
+scripts = [
+    "evals/checks/has_pcov_driver.py",
+    "evals/checks/has_dependency_caching.py",
+    "evals/checks/has_ci_linting.py",
+]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

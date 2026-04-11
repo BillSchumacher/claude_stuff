@@ -1,0 +1,8 @@
+{
+  "name": "fastapi",
+  "description": "FastAPI best practices: dependency injection, Pydantic v2, async endpoints, security, testing",
+  "version": "0.1.0",
+  "author": {
+    "name": "BillSchumacher"
+  }
+}

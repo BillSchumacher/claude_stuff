@@ -1,0 +1,32 @@
+[case]
+id = "sql_mssql_temporal_001"
+name = "MSSQL: temporal table for price history"
+description = "Tests system-versioned temporal tables"
+plugins = ["skill-orchestration", "sql", "sql-mssql"]
+expected_skills = ["sql", "sql-mssql"]
+
+[prompt]
+text = """
+Design a SQL Server table for products that automatically tracks price
+change history. Write a query to see what a product's price was on a
+specific past date.
+"""
+
+[rubric]
+criteria = [
+    "Creates a system-versioned temporal table with PERIOD FOR SYSTEM_TIME",
+    "Uses DATETIME2 for the period columns (GENERATED ALWAYS AS ROW START/END)",
+    "Specifies a history table name",
+    "Uses FOR SYSTEM_TIME AS OF for point-in-time queries",
+    "Uses NVARCHAR for product name, DECIMAL for price",
+]
+
+[checks]
+scripts = [
+    "evals/checks/sql_mssql_quality.py",
+]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

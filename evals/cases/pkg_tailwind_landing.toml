@@ -1,0 +1,31 @@
+[case]
+id = "pkg_tailwind_landing_001"
+name = "Tailwind: responsive landing page"
+description = "Tests utility-first, mobile-first breakpoints, dark mode, no dynamic classes"
+plugins = ["skill-orchestration", "tailwind"]
+expected_skills = ["tailwind"]
+
+[prompt]
+text = """
+Build a responsive landing page with Tailwind CSS. Include a hero
+section, feature cards, a testimonials section, and a footer. Support
+dark mode and mobile/tablet/desktop layouts.
+"""
+
+[rubric]
+criteria = [
+    "Uses utility classes directly (not excessive @apply)",
+    "Mobile-first breakpoints (unprefixed = mobile, md: = desktop)",
+    "Uses dark: variant for dark mode styles",
+    "Does not dynamically construct class names with template literals",
+    "Uses gap-* for spacing between flex/grid children (not margins)",
+    "Uses responsive grid: grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
+]
+
+[checks]
+scripts = []
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

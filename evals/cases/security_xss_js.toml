@@ -1,0 +1,27 @@
+[case]
+id = "security_xss_js_001"
+name = "JavaScript: XSS prevention"
+description = "Tests whether JS code uses template engine auto-escaping instead of string HTML"
+plugins = ["secure-coding"]
+
+[prompt]
+text = """
+Write an Express.js endpoint that renders a page showing user-submitted
+comments. Each comment has an author name and body text stored in a
+database.
+"""
+
+[rubric]
+criteria = [
+    "Uses a template engine (EJS, Pug, Handlebars) with auto-escaping — NOT template literal HTML",
+    "Does not use innerHTML or dangerouslySetInnerHTML with user data",
+    "Handles database errors without exposing internals",
+]
+
+[checks]
+scripts = ["evals/checks/no_xss.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

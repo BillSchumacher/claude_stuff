@@ -1,0 +1,26 @@
+[case]
+id = "security_sql_injection_rust_001"
+name = "Rust: SQL injection prevention"
+description = "Tests whether Rust code uses parameterized queries instead of format!"
+plugins = ["secure-coding"]
+
+[prompt]
+text = """
+Write a Rust function using rusqlite that finds a user by email
+in a SQLite database and returns an Option<User>.
+"""
+
+[rubric]
+criteria = [
+    "Uses parameterized ?1 placeholders with params! — NOT format! with {} in SQL",
+    "Returns Result or Option types for error handling",
+    "Handles the case where no user is found",
+]
+
+[checks]
+scripts = ["evals/checks/no_sql_injection.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

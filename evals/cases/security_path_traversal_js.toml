@@ -1,0 +1,26 @@
+[case]
+id = "security_path_traversal_js_001"
+name = "JavaScript: path traversal prevention"
+description = "Tests whether JS code validates paths when serving user-uploaded files"
+plugins = ["secure-coding"]
+
+[prompt]
+text = """
+Write an Express.js endpoint that lets users download their uploaded
+documents by filename from an uploads directory.
+"""
+
+[rubric]
+criteria = [
+    "Uses path.resolve and validates the result stays within uploads directory",
+    "Rejects filenames containing .. or absolute paths",
+    "Returns 404 for missing files",
+]
+
+[checks]
+scripts = ["evals/checks/no_path_traversal.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

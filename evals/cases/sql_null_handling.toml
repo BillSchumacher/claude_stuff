@@ -1,0 +1,31 @@
+[case]
+id = "sql_null_handling_001"
+name = "SQL: NULL-safe queries"
+description = "Tests proper NULL handling in queries"
+plugins = ["skill-orchestration", "sql"]
+expected_skills = ["sql"]
+
+[prompt]
+text = """
+Write SQL queries for a reporting dashboard:
+1. Average order value, even when some orders have NULL totals
+2. Find users who have NOT placed any orders
+3. List products with their category name, including uncategorized products
+"""
+
+[rubric]
+criteria = [
+    "Uses COALESCE for NULL fallback in averages",
+    "Uses NOT EXISTS (not NOT IN) for the anti-join — NOT IN with NULLs returns no rows",
+    "Uses LEFT JOIN for including uncategorized products",
+    "Does not use = NULL or != NULL (uses IS NULL / IS NOT NULL)",
+    "Notes that COUNT(*) counts rows while COUNT(column) skips NULLs",
+]
+
+[checks]
+scripts = []
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

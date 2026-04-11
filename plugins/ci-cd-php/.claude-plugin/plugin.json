@@ -1,0 +1,8 @@
+{
+  "name": "ci-cd-php",
+  "description": "PHP CI/CD: composer caching, phpunit coverage, phpstan/psalm analysis, composer audit",
+  "version": "0.1.0",
+  "author": {
+    "name": "BillSchumacher"
+  }
+}

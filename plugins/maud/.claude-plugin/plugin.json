@@ -1,0 +1,8 @@
+{
+  "name": "maud",
+  "description": "Maud best practices: HTML templating macros, components, escaping, Axum integration",
+  "version": "0.1.0",
+  "author": {
+    "name": "BillSchumacher"
+  }
+}

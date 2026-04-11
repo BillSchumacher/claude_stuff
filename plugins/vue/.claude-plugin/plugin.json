@@ -1,0 +1,8 @@
+{
+  "name": "vue",
+  "description": "Vue 3 best practices: Composition API, ref vs reactive, composables, Pinia, Vue Router",
+  "version": "0.1.0",
+  "author": {
+    "name": "BillSchumacher"
+  }
+}

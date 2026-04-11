@@ -1,0 +1,34 @@
+[case]
+id = "cicd_gotcha_cpp_asan_001"
+name = "C++ gotcha: separate ASan from coverage"
+description = "Tests whether the agent separates sanitizer and coverage builds in C++ CI"
+plugins = ["skill-orchestration", "ci-cd", "ci-cd-cpp"]
+expected_skills = ["ci-cd", "ci-cd-cpp"]
+
+[prompt]
+text = """
+Create a GitHub Actions workflow for a C++ project using CMake and
+Google Test. Include both code coverage reporting and memory safety
+testing with AddressSanitizer.
+"""
+
+[rubric]
+criteria = [
+    "Runs ASan/UBSan in a separate job or build config from coverage",
+    "Does not combine -fsanitize=address with --coverage flags",
+    "Uses ccache for build caching",
+    "Generates coverage with gcov/lcov/gcovr in its own build",
+    "Sets ASAN_OPTIONS or UBSAN_OPTIONS for better diagnostics",
+]
+
+[checks]
+scripts = [
+    "evals/checks/no_asan_with_coverage.py",
+    "evals/checks/has_dependency_caching.py",
+    "evals/checks/has_code_coverage.py",
+]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

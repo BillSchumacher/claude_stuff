@@ -1,0 +1,8 @@
+{
+  "name": "redis",
+  "description": "Redis best practices: connection pooling, pipelining, data structures, TTL, memory management, pub/sub",
+  "version": "0.1.0",
+  "author": {
+    "name": "BillSchumacher"
+  }
+}

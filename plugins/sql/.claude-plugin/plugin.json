@@ -1,0 +1,8 @@
+{
+  "name": "sql",
+  "description": "Dialect-neutral SQL best practices: query performance, schema design, naming conventions, transactions, migrations, anti-patterns",
+  "version": "0.1.0",
+  "author": {
+    "name": "BillSchumacher"
+  }
+}

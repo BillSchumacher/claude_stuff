@@ -1,0 +1,31 @@
+[case]
+id = "pkg_react_native_list_001"
+name = "React Native: scrollable item list"
+description = "Tests FlatList, keyExtractor, performance, InteractionManager"
+plugins = ["skill-orchestration", "react-native"]
+expected_skills = ["react-native"]
+
+[prompt]
+text = """
+Build a React Native screen that displays a scrollable list of products
+fetched from an API. Each item shows an image, name, and price. Tapping
+an item navigates to a detail screen.
+"""
+
+[rubric]
+criteria = [
+    "Uses FlatList (not ScrollView with .map()) for the product list",
+    "Sets keyExtractor with stable unique IDs (not array index)",
+    "Memoizes renderItem with useCallback and list items with React.memo",
+    "Uses StyleSheet.create() outside the component (not inline styles)",
+    "Uses InteractionManager.runAfterInteractions for post-navigation data fetch",
+    "Uses react-native-fast-image or proper image handling for network images",
+]
+
+[checks]
+scripts = []
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

@@ -1,0 +1,8 @@
+{
+  "name": "ci-cd-go",
+  "description": "Go CI/CD: module caching, go test -coverprofile, golangci-lint, govulncheck",
+  "version": "0.1.0",
+  "author": {
+    "name": "BillSchumacher"
+  }
+}

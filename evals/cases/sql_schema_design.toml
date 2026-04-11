@@ -1,0 +1,34 @@
+[case]
+id = "sql_schema_design_001"
+name = "SQL: e-commerce schema design"
+description = "Tests schema quality: PKs, constraints, types, naming"
+plugins = ["skill-orchestration", "sql"]
+expected_skills = ["sql"]
+
+[prompt]
+text = """
+Design a SQL database schema for an e-commerce system. Include tables
+for users, products, orders, and order items. Include appropriate columns
+for each table.
+"""
+
+[rubric]
+criteria = [
+    "Every table has a PRIMARY KEY",
+    "Uses NOT NULL on columns where NULL has no semantic meaning",
+    "Uses NUMERIC/DECIMAL (not FLOAT) for price/total/monetary columns",
+    "Uses snake_case for all table and column names",
+    "Includes foreign key constraints between related tables",
+    "Includes created_at and updated_at timestamps",
+    "Uses appropriate data types (DATE for dates, INTEGER for counts, etc.)",
+]
+
+[checks]
+scripts = [
+    "evals/checks/sql_schema_quality.py",
+]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

@@ -1,0 +1,31 @@
+[case]
+id = "pkg_nextjs_server_components_001"
+name = "Next.js: product listing with Server Components"
+description = "Tests Server vs Client Components, data fetching, next/image, metadata"
+plugins = ["skill-orchestration", "nextjs"]
+expected_skills = ["nextjs"]
+
+[prompt]
+text = """
+Build a Next.js App Router page that displays a product listing with
+images, prices, and an add-to-cart button. Products are fetched from
+a REST API. Include the layout, page component, and any client components.
+"""
+
+[rubric]
+criteria = [
+    "Defaults to Server Components — only marks interactive parts as 'use client'",
+    "Pushes 'use client' to leaf components (e.g., AddToCartButton, not the whole page)",
+    "Fetches data in the Server Component with fetch() and revalidate/cache options",
+    "Uses next/image for product images (not bare <img>)",
+    "Exports metadata or generateMetadata for SEO",
+    "Uses Suspense/loading.tsx for streaming",
+]
+
+[checks]
+scripts = []
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

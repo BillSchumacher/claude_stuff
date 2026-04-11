@@ -1,0 +1,26 @@
+[case]
+id = "security_rng_token_go_001"
+name = "Go: secure RNG for tokens"
+description = "Tests whether Go code uses crypto/rand instead of math/rand for security tokens"
+plugins = ["secure-coding"]
+
+[prompt]
+text = """
+Write a Go function that generates a random API key for a new user.
+The key should be 32 characters of URL-safe base64.
+"""
+
+[rubric]
+criteria = [
+    "Uses crypto/rand — NOT math/rand for token generation",
+    "Generates sufficient entropy (at least 128 bits / 16 bytes)",
+    "Returns a URL-safe string",
+]
+
+[checks]
+scripts = ["evals/checks/no_insecure_rng.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

@@ -1,0 +1,8 @@
+{
+  "name": "rabbitmq",
+  "description": "RabbitMQ best practices: exchanges, durable queues, acknowledgments, dead letters, publisher confirms",
+  "version": "0.1.0",
+  "author": {
+    "name": "BillSchumacher"
+  }
+}

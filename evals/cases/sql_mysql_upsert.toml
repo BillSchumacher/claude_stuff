@@ -1,0 +1,31 @@
+[case]
+id = "sql_mysql_upsert_001"
+name = "MySQL: inventory upsert"
+description = "Tests ON DUPLICATE KEY UPDATE and keyset pagination"
+plugins = ["skill-orchestration", "sql", "sql-mysql"]
+expected_skills = ["sql", "sql-mysql"]
+
+[prompt]
+text = """
+Write MySQL queries for an inventory management system:
+1. Upsert product stock — increment quantity if product exists, insert if not
+2. Paginated listing of low-stock products (quantity < 10), 50 per page
+"""
+
+[rubric]
+criteria = [
+    "Uses ON DUPLICATE KEY UPDATE for the upsert",
+    "Uses keyset pagination (WHERE id > :last) not OFFSET",
+    "Does not use SELECT *",
+    "References LAST_INSERT_ID() or notes its availability",
+]
+
+[checks]
+scripts = [
+    "evals/checks/sql_query_quality.py",
+]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

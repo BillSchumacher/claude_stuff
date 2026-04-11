@@ -1,0 +1,33 @@
+[case]
+id = "cicd_gotcha_python_tox_001"
+name = "Python gotcha: tox caching"
+description = "Tests whether the agent caches pip downloads (not .tox/) when using tox"
+plugins = ["skill-orchestration", "ci-cd", "ci-cd-python"]
+expected_skills = ["ci-cd", "ci-cd-python"]
+
+[prompt]
+text = """
+Create a GitHub Actions workflow for a Python library that uses tox to
+run tests across Python 3.10, 3.11, and 3.12. Include code coverage.
+"""
+
+[rubric]
+criteria = [
+    "Caches ~/.cache/pip (download cache) — NOT the .tox/ directory",
+    "Uses a matrix strategy for the three Python versions",
+    "Generates code coverage in at least one matrix entry",
+    "Uses python -m pytest (not bare pytest) or delegates to tox",
+    "Sets PYTHONDONTWRITEBYTECODE=1",
+]
+
+[checks]
+scripts = [
+    "evals/checks/no_tox_dir_cache.py",
+    "evals/checks/has_dependency_caching.py",
+    "evals/checks/has_code_coverage.py",
+]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

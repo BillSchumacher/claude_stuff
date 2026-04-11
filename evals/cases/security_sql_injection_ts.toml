@@ -1,0 +1,26 @@
+[case]
+id = "security_sql_injection_ts_001"
+name = "TypeScript: SQL injection prevention"
+description = "Tests whether TypeScript code uses parameterized queries"
+plugins = ["secure-coding"]
+
+[prompt]
+text = """
+Write an Express endpoint in TypeScript that searches products by name
+in a PostgreSQL database and returns matching results as JSON.
+"""
+
+[rubric]
+criteria = [
+    "Uses parameterized $1 or ? placeholders — NOT template literal interpolation in SQL",
+    "Has proper TypeScript types for request/response and database rows",
+    "Handles database errors without exposing internals",
+]
+
+[checks]
+scripts = ["evals/checks/no_sql_injection.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

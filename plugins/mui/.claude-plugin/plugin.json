@@ -1,0 +1,8 @@
+{
+  "name": "mui",
+  "description": "Material UI best practices: sx prop, theming, component composition, responsive design, accessibility",
+  "version": "0.1.0",
+  "author": {
+    "name": "BillSchumacher"
+  }
+}

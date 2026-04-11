@@ -1,0 +1,31 @@
+[case]
+id = "pkg_axum_error_handling_001"
+name = "Axum: API with auth middleware and error handling"
+description = "Tests State in Arc, custom IntoResponse errors, tower middleware"
+plugins = ["skill-orchestration", "axum"]
+expected_skills = ["axum"]
+
+[prompt]
+text = """
+Build an Axum REST API with JWT authentication middleware, structured
+error responses, and a health check endpoint. Include shared database
+state and request logging.
+"""
+
+[rubric]
+criteria = [
+    "Wraps shared state in Arc, passes via Router::with_state (not Extension)",
+    "Implements custom error type with IntoResponse for consistent JSON errors",
+    "Uses Result<T, AppError> as handler return type with From impls for ?",
+    "Adds TraceLayer for request logging",
+    "Uses middleware::from_fn for auth with proper error propagation",
+    "Includes graceful shutdown with tokio::signal",
+]
+
+[checks]
+scripts = []
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

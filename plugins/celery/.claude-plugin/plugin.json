@@ -1,0 +1,8 @@
+{
+  "name": "celery",
+  "description": "Celery best practices: task design, retry strategies, serialization, monitoring, rate limiting",
+  "version": "0.1.0",
+  "author": {
+    "name": "BillSchumacher"
+  }
+}

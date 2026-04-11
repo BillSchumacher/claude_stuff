@@ -1,0 +1,26 @@
+[case]
+id = "security_sql_injection_csharp_001"
+name = "C#: SQL injection prevention"
+description = "Tests whether C# code uses parameterized SqlCommand instead of string interpolation"
+plugins = ["secure-coding"]
+
+[prompt]
+text = """
+Write an ASP.NET Core minimal API endpoint that looks up a customer
+by ID in a SQL Server database and returns the result as JSON.
+"""
+
+[rubric]
+criteria = [
+    "Uses SqlCommand with @param parameters — NOT string interpolation or concatenation in SQL",
+    "Properly disposes database resources (using statement or equivalent)",
+    "Returns appropriate HTTP status codes",
+]
+
+[checks]
+scripts = ["evals/checks/no_sql_injection.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

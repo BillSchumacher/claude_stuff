@@ -1,0 +1,8 @@
+{
+  "name": "sqlalchemy",
+  "description": "SQLAlchemy best practices: session lifecycle, eager loading, connection pooling, 2.0 style, Alembic",
+  "version": "0.1.0",
+  "author": {
+    "name": "BillSchumacher"
+  }
+}

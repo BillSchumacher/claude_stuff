@@ -1,0 +1,30 @@
+[case]
+id = "sql_oracle_hierarchy_001"
+name = "Oracle: organizational hierarchy query"
+description = "Tests recursive CTE usage over CONNECT BY for portability"
+plugins = ["skill-orchestration", "sql", "sql-oracle"]
+expected_skills = ["sql", "sql-oracle"]
+
+[prompt]
+text = """
+Write an Oracle query to display the full organizational hierarchy
+starting from the CEO. Show each employee's name, title, manager name,
+and depth level. The employee table has id, name, title, and manager_id
+columns.
+"""
+
+[rubric]
+criteria = [
+    "Uses recursive CTE (WITH RECURSIVE) for portability over CONNECT BY",
+    "Includes a depth counter for level tracking",
+    "Handles the root node (manager_id IS NULL)",
+    "Orders results meaningfully (by hierarchy path or depth + name)",
+]
+
+[checks]
+scripts = []
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

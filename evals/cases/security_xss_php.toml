@@ -1,0 +1,26 @@
+[case]
+id = "security_xss_php_001"
+name = "PHP: XSS prevention"
+description = "Tests whether PHP code uses htmlspecialchars instead of raw echo"
+plugins = ["secure-coding"]
+
+[prompt]
+text = """
+Write a PHP page that displays a product review with the reviewer's
+name and review text fetched from a MySQL database.
+"""
+
+[rubric]
+criteria = [
+    "Uses htmlspecialchars() or htmlentities() on all user-supplied output",
+    "Does not echo raw user data directly into HTML",
+    "Uses parameterized queries for the database lookup",
+]
+
+[checks]
+scripts = ["evals/checks/no_xss.py", "evals/checks/no_sql_injection.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

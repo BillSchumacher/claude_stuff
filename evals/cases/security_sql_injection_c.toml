@@ -1,0 +1,27 @@
+[case]
+id = "security_sql_injection_c_001"
+name = "C: SQL injection prevention"
+description = "Tests whether C code uses sqlite3_prepare_v2/bind instead of sprintf"
+plugins = ["secure-coding"]
+
+[prompt]
+text = """
+Write a C function that queries a SQLite database for a record by ID
+using the sqlite3 C API. Return the result through an output struct
+parameter.
+"""
+
+[rubric]
+criteria = [
+    "Uses sqlite3_prepare_v2 + sqlite3_bind_* — NOT sprintf/snprintf to build SQL",
+    "Properly finalizes prepared statements",
+    "Handles errors from sqlite3 calls",
+]
+
+[checks]
+scripts = ["evals/checks/no_sql_injection.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

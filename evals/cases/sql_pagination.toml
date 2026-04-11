@@ -1,0 +1,31 @@
+[case]
+id = "sql_pagination_001"
+name = "SQL: paginated product listing"
+description = "Tests query quality: no SELECT *, no OFFSET pagination"
+plugins = ["skill-orchestration", "sql"]
+expected_skills = ["sql"]
+
+[prompt]
+text = """
+Write a SQL query for a paginated product listing endpoint. The query
+should return products sorted by creation date, 20 per page, and support
+navigating to any page. Include the total count.
+"""
+
+[rubric]
+criteria = [
+    "Uses keyset/cursor pagination (WHERE id > :last_seen) instead of OFFSET",
+    "Does not use SELECT * — lists specific columns",
+    "Includes an ORDER BY clause",
+    "Suggests an appropriate index for the query",
+]
+
+[checks]
+scripts = [
+    "evals/checks/sql_query_quality.py",
+]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

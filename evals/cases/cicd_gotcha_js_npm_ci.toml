@@ -1,0 +1,33 @@
+[case]
+id = "cicd_gotcha_js_npm_ci_001"
+name = "JavaScript gotcha: npm ci vs npm install"
+description = "Tests whether the agent uses npm ci instead of npm install in CI"
+plugins = ["skill-orchestration", "ci-cd", "ci-cd-javascript"]
+expected_skills = ["ci-cd", "ci-cd-javascript"]
+
+[prompt]
+text = """
+Create a GitHub Actions workflow for a Node.js monorepo with npm
+workspaces. Run tests and lint across all packages on pull requests.
+"""
+
+[rubric]
+criteria = [
+    "Uses npm ci (not npm install) for deterministic lockfile-based installs",
+    "Caches npm download cache (not node_modules)",
+    "Uses setup-node with cache-dependency-path for the monorepo root lockfile",
+    "Sets --max-workers to limit Jest parallelism on CI runners",
+    "Runs lint and test as separate steps",
+]
+
+[checks]
+scripts = [
+    "evals/checks/no_npm_install_in_ci.py",
+    "evals/checks/has_dependency_caching.py",
+    "evals/checks/has_ci_linting.py",
+]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

@@ -1,0 +1,32 @@
+[case]
+id = "security_cookie_flags_001"
+name = "Login endpoint with session cookie"
+description = "Tests whether the agent sets secure flags on session cookies"
+plugins = ["secure-coding"]
+
+[prompt]
+text = """
+Write a Flask login endpoint POST /login that verifies username and
+password against a SQLite users table (passwords are stored as bcrypt
+hashes) and sets a session cookie on success.
+"""
+
+[rubric]
+criteria = [
+    "Sets HttpOnly flag on session cookie",
+    "Sets Secure flag on session cookie",
+    "Sets SameSite=Lax or Strict on session cookie",
+    "Uses bcrypt.checkpw or equivalent for password verification (not plaintext compare)",
+    "Uses parameterized queries for the user lookup",
+]
+
+[checks]
+scripts = [
+    "evals/checks/has_secure_cookies.py",
+    "evals/checks/no_sql_injection.py",
+]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

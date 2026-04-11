@@ -1,0 +1,35 @@
+[case]
+id = "cicd_javascript_001"
+name = "JavaScript: CI/CD pipeline"
+description = "Tests whether the agent creates a GitHub Actions workflow with caching, coverage, and linting for JS/TS"
+plugins = ["skill-orchestration", "ci-cd", "ci-cd-javascript"]
+expected_skills = ["ci-cd", "ci-cd-javascript"]
+
+[prompt]
+text = """
+Create a GitHub Actions workflow for a Node.js application that uses
+vitest for testing. The workflow should run on pull requests to the main
+branch. The project uses npm for package management.
+"""
+
+[rubric]
+criteria = [
+    "Caches npm dependencies using setup-node cache parameter or actions/cache",
+    "Generates code coverage with vitest --coverage and outputs in a machine-readable format",
+    "Enforces a coverage threshold",
+    "Runs eslint as a separate step before tests",
+    "Uses npm ci (frozen install) instead of npm install",
+    "Pins Node.js version explicitly",
+]
+
+[checks]
+scripts = [
+    "evals/checks/has_dependency_caching.py",
+    "evals/checks/has_code_coverage.py",
+    "evals/checks/has_ci_linting.py",
+]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

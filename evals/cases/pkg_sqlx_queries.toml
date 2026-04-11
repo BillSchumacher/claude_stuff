@@ -1,0 +1,31 @@
+[case]
+id = "pkg_sqlx_queries_001"
+name = "SQLx: user management with compile-time queries"
+description = "Tests query! macro, pool config, transactions, error handling"
+plugins = ["skill-orchestration", "sqlx"]
+expected_skills = ["sqlx"]
+
+[prompt]
+text = """
+Write a Rust module using SQLx with PostgreSQL for user management:
+create user, get by ID, get by email, update profile, and delete.
+Include the pool setup and a migration for the users table.
+"""
+
+[rubric]
+criteria = [
+    "Uses sqlx::query! or query_as! for compile-time SQL checking",
+    "Configures PgPool with max_connections and acquire_timeout",
+    "Uses transactions (pool.begin(), tx.commit()) for multi-step operations",
+    "Uses fetch_optional for get-by-email (may not exist)",
+    "Handles sqlx::Error variants (RowNotFound, unique violation) in error type",
+    "Includes migration file and sqlx::migrate!() call",
+]
+
+[checks]
+scripts = []
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

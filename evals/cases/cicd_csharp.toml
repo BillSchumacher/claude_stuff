@@ -1,0 +1,33 @@
+[case]
+id = "cicd_csharp_001"
+name = "C#: CI/CD pipeline"
+description = "Tests whether the agent creates a GitHub Actions workflow with caching, coverage, and linting for .NET"
+plugins = ["skill-orchestration", "ci-cd", "ci-cd-csharp"]
+expected_skills = ["ci-cd", "ci-cd-csharp"]
+
+[prompt]
+text = """
+Create a GitHub Actions workflow for a .NET 8 application that runs tests
+on pull requests to the main branch.
+"""
+
+[rubric]
+criteria = [
+    "Caches NuGet packages using actions/cache or setup-dotnet cache",
+    "Generates code coverage with coverlet or XPlat Code Coverage",
+    "Runs dotnet format --verify-no-changes or enables Roslyn analyzers",
+    "Uses dotnet restore, dotnet build --no-restore, dotnet test --no-build pattern",
+    "Pins .NET version explicitly",
+]
+
+[checks]
+scripts = [
+    "evals/checks/has_dependency_caching.py",
+    "evals/checks/has_code_coverage.py",
+    "evals/checks/has_ci_linting.py",
+]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

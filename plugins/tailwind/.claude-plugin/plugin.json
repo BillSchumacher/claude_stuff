@@ -1,0 +1,8 @@
+{
+  "name": "tailwind",
+  "description": "Tailwind CSS best practices: utility-first, responsive design, dark mode, custom theme, component extraction",
+  "version": "0.1.0",
+  "author": {
+    "name": "BillSchumacher"
+  }
+}

@@ -1,0 +1,30 @@
+[case]
+id = "sql_oracle_bulk_001"
+name = "Oracle: PL/SQL bulk operations"
+description = "Tests FORALL and BULK COLLECT over row-by-row processing"
+plugins = ["skill-orchestration", "sql", "sql-oracle"]
+expected_skills = ["sql", "sql-oracle"]
+
+[prompt]
+text = """
+Write an Oracle PL/SQL procedure that archives orders older than one
+year. Move them from the orders table to an orders_archive table, then
+delete the originals. Process in batches to avoid locking the table.
+"""
+
+[rubric]
+criteria = [
+    "Uses BULK COLLECT with LIMIT for batch fetching",
+    "Uses FORALL for bulk INSERT and DELETE (not row-by-row)",
+    "Processes in a loop with COMMIT per batch",
+    "Handles the case where no rows remain (exit condition)",
+    "Uses a cursor or explicit query for batch selection",
+]
+
+[checks]
+scripts = []
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

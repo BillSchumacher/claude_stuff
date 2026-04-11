@@ -1,0 +1,30 @@
+[case]
+id = "pkg_starlette_websocket_001"
+name = "Starlette: API with WebSocket and background tasks"
+description = "Tests lifespan, BackgroundTask, WebSocket handling, streaming"
+plugins = ["skill-orchestration", "starlette"]
+expected_skills = ["starlette"]
+
+[prompt]
+text = """
+Build a Starlette application with a REST endpoint that triggers a
+background email notification and a WebSocket endpoint for real-time
+chat messages.
+"""
+
+[rubric]
+criteria = [
+    "Uses lifespan context manager for startup/shutdown (not on_startup/on_shutdown)",
+    "Uses BackgroundTask for post-response email sending",
+    "WebSocket handler explicitly accepts, handles WebSocketDisconnect, uses try/finally",
+    "Uses Request.state or lifespan state for dependency passing",
+    "Uses explicit response types (JSONResponse, not raw strings)",
+]
+
+[checks]
+scripts = []
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

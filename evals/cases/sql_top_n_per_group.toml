@@ -1,0 +1,31 @@
+[case]
+id = "sql_top_n_per_group_001"
+name = "SQL: top-N per group with window functions"
+description = "Tests window function usage over correlated subqueries"
+plugins = ["skill-orchestration", "sql"]
+expected_skills = ["sql"]
+
+[prompt]
+text = """
+Write a SQL query to find each customer's most recent order, including
+the order date and total amount. The database has a customers table and
+an orders table with customer_id, order_date, and total columns.
+"""
+
+[rubric]
+criteria = [
+    "Uses ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY order_date DESC)",
+    "Does not use a correlated subquery for latest-per-group",
+    "Does not use SELECT *",
+    "Joins cleanly with explicit JOIN ON syntax",
+]
+
+[checks]
+scripts = [
+    "evals/checks/sql_query_quality.py",
+]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

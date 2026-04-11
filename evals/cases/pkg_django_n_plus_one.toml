@@ -1,0 +1,31 @@
+[case]
+id = "pkg_django_n_plus_one_001"
+name = "Django: blog listing with related data"
+description = "Tests ORM optimization: select_related, prefetch_related, no N+1"
+plugins = ["skill-orchestration", "django"]
+expected_skills = ["django"]
+
+[prompt]
+text = """
+Write a Django view that lists the 20 most recent blog posts. Each post
+has an author (ForeignKey to User) and tags (ManyToManyField). Display
+the author name and tag count for each post. Include the model definitions,
+view, and URL configuration.
+"""
+
+[rubric]
+criteria = [
+    "Uses select_related('author') for the ForeignKey to avoid N+1 on author",
+    "Uses prefetch_related('tags') for ManyToMany to avoid N+1 on tags",
+    "Does not use SELECT * equivalent — uses .only() or .defer() or explicit fields",
+    "Slices the queryset ([:20]) rather than fetching all then slicing in Python",
+    "Includes db_index=True or Meta.indexes on fields used in ordering/filtering",
+]
+
+[checks]
+scripts = []
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

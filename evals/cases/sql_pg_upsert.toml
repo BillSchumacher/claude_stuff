@@ -1,0 +1,29 @@
+[case]
+id = "sql_pg_upsert_001"
+name = "PostgreSQL: upsert with RETURNING"
+description = "Tests ON CONFLICT and RETURNING clause usage"
+plugins = ["skill-orchestration", "sql", "sql-postgresql"]
+expected_skills = ["sql", "sql-postgresql"]
+
+[prompt]
+text = """
+Write a PostgreSQL query that inserts a new user or updates their
+last_login timestamp if they already exist (by email). Return the
+user's id and whether they were newly created or updated.
+"""
+
+[rubric]
+criteria = [
+    "Uses INSERT ... ON CONFLICT (email) DO UPDATE",
+    "Uses RETURNING to get the result without a separate SELECT",
+    "Distinguishes insert vs update (using xmax = 0 trick or similar)",
+    "Does not use SELECT then INSERT/UPDATE pattern",
+]
+
+[checks]
+scripts = []
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

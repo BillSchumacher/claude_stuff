@@ -1,0 +1,33 @@
+[case]
+id = "cicd_gotcha_csharp_chain_001"
+name = "C# gotcha: restore/build/test chaining"
+description = "Tests whether the agent chains --no-restore and --no-build flags in .NET CI"
+plugins = ["skill-orchestration", "ci-cd", "ci-cd-csharp"]
+expected_skills = ["ci-cd", "ci-cd-csharp"]
+
+[prompt]
+text = """
+Create a GitHub Actions workflow for a .NET 8 solution with multiple
+projects. Run tests with code coverage on pull requests.
+"""
+
+[rubric]
+criteria = [
+    "Chains dotnet restore → build --no-restore → test --no-build",
+    "Generates code coverage with coverlet or XPlat Code Coverage",
+    "Caches NuGet packages directory",
+    "Uses dotnet format --verify-no-changes for style checking",
+    "Pins .NET SDK version explicitly",
+]
+
+[checks]
+scripts = [
+    "evals/checks/has_dotnet_no_restore_chain.py",
+    "evals/checks/has_dependency_caching.py",
+    "evals/checks/has_code_coverage.py",
+]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

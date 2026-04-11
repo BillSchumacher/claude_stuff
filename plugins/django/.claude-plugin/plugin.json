@@ -1,0 +1,8 @@
+{
+  "name": "django",
+  "description": "Django best practices: ORM optimization, middleware, security, caching, migrations, async views",
+  "version": "0.1.0",
+  "author": {
+    "name": "BillSchumacher"
+  }
+}

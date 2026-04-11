@@ -1,0 +1,30 @@
+[case]
+id = "sql_mssql_cross_apply_001"
+name = "MSSQL: CROSS APPLY for latest-per-group"
+description = "Tests CROSS APPLY / OUTER APPLY over correlated subqueries"
+plugins = ["skill-orchestration", "sql", "sql-mssql"]
+expected_skills = ["sql", "sql-mssql"]
+
+[prompt]
+text = """
+Write a T-SQL query to list all customers with their most recent order
+date and total. Include customers who have never placed an order.
+"""
+
+[rubric]
+criteria = [
+    "Uses OUTER APPLY (not a correlated subquery in SELECT)",
+    "Uses TOP 1 with ORDER BY inside the APPLY",
+    "Includes customers with no orders (OUTER not CROSS)",
+    "Does not use SELECT *",
+]
+
+[checks]
+scripts = [
+    "evals/checks/sql_query_quality.py",
+]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

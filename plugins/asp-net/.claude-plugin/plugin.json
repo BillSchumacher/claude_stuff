@@ -1,0 +1,8 @@
+{
+  "name": "asp-net",
+  "description": "ASP.NET Core best practices: DI lifecycle, middleware pipeline, configuration, EF Core, health checks",
+  "version": "0.1.0",
+  "author": {
+    "name": "BillSchumacher"
+  }
+}

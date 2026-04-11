@@ -1,0 +1,31 @@
+[case]
+id = "pkg_mui_form_001"
+name = "MUI: themed form with responsive layout"
+description = "Tests sx prop, theming, slots, accessibility, responsive design"
+plugins = ["skill-orchestration", "mui"]
+expected_skills = ["mui"]
+
+[prompt]
+text = """
+Build a Material UI registration form with name, email, and password
+fields. Include form validation, a custom theme, and a responsive
+layout that stacks on mobile and goes side-by-side on desktop.
+"""
+
+[rubric]
+criteria = [
+    "Uses sx prop for styling (not inline style prop)",
+    "Uses createTheme with ThemeProvider for theming",
+    "Uses responsive breakpoints in sx: { xs: '100%', md: '50%' }",
+    "Provides aria-label on icon buttons and proper form labels",
+    "Uses Stack or Grid for layout composition",
+    "Integrates with a form library (React Hook Form) or manages state properly",
+]
+
+[checks]
+scripts = []
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

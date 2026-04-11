@@ -1,0 +1,33 @@
+[case]
+id = "cicd_rust_001"
+name = "Rust: CI/CD pipeline"
+description = "Tests whether the agent creates a GitHub Actions workflow with caching, coverage, and linting for Rust"
+plugins = ["skill-orchestration", "ci-cd", "ci-cd-rust"]
+expected_skills = ["ci-cd", "ci-cd-rust"]
+
+[prompt]
+text = """
+Create a GitHub Actions workflow for a Rust library that runs tests on
+pull requests to the main branch.
+"""
+
+[rubric]
+criteria = [
+    "Caches cargo registry and target directory using Swatinem/rust-cache or actions/cache",
+    "Generates code coverage with cargo-tarpaulin or cargo-llvm-cov",
+    "Runs cargo clippy with -D warnings as a separate step",
+    "Runs cargo fmt --check as a format verification step",
+    "Pins Rust toolchain version",
+]
+
+[checks]
+scripts = [
+    "evals/checks/has_dependency_caching.py",
+    "evals/checks/has_code_coverage.py",
+    "evals/checks/has_ci_linting.py",
+]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

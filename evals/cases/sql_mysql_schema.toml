@@ -1,0 +1,33 @@
+[case]
+id = "sql_mysql_schema_001"
+name = "MySQL: blog schema design"
+description = "Tests MySQL-specific schema: InnoDB, utf8mb4, BIGINT AUTO_INCREMENT"
+plugins = ["skill-orchestration", "sql", "sql-mysql"]
+expected_skills = ["sql", "sql-mysql"]
+
+[prompt]
+text = """
+Design a MySQL schema for a blog platform with tables for posts,
+comments, tags, and a post_tags junction table. Include appropriate
+indexes for common queries.
+"""
+
+[rubric]
+criteria = [
+    "Uses InnoDB engine (not MyISAM)",
+    "Sets CHARACTER SET utf8mb4 (not bare utf8)",
+    "Uses BIGINT AUTO_INCREMENT for primary keys (not INT)",
+    "Includes composite indexes following leftmost-prefix rule",
+    "Uses appropriate column types (TEXT for post body, not VARCHAR(255))",
+]
+
+[checks]
+scripts = [
+    "evals/checks/sql_schema_quality.py",
+    "evals/checks/sql_mysql_quality.py",
+]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

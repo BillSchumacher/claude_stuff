@@ -9,13 +9,23 @@ from _security_lib import get_all_code, fail
 
 
 def main() -> int:
-    code = get_all_code(sys.stdin.read())
+    code = get_all_code(
+        sys.stdin.read(),
+        languages=(
+            "python", "py", "go", "golang", "javascript", "js",
+            "typescript", "ts", "php", "csharp", "cs", "rust", "rs",
+            "c", "cpp", "c++",
+        ),
+        strip_docs=False,
+        require_language_tag=True,
+    )
     if not code:
         return fail("No code found")
 
     # Look for assignments like API_KEY = "abc123def..." or password = "..."
+    # Handles Python =, Go :=, and other assignment styles
     secret_var_pattern = re.compile(
-        r'\b(api_key|apikey|secret|token|password|passwd|access_key|private_key|auth_token)\s*=\s*["\']([^"\']{8,})["\']',
+        r'\b(api_key|apikey|secret|token|password|passwd|access_key|private_key|auth_token)\s*:?=\s*["\']([^"\']{8,})["\']',
         re.IGNORECASE,
     )
     placeholder_values = {

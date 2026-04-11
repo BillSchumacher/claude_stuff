@@ -1,0 +1,31 @@
+[case]
+id = "sql_migration_001"
+name = "SQL: idempotent migration"
+description = "Tests migration best practices: idempotent DDL, expand-contract"
+plugins = ["skill-orchestration", "sql"]
+expected_skills = ["sql"]
+
+[prompt]
+text = """
+Write SQL migrations for these changes to a users table:
+1. Add an email_verified boolean column (default false)
+2. Add a phone_number column
+3. Add an index on email for faster lookups
+"""
+
+[rubric]
+criteria = [
+    "Uses IF NOT EXISTS / IF EXISTS guards for idempotent DDL",
+    "Adds NOT NULL with a DEFAULT for the new boolean column",
+    "Creates the index concurrently or notes the locking concern",
+    "Does not drop or rename existing columns",
+    "Includes a rollback/down migration or notes reversibility",
+]
+
+[checks]
+scripts = []
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

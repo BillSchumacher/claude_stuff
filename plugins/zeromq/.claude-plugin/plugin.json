@@ -1,0 +1,8 @@
+{
+  "name": "zeromq",
+  "description": "ZeroMQ best practices: socket patterns, context management, HWM, polling, message serialization",
+  "version": "0.1.0",
+  "author": {
+    "name": "BillSchumacher"
+  }
+}

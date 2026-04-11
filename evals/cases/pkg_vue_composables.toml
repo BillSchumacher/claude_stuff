@@ -1,0 +1,31 @@
+[case]
+id = "pkg_vue_composables_001"
+name = "Vue 3: dashboard with composables and Pinia"
+description = "Tests Composition API, ref vs reactive, composables, Pinia store"
+plugins = ["skill-orchestration", "vue"]
+expected_skills = ["vue"]
+
+[prompt]
+text = """
+Build a Vue 3 dashboard component that displays user statistics and a
+list of recent activities. Include a composable for data fetching, a
+Pinia store for user state, and proper TypeScript types.
+"""
+
+[rubric]
+criteria = [
+    "Uses <script setup lang='ts'> syntax",
+    "Uses ref() for primitive values (not reactive for everything)",
+    "Extracts reusable logic into a composable (useFetch or useActivities)",
+    "Uses Pinia defineStore with composition syntax",
+    "Uses computed() for derived values (not watch setting a ref)",
+    "Uses defineProps with TypeScript generics for type-safe props",
+]
+
+[checks]
+scripts = []
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

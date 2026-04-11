@@ -1,0 +1,26 @@
+[case]
+id = "security_xss_go_001"
+name = "Go: XSS prevention"
+description = "Tests whether Go code uses html/template instead of fmt.Fprintf for HTML"
+plugins = ["secure-coding"]
+
+[prompt]
+text = """
+Write a Go HTTP handler that displays a user's profile page with their
+name and bio fetched from a database.
+"""
+
+[rubric]
+criteria = [
+    "Uses html/template — NOT fmt.Fprintf with HTML and user data",
+    "Does not use text/template for HTML output",
+    "Handles missing user with appropriate HTTP status",
+]
+
+[checks]
+scripts = ["evals/checks/no_xss.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

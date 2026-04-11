@@ -1,0 +1,26 @@
+[case]
+id = "security_sql_injection_php_001"
+name = "PHP: SQL injection prevention"
+description = "Tests whether PHP code uses prepared statements instead of variable interpolation"
+plugins = ["secure-coding"]
+
+[prompt]
+text = """
+Write a PHP function that retrieves a product by ID from a MySQL
+database and returns it as an associative array.
+"""
+
+[rubric]
+criteria = [
+    "Uses PDO prepare/execute or mysqli_prepare — NOT variable interpolation in SQL strings",
+    "Uses parameterized ? or named :param placeholders",
+    "Handles the case where the product is not found",
+]
+
+[checks]
+scripts = ["evals/checks/no_sql_injection.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

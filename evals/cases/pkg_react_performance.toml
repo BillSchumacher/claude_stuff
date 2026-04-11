@@ -1,0 +1,31 @@
+[case]
+id = "pkg_react_performance_001"
+name = "React: data table with filtering and sorting"
+description = "Tests useMemo, stable keys, no unnecessary useEffect, proper state"
+plugins = ["skill-orchestration", "react"]
+expected_skills = ["react"]
+
+[prompt]
+text = """
+Build a React component that displays a data table with search filtering,
+column sorting, and pagination. The data comes from a prop. Include
+proper performance optimization for large datasets.
+"""
+
+[rubric]
+criteria = [
+    "Computes filtered/sorted data with useMemo (not useEffect + setState)",
+    "Uses stable unique keys on list items (not array index)",
+    "Does not wrap every component in React.memo without reason",
+    "Colocates state — filter/sort state lives in the table component, not lifted unnecessarily",
+    "Uses useCallback for event handlers passed to memoized children",
+    "Does not create inline objects/arrays in JSX props for memoized children",
+]
+
+[checks]
+scripts = []
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

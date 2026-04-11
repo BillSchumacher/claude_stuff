@@ -1,0 +1,32 @@
+[case]
+id = "sql_mssql_error_handling_001"
+name = "MSSQL: stored procedure with error handling"
+description = "Tests TRY/CATCH with XACT_ABORT, no @@IDENTITY"
+plugins = ["skill-orchestration", "sql", "sql-mssql"]
+expected_skills = ["sql", "sql-mssql"]
+
+[prompt]
+text = """
+Write a T-SQL stored procedure that processes an order: insert the
+order record, insert order items, update inventory counts, and return
+the new order ID. If any step fails, roll back everything.
+"""
+
+[rubric]
+criteria = [
+    "Uses SET XACT_ABORT ON at the start",
+    "Wraps logic in BEGIN TRY / BEGIN CATCH",
+    "Checks @@TRANCOUNT before ROLLBACK in CATCH block",
+    "Uses THROW (not RAISERROR) to re-raise errors",
+    "Uses SCOPE_IDENTITY() or OUTPUT inserted.id (not @@IDENTITY)",
+]
+
+[checks]
+scripts = [
+    "evals/checks/sql_mssql_quality.py",
+]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

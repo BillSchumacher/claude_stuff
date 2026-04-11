@@ -1,0 +1,33 @@
+[case]
+id = "cicd_cpp_001"
+name = "C++: CI/CD pipeline"
+description = "Tests whether the agent creates a GitHub Actions workflow with caching, coverage, and linting for C++"
+plugins = ["skill-orchestration", "ci-cd", "ci-cd-cpp"]
+expected_skills = ["ci-cd", "ci-cd-cpp"]
+
+[prompt]
+text = """
+Create a GitHub Actions workflow for a C++ project that uses CMake and
+Google Test. The workflow should run on pull requests to the main branch.
+"""
+
+[rubric]
+criteria = [
+    "Caches builds using ccache (hendrikmuhs/ccache-action or manual setup)",
+    "Generates code coverage with gcov/lcov/gcovr",
+    "Runs cppcheck or clang-tidy as a static analysis step",
+    "Uses CMake configure/build/test pattern",
+    "Pins compiler or OS version explicitly",
+]
+
+[checks]
+scripts = [
+    "evals/checks/has_dependency_caching.py",
+    "evals/checks/has_code_coverage.py",
+    "evals/checks/has_ci_linting.py",
+]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

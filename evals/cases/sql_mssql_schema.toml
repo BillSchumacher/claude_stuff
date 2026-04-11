@@ -1,0 +1,33 @@
+[case]
+id = "sql_mssql_schema_001"
+name = "MSSQL: ticket tracking schema"
+description = "Tests T-SQL types: NVARCHAR, DATETIME2, proper identity"
+plugins = ["skill-orchestration", "sql", "sql-mssql"]
+expected_skills = ["sql", "sql-mssql"]
+
+[prompt]
+text = """
+Design a SQL Server schema for a ticket tracking system. Include tables
+for tickets, users, comments, and ticket status history. Tickets have
+a title, description, priority, and assignee.
+"""
+
+[rubric]
+criteria = [
+    "Uses NVARCHAR (not VARCHAR) for user-facing text columns",
+    "Uses DATETIME2 or DATETIMEOFFSET (not DATETIME) for timestamps",
+    "Uses IDENTITY for auto-increment PKs",
+    "Uses DECIMAL for any monetary columns (not FLOAT)",
+    "Includes proper foreign keys and constraints",
+]
+
+[checks]
+scripts = [
+    "evals/checks/sql_schema_quality.py",
+    "evals/checks/sql_mssql_quality.py",
+]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

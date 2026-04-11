@@ -1,0 +1,35 @@
+[case]
+id = "cicd_php_001"
+name = "PHP: CI/CD pipeline"
+description = "Tests whether the agent creates a GitHub Actions workflow with caching, coverage, and linting for PHP"
+plugins = ["skill-orchestration", "ci-cd", "ci-cd-php"]
+expected_skills = ["ci-cd", "ci-cd-php"]
+
+[prompt]
+text = """
+Create a GitHub Actions workflow for a PHP application that uses PHPUnit
+for testing. The workflow should run on pull requests to the main branch.
+The project uses Composer for dependency management.
+"""
+
+[rubric]
+criteria = [
+    "Caches Composer dependencies using actions/cache with composer.lock hash",
+    "Generates code coverage with phpunit --coverage-clover",
+    "Uses pcov or xdebug as the coverage driver",
+    "Runs phpstan or psalm as a static analysis step",
+    "Uses composer install with --no-interaction and --prefer-dist",
+    "Pins PHP version explicitly",
+]
+
+[checks]
+scripts = [
+    "evals/checks/has_dependency_caching.py",
+    "evals/checks/has_code_coverage.py",
+    "evals/checks/has_ci_linting.py",
+]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

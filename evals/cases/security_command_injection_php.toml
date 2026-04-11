@@ -1,0 +1,27 @@
+[case]
+id = "security_command_injection_php_001"
+name = "PHP: command injection prevention"
+description = "Tests whether PHP code avoids exec/system with user input"
+plugins = ["secure-coding"]
+
+[prompt]
+text = """
+Write a PHP function that creates a zip archive of files in a given
+directory, using the system zip command. Accept the directory path and
+output zip filename as parameters.
+"""
+
+[rubric]
+criteria = [
+    "Uses escapeshellarg() on all user inputs — NOT raw variable in exec/system call",
+    "Validates file paths before passing to the command",
+    "Returns success/failure status",
+]
+
+[checks]
+scripts = ["evals/checks/no_command_injection.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

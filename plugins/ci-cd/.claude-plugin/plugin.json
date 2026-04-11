@@ -1,0 +1,8 @@
+{
+  "name": "ci-cd",
+  "description": "Language-neutral CI/CD pipeline best practices: dependency caching, code coverage, fast feedback, security scanning, reproducible builds",
+  "version": "0.1.0",
+  "author": {
+    "name": "BillSchumacher"
+  }
+}

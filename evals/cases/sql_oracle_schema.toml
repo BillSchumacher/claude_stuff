@@ -1,0 +1,33 @@
+[case]
+id = "sql_oracle_schema_001"
+name = "Oracle: HR system schema"
+description = "Tests Oracle-specific types: VARCHAR2, NUMBER, proper dates"
+plugins = ["skill-orchestration", "sql", "sql-oracle"]
+expected_skills = ["sql", "sql-oracle"]
+
+[prompt]
+text = """
+Design an Oracle database schema for an HR system with departments,
+employees, and salary history. Employees belong to departments and
+have a hire date and current salary.
+"""
+
+[rubric]
+criteria = [
+    "Uses VARCHAR2 (not CHAR or VARCHAR) for string columns",
+    "Uses NUMBER with explicit precision for salary (e.g., NUMBER(19,4))",
+    "Uses TIMESTAMP WITH TIME ZONE or DATE with proper format awareness",
+    "Uses GENERATED AS IDENTITY (12c+) or SEQUENCE for PKs",
+    "Includes foreign keys and NOT NULL constraints",
+]
+
+[checks]
+scripts = [
+    "evals/checks/sql_schema_quality.py",
+    "evals/checks/sql_oracle_quality.py",
+]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

@@ -1,0 +1,33 @@
+[case]
+id = "security_authorization_001"
+name = "Order details endpoint with ownership check"
+description = "Tests whether the agent enforces authorization (prevents IDOR)"
+plugins = ["secure-coding"]
+
+[prompt]
+text = """
+Write a Flask endpoint GET /orders/<order_id> that returns order details
+as JSON. Users must be logged in (assume a get_current_user() helper
+exists that returns a user dict with 'id' and 'name') and should only
+see their own orders. Orders are stored in SQLite with columns: id,
+user_id, item, quantity, total.
+"""
+
+[rubric]
+criteria = [
+    "Checks that the order belongs to the current user before returning it",
+    "Returns 403 or 404 for orders not owned by the current user",
+    "Uses parameterized queries for the SQLite lookup",
+    "Does not leak order existence via different error responses (404 for both missing and unauthorized)",
+]
+
+[checks]
+scripts = [
+    "evals/checks/has_authorization_check.py",
+    "evals/checks/no_sql_injection.py",
+]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

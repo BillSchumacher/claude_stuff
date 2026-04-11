@@ -1,0 +1,32 @@
+[case]
+id = "sql_mysql_json_001"
+name = "MySQL: JSON columns with indexed fields"
+description = "Tests MySQL JSON support with generated columns and indexes"
+plugins = ["skill-orchestration", "sql", "sql-mysql"]
+expected_skills = ["sql", "sql-mysql"]
+
+[prompt]
+text = """
+Design a MySQL table for storing user preferences as a JSON column.
+Users frequently query by their preferred language and notification
+settings. Write the schema and a query to find all users who prefer
+English.
+"""
+
+[rubric]
+criteria = [
+    "Uses JSON column type for the preferences",
+    "Creates generated (virtual or stored) columns for indexed JSON fields",
+    "Adds indexes on the generated columns",
+    "Uses ->> or JSON_UNQUOTE(JSON_EXTRACT()) for querying",
+]
+
+[checks]
+scripts = [
+    "evals/checks/sql_mysql_quality.py",
+]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

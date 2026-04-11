@@ -1,0 +1,31 @@
+[case]
+id = "pkg_apalis_jobs_001"
+name = "Apalis: order processing background jobs"
+description = "Tests job definition, retry, timeout, monitoring"
+plugins = ["skill-orchestration", "apalis"]
+expected_skills = ["apalis"]
+
+[prompt]
+text = """
+Set up Apalis background jobs for an e-commerce order processing system.
+Include jobs for payment processing, inventory update, and email notification.
+Use Redis as the storage backend.
+"""
+
+[rubric]
+criteria = [
+    "Jobs are structs with Serialize/Deserialize implementing Job trait",
+    "Job payloads contain IDs, not full data objects",
+    "Handlers are idempotent",
+    "Uses RetryPolicy layer with bounded retries",
+    "Sets TimeoutLayer on workers",
+    "Uses Monitor for multi-worker management and graceful shutdown",
+]
+
+[checks]
+scripts = []
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

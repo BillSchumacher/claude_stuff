@@ -1,0 +1,8 @@
+{
+  "name": "ci-cd-python",
+  "description": "Python CI/CD: pip/pipenv/poetry/uv caching, pytest-cov coverage, ruff linting, mypy type checking, pip-audit",
+  "version": "0.1.0",
+  "author": {
+    "name": "BillSchumacher"
+  }
+}

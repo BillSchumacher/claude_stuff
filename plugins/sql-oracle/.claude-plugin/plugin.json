@@ -1,0 +1,8 @@
+{
+  "name": "sql-oracle",
+  "description": "Oracle-specific SQL: NUMBER/VARCHAR2, MERGE, PL/SQL bulk ops, partitioning, SQL Plan Management",
+  "version": "0.1.0",
+  "author": {
+    "name": "BillSchumacher"
+  }
+}

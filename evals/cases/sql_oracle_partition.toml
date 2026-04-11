@@ -1,0 +1,33 @@
+[case]
+id = "sql_oracle_partition_001"
+name = "Oracle: partitioned transaction log"
+description = "Tests range partitioning with local indexes"
+plugins = ["skill-orchestration", "sql", "sql-oracle"]
+expected_skills = ["sql", "sql-oracle"]
+
+[prompt]
+text = """
+Design an Oracle partitioned table for storing financial transaction
+logs. Transactions have an id, account_id, amount, type, and timestamp.
+The table will hold billions of rows and queries primarily filter by
+date range.
+"""
+
+[rubric]
+criteria = [
+    "Uses RANGE partitioning on the timestamp column",
+    "Creates LOCAL indexes (not global) for partition-friendly queries",
+    "Uses monthly or quarterly partition intervals",
+    "Includes partition maintenance notes (DROP PARTITION for data retention)",
+    "Uses NUMBER with precision for the amount column",
+]
+
+[checks]
+scripts = [
+    "evals/checks/sql_oracle_quality.py",
+]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

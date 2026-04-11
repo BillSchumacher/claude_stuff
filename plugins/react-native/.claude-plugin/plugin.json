@@ -1,0 +1,8 @@
+{
+  "name": "react-native",
+  "description": "React Native best practices: FlatList, navigation, platform-specific code, performance, native modules",
+  "version": "0.1.0",
+  "author": {
+    "name": "BillSchumacher"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "sqlx",
+  "description": "SQLx best practices: compile-time queries, connection pooling, transactions, migrations, testing",
+  "version": "0.1.0",
+  "author": {
+    "name": "BillSchumacher"
+  }
+}

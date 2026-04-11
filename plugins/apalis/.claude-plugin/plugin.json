@@ -1,0 +1,8 @@
+{
+  "name": "apalis",
+  "description": "Apalis best practices: job definition, storage backends, retry strategies, scheduling, monitoring",
+  "version": "0.1.0",
+  "author": {
+    "name": "BillSchumacher"
+  }
+}

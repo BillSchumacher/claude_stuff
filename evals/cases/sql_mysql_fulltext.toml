@@ -1,0 +1,28 @@
+[case]
+id = "sql_mysql_fulltext_001"
+name = "MySQL: full-text search"
+description = "Tests FULLTEXT index usage over LIKE '%term%'"
+plugins = ["skill-orchestration", "sql", "sql-mysql"]
+expected_skills = ["sql", "sql-mysql"]
+
+[prompt]
+text = """
+Write a MySQL query for searching products by name and description with
+relevance ranking. The product table has name and description columns.
+"""
+
+[rubric]
+criteria = [
+    "Uses FULLTEXT index on name and/or description",
+    "Uses MATCH ... AGAINST syntax (not LIKE '%term%')",
+    "Uses BOOLEAN MODE or NATURAL LANGUAGE MODE",
+    "Orders results by relevance score",
+]
+
+[checks]
+scripts = []
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

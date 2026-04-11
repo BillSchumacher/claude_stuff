@@ -1,0 +1,32 @@
+[case]
+id = "pkg_rabbitmq_messaging_001"
+name = "RabbitMQ: order processing pipeline"
+description = "Tests durable queues, manual ack, DLX, prefetch_count"
+plugins = ["skill-orchestration", "rabbitmq"]
+expected_skills = ["rabbitmq"]
+
+[prompt]
+text = """
+Set up RabbitMQ producers and consumers for an order processing system
+using Python and pika. Orders go through stages: validation, payment,
+fulfillment. Failed orders should be retried or sent to a dead letter
+queue.
+"""
+
+[rubric]
+criteria = [
+    "Declares queues as durable with persistent messages (delivery_mode=2)",
+    "Uses manual acknowledgments (auto_ack=False) with explicit ack/nack",
+    "Configures dead letter exchange for failed messages",
+    "Sets prefetch_count to control consumer concurrency",
+    "Uses publisher confirms for reliable publishing",
+    "Implements reconnection logic with heartbeats",
+]
+
+[checks]
+scripts = []
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

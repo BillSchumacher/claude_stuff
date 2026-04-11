@@ -1,0 +1,33 @@
+[case]
+id = "pkg_fastapi_async_001"
+name = "FastAPI: CRUD API with database"
+description = "Tests Depends, async/sync correctness, Pydantic v2, response_model"
+plugins = ["skill-orchestration", "fastapi"]
+expected_skills = ["fastapi"]
+
+[prompt]
+text = """
+Build a FastAPI CRUD API for managing a todo list. Each todo has a title,
+description, completed status, and created_at timestamp. Use SQLAlchemy
+with an async PostgreSQL driver. Include all endpoints and the database
+session dependency.
+"""
+
+[rubric]
+criteria = [
+    "Uses Depends() for database session injection (yield dependency pattern)",
+    "Uses async def with async SQLAlchemy (not sync ORM in async endpoint)",
+    "Uses Pydantic v2 BaseModel for request/response schemas with ConfigDict(from_attributes=True)",
+    "Sets response_model on endpoint decorators for response filtering",
+    "Uses APIRouter for modular route organization",
+    "Uses lifespan context manager (not @app.on_event)",
+    "Uses HTTPException for errors with proper status codes",
+]
+
+[checks]
+scripts = []
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

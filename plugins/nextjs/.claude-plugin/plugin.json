@@ -1,0 +1,8 @@
+{
+  "name": "nextjs",
+  "description": "Next.js best practices: Server/Client Components, Server Actions, data fetching, Image optimization, metadata",
+  "version": "0.1.0",
+  "author": {
+    "name": "BillSchumacher"
+  }
+}

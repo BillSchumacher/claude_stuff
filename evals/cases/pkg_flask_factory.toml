@@ -1,0 +1,31 @@
+[case]
+id = "pkg_flask_factory_001"
+name = "Flask: app with auth and protected routes"
+description = "Tests factory pattern, blueprints, session security, no app.run() in prod"
+plugins = ["skill-orchestration", "flask"]
+expected_skills = ["flask"]
+
+[prompt]
+text = """
+Create a Flask application with user login/logout and a protected
+dashboard page. Use SQLite for the user database. Include the
+application setup, routes, and how to run it.
+"""
+
+[rubric]
+criteria = [
+    "Uses the application factory pattern (create_app function)",
+    "Uses Blueprints for route organization",
+    "Does not call app.run() as the production entry point — uses gunicorn/waitress",
+    "Sets SESSION_COOKIE_HTTPONLY, SESSION_COOKIE_SECURE, SESSION_COOKIE_SAMESITE",
+    "Loads SECRET_KEY from environment variable, not hardcoded",
+    "Uses Flask-Login or session-based auth with proper error handling",
+]
+
+[checks]
+scripts = []
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

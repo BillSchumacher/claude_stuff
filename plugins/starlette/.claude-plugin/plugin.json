@@ -1,0 +1,8 @@
+{
+  "name": "starlette",
+  "description": "Starlette best practices: middleware, lifespan events, streaming, WebSockets, background tasks",
+  "version": "0.1.0",
+  "author": {
+    "name": "BillSchumacher"
+  }
+}

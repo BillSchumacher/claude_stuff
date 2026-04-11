@@ -1,0 +1,32 @@
+[case]
+id = "sql_money_calc_001"
+name = "SQL: financial calculations"
+description = "Tests proper types for monetary values"
+plugins = ["skill-orchestration", "sql"]
+expected_skills = ["sql"]
+
+[prompt]
+text = """
+Design a SQL schema and queries for a simple accounting system. Include
+tables for accounts (with balance), transactions (with amount, from/to
+accounts), and a query to calculate the running balance for an account.
+"""
+
+[rubric]
+criteria = [
+    "Uses NUMERIC/DECIMAL (not FLOAT/DOUBLE) for all monetary columns",
+    "Specifies precision and scale (e.g., NUMERIC(19,4))",
+    "Uses a window function for running balance (SUM OVER ORDER BY)",
+    "Wraps the transfer in a transaction",
+    "Uses NOT NULL on balance and amount columns",
+]
+
+[checks]
+scripts = [
+    "evals/checks/sql_schema_quality.py",
+]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

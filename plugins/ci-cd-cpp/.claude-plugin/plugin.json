@@ -1,0 +1,8 @@
+{
+  "name": "ci-cd-cpp",
+  "description": "C/C++ CI/CD: ccache, gcov/lcov coverage, cppcheck/clang-tidy, sanitizers (ASan/UBSan)",
+  "version": "0.1.0",
+  "author": {
+    "name": "BillSchumacher"
+  }
+}

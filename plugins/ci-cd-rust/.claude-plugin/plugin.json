@@ -1,0 +1,8 @@
+{
+  "name": "ci-cd-rust",
+  "description": "Rust CI/CD: cargo/target caching, cargo-tarpaulin/llvm-cov coverage, clippy linting, cargo audit",
+  "version": "0.1.0",
+  "author": {
+    "name": "BillSchumacher"
+  }
+}

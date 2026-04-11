@@ -1,0 +1,32 @@
+[case]
+id = "pkg_zeromq_pubsub_001"
+name = "ZeroMQ: real-time data distribution"
+description = "Tests context management, HWM, Poller, LINGER, patterns"
+plugins = ["skill-orchestration", "zeromq"]
+expected_skills = ["zeromq"]
+
+[prompt]
+text = """
+Build a ZeroMQ system for distributing real-time sensor data. A publisher
+collects data from sensors and broadcasts it. Multiple subscribers filter
+for specific sensor types. Include the publisher, subscriber, and a
+monitoring proxy.
+"""
+
+[rubric]
+criteria = [
+    "Uses zmq.Context as a singleton, calls term() at shutdown",
+    "Publisher binds, subscribers connect (not reversed)",
+    "Sets HWM (high water mark) on sockets",
+    "Uses zmq.Poller for multiplexing (not busy-loop recv)",
+    "Sets LINGER on sockets before closing",
+    "Uses multipart messages for topic + payload framing",
+]
+
+[checks]
+scripts = []
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

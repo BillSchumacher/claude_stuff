@@ -1,0 +1,31 @@
+[case]
+id = "pkg_celery_task_design_001"
+name = "Celery: email and report tasks"
+description = "Tests idempotent tasks, JSON serialization, retry config, time limits"
+plugins = ["skill-orchestration", "celery"]
+expected_skills = ["celery"]
+
+[prompt]
+text = """
+Set up Celery tasks for an e-commerce app: one task to send order
+confirmation emails and another to generate monthly PDF sales reports.
+Include the Celery configuration and task definitions.
+"""
+
+[rubric]
+criteria = [
+    "Tasks are idempotent (check state before mutating, use upsert patterns)",
+    "Uses JSON serializer (task_serializer='json'), not pickle",
+    "Sets autoretry_for with retry_backoff and max_retries on the email task",
+    "Sets soft_time_limit and time_limit on the report task",
+    "Passes IDs in task arguments, not full objects",
+    "Routes tasks to separate queues (io vs cpu)",
+]
+
+[checks]
+scripts = []
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

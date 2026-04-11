@@ -1,0 +1,8 @@
+{
+  "name": "ci-cd-javascript",
+  "description": "JavaScript/TypeScript CI/CD: npm/yarn/pnpm caching, jest/vitest coverage, eslint linting, tsc type checking",
+  "version": "0.1.0",
+  "author": {
+    "name": "BillSchumacher"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "react",
+  "description": "React best practices: Server Components, hooks, custom hooks, state management, performance optimization",
+  "version": "0.1.0",
+  "author": {
+    "name": "BillSchumacher"
+  }
+}

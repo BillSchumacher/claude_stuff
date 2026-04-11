@@ -1,0 +1,31 @@
+[case]
+id = "pkg_sqlalchemy_eager_loading_001"
+name = "SQLAlchemy: multi-tenant query optimization"
+description = "Tests 2.0 style, eager loading, session lifecycle, bulk operations"
+plugins = ["skill-orchestration", "sqlalchemy"]
+expected_skills = ["sqlalchemy"]
+
+[prompt]
+text = """
+Write SQLAlchemy 2.0 models and queries for a multi-tenant project
+management app. Each tenant has multiple projects, each project has
+tasks with assignees. Write a query to list all projects for a tenant
+with their task counts and recent activity.
+"""
+
+[rubric]
+criteria = [
+    "Uses 2.0 style: select(), Session.execute()/scalars() (not legacy Query API)",
+    "Uses Mapped[] type annotations with mapped_column()",
+    "Uses selectinload or joinedload to prevent N+1 queries",
+    "Uses relationship with back_populates (not backref)",
+    "Configures connection pool (pool_size, pool_pre_ping)",
+]
+
+[checks]
+scripts = []
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

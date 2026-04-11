@@ -1,0 +1,33 @@
+[case]
+id = "cicd_gotcha_rust_incremental_001"
+name = "Rust gotcha: CARGO_INCREMENTAL=0"
+description = "Tests whether the agent disables incremental compilation in Rust CI"
+plugins = ["skill-orchestration", "ci-cd", "ci-cd-rust"]
+expected_skills = ["ci-cd", "ci-cd-rust"]
+
+[prompt]
+text = """
+Create a GitHub Actions workflow for a Rust workspace with three crates.
+Run tests, clippy, and fmt checks on pull requests.
+"""
+
+[rubric]
+criteria = [
+    "Sets CARGO_INCREMENTAL=0 for faster clean CI builds",
+    "Sets RUSTFLAGS with -C debuginfo=0 to reduce target/ size",
+    "Caches cargo registry and target/ with Swatinem/rust-cache",
+    "Runs clippy and fmt in a separate job from tests",
+    "Uses cargo test --workspace to run all crate tests",
+]
+
+[checks]
+scripts = [
+    "evals/checks/has_cargo_incremental_zero.py",
+    "evals/checks/has_dependency_caching.py",
+    "evals/checks/has_ci_linting.py",
+]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

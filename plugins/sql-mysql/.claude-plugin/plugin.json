@@ -1,0 +1,8 @@
+{
+  "name": "sql-mysql",
+  "description": "MySQL-specific SQL: InnoDB, utf8mb4, AUTO_INCREMENT, ON DUPLICATE KEY, covering indexes, ONLY_FULL_GROUP_BY",
+  "version": "0.1.0",
+  "author": {
+    "name": "BillSchumacher"
+  }
+}

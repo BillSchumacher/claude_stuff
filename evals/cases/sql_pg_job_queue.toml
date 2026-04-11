@@ -1,0 +1,32 @@
+[case]
+id = "sql_pg_job_queue_001"
+name = "PostgreSQL: job queue with SKIP LOCKED"
+description = "Tests FOR UPDATE SKIP LOCKED for concurrent job processing"
+plugins = ["skill-orchestration", "sql", "sql-postgresql"]
+expected_skills = ["sql", "sql-postgresql"]
+
+[prompt]
+text = """
+Write PostgreSQL queries for a simple job queue. Multiple workers should
+be able to claim and process jobs concurrently without conflicts. Include
+the schema and the claim/complete queries.
+"""
+
+[rubric]
+criteria = [
+    "Uses SELECT ... FOR UPDATE SKIP LOCKED for claiming jobs",
+    "Limits to one or a batch of jobs per claim (LIMIT)",
+    "Orders by created_at or priority",
+    "Uses a partial index on pending/unclaimed jobs",
+    "Updates status atomically in the same transaction",
+]
+
+[checks]
+scripts = [
+    "evals/checks/sql_postgresql_quality.py",
+]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

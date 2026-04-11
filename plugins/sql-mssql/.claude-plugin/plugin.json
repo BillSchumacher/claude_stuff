@@ -1,0 +1,8 @@
+{
+  "name": "sql-mssql",
+  "description": "MS SQL Server T-SQL: NVARCHAR, columnstore indexes, TRY/CATCH, CROSS APPLY, temporal tables, parameter sniffing",
+  "version": "0.1.0",
+  "author": {
+    "name": "BillSchumacher"
+  }
+}

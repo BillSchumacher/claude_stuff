@@ -1,0 +1,8 @@
+{
+  "name": "flask",
+  "description": "Flask best practices: application factory, blueprints, context management, extensions, production deployment",
+  "version": "0.1.0",
+  "author": {
+    "name": "BillSchumacher"
+  }
+}

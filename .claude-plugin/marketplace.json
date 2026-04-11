@@ -109,6 +109,210 @@
       "source": "./plugins/efficient-code-go",
       "description": "Go efficiency: slice growth and leaks, strings.Builder, interface boxing, escape analysis, defer cost, and sync.Pool for transient allocations",
       "version": "0.1.0"
+    },
+    {
+      "name": "ci-cd",
+      "source": "./plugins/ci-cd",
+      "description": "Language-neutral CI/CD pipeline best practices: dependency caching, code coverage, fast feedback, security scanning, reproducible builds",
+      "version": "0.1.0"
+    },
+    {
+      "name": "ci-cd-python",
+      "source": "./plugins/ci-cd-python",
+      "description": "Python CI/CD: pip/pipenv/poetry/uv caching, pytest-cov coverage, ruff linting, mypy type checking, pip-audit",
+      "version": "0.1.0"
+    },
+    {
+      "name": "ci-cd-javascript",
+      "source": "./plugins/ci-cd-javascript",
+      "description": "JavaScript/TypeScript CI/CD: npm/yarn/pnpm caching, jest/vitest coverage, eslint linting, tsc type checking",
+      "version": "0.1.0"
+    },
+    {
+      "name": "ci-cd-go",
+      "source": "./plugins/ci-cd-go",
+      "description": "Go CI/CD: module caching, go test -coverprofile, golangci-lint, govulncheck",
+      "version": "0.1.0"
+    },
+    {
+      "name": "ci-cd-rust",
+      "source": "./plugins/ci-cd-rust",
+      "description": "Rust CI/CD: cargo/target caching, cargo-tarpaulin/llvm-cov coverage, clippy linting, cargo audit",
+      "version": "0.1.0"
+    },
+    {
+      "name": "ci-cd-php",
+      "source": "./plugins/ci-cd-php",
+      "description": "PHP CI/CD: composer caching, phpunit coverage, phpstan/psalm analysis, composer audit",
+      "version": "0.1.0"
+    },
+    {
+      "name": "ci-cd-csharp",
+      "source": "./plugins/ci-cd-csharp",
+      "description": "C#/.NET CI/CD: NuGet caching, coverlet coverage, dotnet format, Roslyn analyzers",
+      "version": "0.1.0"
+    },
+    {
+      "name": "ci-cd-cpp",
+      "source": "./plugins/ci-cd-cpp",
+      "description": "C/C++ CI/CD: ccache, gcov/lcov coverage, cppcheck/clang-tidy, sanitizers (ASan/UBSan)",
+      "version": "0.1.0"
+    },
+    {
+      "name": "sql",
+      "source": "./plugins/sql",
+      "description": "Dialect-neutral SQL best practices: query performance, schema design, naming conventions, transactions, migrations, anti-patterns",
+      "version": "0.1.0"
+    },
+    {
+      "name": "sql-mysql",
+      "source": "./plugins/sql-mysql",
+      "description": "MySQL-specific SQL: InnoDB, utf8mb4, AUTO_INCREMENT, ON DUPLICATE KEY, covering indexes, ONLY_FULL_GROUP_BY",
+      "version": "0.1.0"
+    },
+    {
+      "name": "sql-postgresql",
+      "source": "./plugins/sql-postgresql",
+      "description": "PostgreSQL-specific SQL: JSONB, UPSERT, GIN/GiST/BRIN indexes, RETURNING, CTEs, advisory locks, autovacuum",
+      "version": "0.1.0"
+    },
+    {
+      "name": "sql-oracle",
+      "source": "./plugins/sql-oracle",
+      "description": "Oracle-specific SQL: NUMBER/VARCHAR2, MERGE, PL/SQL bulk ops, partitioning, SQL Plan Management",
+      "version": "0.1.0"
+    },
+    {
+      "name": "sql-mssql",
+      "source": "./plugins/sql-mssql",
+      "description": "MS SQL Server T-SQL: NVARCHAR, columnstore indexes, TRY/CATCH, CROSS APPLY, temporal tables, parameter sniffing",
+      "version": "0.1.0"
+    },
+    {
+      "name": "django",
+      "source": "./plugins/django",
+      "description": "Django best practices: ORM optimization, middleware, security, caching, migrations, async views",
+      "version": "0.1.0"
+    },
+    {
+      "name": "flask",
+      "source": "./plugins/flask",
+      "description": "Flask best practices: application factory, blueprints, context management, extensions, production deployment",
+      "version": "0.1.0"
+    },
+    {
+      "name": "starlette",
+      "source": "./plugins/starlette",
+      "description": "Starlette best practices: middleware, lifespan events, streaming, WebSockets, background tasks",
+      "version": "0.1.0"
+    },
+    {
+      "name": "fastapi",
+      "source": "./plugins/fastapi",
+      "description": "FastAPI best practices: dependency injection, Pydantic v2, async endpoints, security, testing",
+      "version": "0.1.0"
+    },
+    {
+      "name": "celery",
+      "source": "./plugins/celery",
+      "description": "Celery best practices: task design, retry strategies, serialization, monitoring, rate limiting",
+      "version": "0.1.0"
+    },
+    {
+      "name": "sqlalchemy",
+      "source": "./plugins/sqlalchemy",
+      "description": "SQLAlchemy best practices: session lifecycle, eager loading, connection pooling, 2.0 style, Alembic",
+      "version": "0.1.0"
+    },
+    {
+      "name": "axum",
+      "source": "./plugins/axum",
+      "description": "Axum best practices: extractors, error handling, tower middleware, shared state, testing",
+      "version": "0.1.0"
+    },
+    {
+      "name": "apalis",
+      "source": "./plugins/apalis",
+      "description": "Apalis best practices: job definition, storage backends, retry strategies, scheduling, monitoring",
+      "version": "0.1.0"
+    },
+    {
+      "name": "maud",
+      "source": "./plugins/maud",
+      "description": "Maud best practices: HTML templating macros, components, escaping, Axum integration",
+      "version": "0.1.0"
+    },
+    {
+      "name": "sqlx",
+      "source": "./plugins/sqlx",
+      "description": "SQLx best practices: compile-time queries, connection pooling, transactions, migrations, testing",
+      "version": "0.1.0"
+    },
+    {
+      "name": "asp-net",
+      "source": "./plugins/asp-net",
+      "description": "ASP.NET Core best practices: DI lifecycle, middleware pipeline, configuration, EF Core, health checks",
+      "version": "0.1.0"
+    },
+    {
+      "name": "redis",
+      "source": "./plugins/redis",
+      "description": "Redis best practices: connection pooling, pipelining, data structures, TTL, memory management, pub/sub",
+      "version": "0.1.0"
+    },
+    {
+      "name": "rabbitmq",
+      "source": "./plugins/rabbitmq",
+      "description": "RabbitMQ best practices: exchanges, durable queues, acknowledgments, dead letters, publisher confirms",
+      "version": "0.1.0"
+    },
+    {
+      "name": "zeromq",
+      "source": "./plugins/zeromq",
+      "description": "ZeroMQ best practices: socket patterns, context management, HWM, polling, message serialization",
+      "version": "0.1.0"
+    },
+    {
+      "name": "nextjs",
+      "source": "./plugins/nextjs",
+      "description": "Next.js best practices: Server/Client Components, Server Actions, data fetching, Image optimization, metadata",
+      "version": "0.1.0"
+    },
+    {
+      "name": "nestjs",
+      "source": "./plugins/nestjs",
+      "description": "NestJS best practices: modules, DI, pipes/guards/interceptors, DTOs, exception filters, testing",
+      "version": "0.1.0"
+    },
+    {
+      "name": "vue",
+      "source": "./plugins/vue",
+      "description": "Vue 3 best practices: Composition API, ref vs reactive, composables, Pinia, Vue Router",
+      "version": "0.1.0"
+    },
+    {
+      "name": "react",
+      "source": "./plugins/react",
+      "description": "React best practices: Server Components, hooks, custom hooks, state management, performance optimization",
+      "version": "0.1.0"
+    },
+    {
+      "name": "react-native",
+      "source": "./plugins/react-native",
+      "description": "React Native best practices: FlatList, navigation, platform-specific code, performance, native modules",
+      "version": "0.1.0"
+    },
+    {
+      "name": "mui",
+      "source": "./plugins/mui",
+      "description": "Material UI best practices: sx prop, theming, component composition, responsive design, accessibility",
+      "version": "0.1.0"
+    },
+    {
+      "name": "tailwind",
+      "source": "./plugins/tailwind",
+      "description": "Tailwind CSS best practices: utility-first, responsive design, dark mode, custom theme, component extraction",
+      "version": "0.1.0"
     }
   ]
 }

@@ -1,0 +1,8 @@
+{
+  "name": "axum",
+  "description": "Axum best practices: extractors, error handling, tower middleware, shared state, testing",
+  "version": "0.1.0",
+  "author": {
+    "name": "BillSchumacher"
+  }
+}

@@ -1,0 +1,31 @@
+[case]
+id = "pkg_maud_templates_001"
+name = "Maud: web app with HTML templates"
+description = "Tests components, layout, escaping, Axum integration"
+plugins = ["skill-orchestration", "maud"]
+expected_skills = ["maud"]
+
+[prompt]
+text = """
+Build a simple Axum web app with Maud HTML templates. Include a base
+layout, a home page with a list of articles, and an article detail page.
+Articles have a title, author, and HTML body content.
+"""
+
+[rubric]
+criteria = [
+    "Components are plain functions returning Markup",
+    "Has a base layout function taking title and content parameters",
+    "Uses PreEscaped only for trusted pre-sanitized HTML (article body), with a note about safety",
+    "Returns Markup directly from Axum handlers",
+    "Uses @for, @if control flow syntax correctly",
+    "Splits templates into small functions (not one giant html! block)",
+]
+
+[checks]
+scripts = []
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

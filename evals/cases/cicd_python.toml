@@ -1,0 +1,36 @@
+[case]
+id = "cicd_python_001"
+name = "Python: CI/CD pipeline"
+description = "Tests whether the agent creates a GitHub Actions workflow with caching, coverage, and linting for Python"
+plugins = ["skill-orchestration", "ci-cd", "ci-cd-python"]
+expected_skills = ["ci-cd", "ci-cd-python"]
+
+[prompt]
+text = """
+Create a GitHub Actions workflow for a Python library that uses pytest
+for testing. The workflow should run on pull requests to the main branch.
+The project uses pipenv for dependency management.
+"""
+
+[rubric]
+criteria = [
+    "Caches pip/pipenv dependencies using the setup action cache parameter or actions/cache",
+    "Generates code coverage with pytest-cov and outputs in a machine-readable format",
+    "Enforces a coverage threshold (e.g., --cov-fail-under)",
+    "Runs ruff or another linter as a separate step before tests",
+    "Runs mypy or pyright type checking",
+    "Uses a frozen install command (pipenv install --deploy)",
+    "Pins Python version explicitly",
+]
+
+[checks]
+scripts = [
+    "evals/checks/has_dependency_caching.py",
+    "evals/checks/has_code_coverage.py",
+    "evals/checks/has_ci_linting.py",
+]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

@@ -1,0 +1,8 @@
+{
+  "name": "nestjs",
+  "description": "NestJS best practices: modules, DI, pipes/guards/interceptors, DTOs, exception filters, testing",
+  "version": "0.1.0",
+  "author": {
+    "name": "BillSchumacher"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "ci-cd-csharp",
+  "description": "C#/.NET CI/CD: NuGet caching, coverlet coverage, dotnet format, Roslyn analyzers",
+  "version": "0.1.0",
+  "author": {
+    "name": "BillSchumacher"
+  }
+}

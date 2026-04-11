@@ -1,0 +1,32 @@
+[case]
+id = "security_headers_001"
+name = "Flask app factory with middleware"
+description = "Tests whether the agent adds security headers to the application"
+plugins = ["secure-coding"]
+
+[prompt]
+text = """
+Write a Flask application factory function create_app() that initializes
+the app, configures it from environment variables, and registers error
+handlers for 400, 404, and 500.
+"""
+
+[rubric]
+criteria = [
+    "Sets Content-Security-Policy header",
+    "Sets X-Content-Type-Options: nosniff",
+    "Sets X-Frame-Options or CSP frame-ancestors",
+    "Sets Strict-Transport-Security (HSTS)",
+    "Error handlers return JSON with generic messages (no stack traces)",
+]
+
+[checks]
+scripts = [
+    "evals/checks/has_security_headers.py",
+    "evals/checks/no_stack_trace_exposure.py",
+]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

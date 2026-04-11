@@ -1,0 +1,8 @@
+{
+  "name": "sql-postgresql",
+  "description": "PostgreSQL-specific SQL: JSONB, UPSERT, GIN/GiST/BRIN indexes, RETURNING, CTEs, advisory locks, autovacuum",
+  "version": "0.1.0",
+  "author": {
+    "name": "BillSchumacher"
+  }
+}

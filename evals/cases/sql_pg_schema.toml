@@ -1,0 +1,33 @@
+[case]
+id = "sql_pg_schema_001"
+name = "PostgreSQL: booking system schema"
+description = "Tests PG-specific types: TIMESTAMPTZ, range types, exclusion constraints"
+plugins = ["skill-orchestration", "sql", "sql-postgresql"]
+expected_skills = ["sql", "sql-postgresql"]
+
+[prompt]
+text = """
+Design a PostgreSQL schema for a room booking system. Rooms have names
+and capacities. Bookings have a room, a user, a time range, and a
+status. No two bookings for the same room should overlap.
+"""
+
+[rubric]
+criteria = [
+    "Uses TIMESTAMPTZ (not TIMESTAMP) for booking times",
+    "Uses TSTZRANGE or separate start/end columns for the time range",
+    "Uses an EXCLUDE constraint with GiST to prevent overlapping bookings",
+    "Uses TEXT or VARCHAR for names (TEXT preferred in PG)",
+    "Uses BIGINT GENERATED ALWAYS AS IDENTITY for PKs",
+]
+
+[checks]
+scripts = [
+    "evals/checks/sql_schema_quality.py",
+    "evals/checks/sql_postgresql_quality.py",
+]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

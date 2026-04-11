@@ -1,0 +1,32 @@
+[case]
+id = "pkg_asp_net_di_001"
+name = "ASP.NET Core: API with EF Core and DI"
+description = "Tests DI lifetimes, middleware order, Options pattern, health checks"
+plugins = ["skill-orchestration", "asp-net"]
+expected_skills = ["asp-net"]
+
+[prompt]
+text = """
+Build an ASP.NET Core minimal API for managing products. Use Entity
+Framework Core with PostgreSQL, configuration from environment variables,
+and health checks. Include the Program.cs setup and endpoint definitions.
+"""
+
+[rubric]
+criteria = [
+    "Uses correct DI lifetimes (Scoped for DbContext, Singleton for stateless services)",
+    "Uses Options pattern (Configure<T>, IOptions<T>) not raw IConfiguration in services",
+    "Middleware ordered correctly (ExceptionHandler, HTTPS, Routing, Auth)",
+    "Uses AddDbContextPool (not AddDbContext) for pooling",
+    "Adds health checks for database",
+    "Uses structured logging with ILogger<T> (no string interpolation in log calls)",
+    "Uses CancellationToken in async endpoints",
+]
+
+[checks]
+scripts = []
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

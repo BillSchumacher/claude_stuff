@@ -1,0 +1,31 @@
+[case]
+id = "pkg_nestjs_crud_001"
+name = "NestJS: user management API"
+description = "Tests modules, ValidationPipe, Guards, DTOs, ConfigService"
+plugins = ["skill-orchestration", "nestjs"]
+expected_skills = ["nestjs"]
+
+[prompt]
+text = """
+Build a NestJS REST API for user management with CRUD operations.
+Include authentication, input validation, and configuration from
+environment variables.
+"""
+
+[rubric]
+criteria = [
+    "Organizes into a UsersModule with controller, service, DTOs",
+    "Uses global ValidationPipe with whitelist:true and transform:true",
+    "Uses class-validator DTOs for all request bodies (CreateUserDto, UpdateUserDto)",
+    "Uses @nestjs/config ConfigService (not raw process.env)",
+    "Uses Guards for authentication",
+    "Uses exception filters or built-in HttpException for error responses",
+]
+
+[checks]
+scripts = []
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

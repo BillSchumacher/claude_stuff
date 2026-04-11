@@ -1,0 +1,32 @@
+[case]
+id = "security_csrf_001"
+name = "Email change form with CSRF protection"
+description = "Tests whether the agent adds CSRF protection to state-changing forms"
+plugins = ["secure-coding"]
+
+[prompt]
+text = """
+Write a Flask page with a form that lets logged-in users change their
+email address. Include both the GET handler (show form) and POST handler
+(process change). Assume a get_current_user() helper exists. Store
+emails in a SQLite users table.
+"""
+
+[rubric]
+criteria = [
+    "Uses flask-wtf CSRFProtect or equivalent CSRF middleware",
+    "Includes a CSRF token in the form template",
+    "Validates CSRF token on the POST handler",
+    "Uses parameterized queries for the SQLite update",
+]
+
+[checks]
+scripts = [
+    "evals/checks/has_csrf_protection.py",
+    "evals/checks/no_sql_injection.py",
+]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5
