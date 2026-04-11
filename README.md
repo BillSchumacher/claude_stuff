@@ -67,8 +67,17 @@ plugins/                          Skill plugins (loaded via --plugin-dir)
   sql/                             SQL best practices (core)
   sql-{mysql,postgresql,           Dialect-specific SQL (4 dialects)
     oracle,mssql}/
+  accessibility/                   Semantic HTML, WCAG 2.2 AA, ARIA patterns
+  htmx/                            htmx HTML-over-the-wire best practices
+  django, flask, starlette,        Package-specific best practices (21 packages)
+    fastapi, celery, sqlalchemy,
+    axum, apalis, maud, sqlx,
+    asp-net, redis, rabbitmq,
+    zeromq, nextjs, nestjs, vue,
+    react, react-native, mui,
+    tailwind/
 evals/
-  cases/                          Test case definitions (TOML) — 170 cases
+  cases/                          Test case definitions (TOML) — 176 cases
   checks/                         Custom check scripts (exit 0=pass, 1=fail)
 results/                          TSV output from evaluation runs
 src/                              Framework source code
@@ -206,19 +215,18 @@ With the orchestrator, the agent invokes `combine-skills`, which routes to **all
 
 **Takeaway:** Just making skills available isn't enough — the agent gravitates toward a single best-match skill by default. A meta-skill that explicitly instructs "invoke every relevant skill, not just one" reliably enables multi-skill composition.
 
-## Full suite results (170 cases)
+## Full suite results (179 cases)
 
 Opus 4.6 judge, Sonnet agent.
 
-**Total rubric: 922 → 1135 (+213)**
+**Total rubric: 1058 → 1311 (+253)**
 
 | Metric | Count |
 |---|---|
-| Cases | 170 |
-| Improved (rubric) | 70 |
-| Flat | 85 |
-| Degraded | 5 |
-| Failed (timeout/error) | 10 |
+| Cases | 179 |
+| Improved (rubric) | 83 |
+| Flat | 90 |
+| Degraded | 6 |
 | Failed (judge error) | 2 |
 
 ### Positive check flips (skill fixed what baseline missed)
@@ -291,7 +299,10 @@ Six cases showed degradation in the initial run. Root causes and fixes:
 | Dev workflow + orchestration | 3 | +9 | 2 (TDD, multi-skill) |
 | CI/CD | 14 | +66 | 10 (all 7 languages) |
 | SQL | 22 | +29 | 4 (pagination, MySQL schema, PG JSONB, MSSQL schema) |
-| Package-specific | 21 | +39 | 0 (rubric-only, 7 timed out) |
+| Package-specific | 21 | +54 | 0 (rubric-only) |
+| htmx | 3 | +8 | 0 |
+| Accessibility (WCAG/ARIA) | 3 | +7 | 0 |
+| HTML/CSS | 3 | +10 | 0 |
 | Python style + streaming | 2 | +5 | 0 |
 
 ### CI/CD results (14 cases across 7 languages)
@@ -320,7 +331,7 @@ Six cases showed degradation in the initial run. Root causes and fixes:
 
 ### Package-specific results (21 cases across 21 frameworks)
 
-Total rubric (14 completed): 112 → 151 (+39). 11 improved, 3 flat, 7 timed out.
+Total rubric: 166 → 220 (+54). 15 improved, 5 flat, 1 degraded.
 
 | Case | Baseline | With skill | Δ |
 |---|---|---|---|
@@ -328,22 +339,26 @@ Total rubric (14 completed): 112 → 151 (+39). 11 improved, 3 flat, 7 timed out
 | `pkg_flask_factory` | 6 | 12 | **+6** |
 | `pkg_fastapi_async` | 9 | 14 | **+5** |
 | `pkg_celery_task_design` | 8 | 12 | **+4** |
+| `pkg_axum_error_handling` | 7 | 11 | **+4** |
 | `pkg_maud_templates` | 9 | 12 | **+3** |
 | `pkg_sqlx_queries` | 7 | 10 | **+3** |
 | `pkg_starlette_websocket` | 5 | 8 | **+3** |
 | `pkg_django_n_plus_one` | 4 | 6 | **+2** |
 | `pkg_react_native_list` | 8 | 10 | **+2** |
 | `pkg_sqlalchemy_eager_loading` | 8 | 10 | **+2** |
-| `pkg_redis_caching` | 10 | 11 | **+1** |
+| `pkg_redis_caching` | 10 | 11 | +1 |
 | `pkg_nextjs_server_components` | 12 | 12 | 0 |
 | `pkg_react_performance` | 11 | 11 | 0 |
 | `pkg_vue_composables` | 12 | 12 | 0 |
+| `pkg_nestjs_crud` | 12 | 12 | 0 |
+| `pkg_mui_form` | 12 | 12 | 0 |
+| `pkg_zeromq_pubsub` | 1 | 11 | **+10** |
+| `pkg_rabbitmq_messaging` | 9 | 11 | **+2** |
+| `pkg_tailwind_landing` | 12 | 11 | -1 |
 
-**Biggest impact:** ASP.NET DI lifetimes/middleware (+8), Flask factory pattern (+6), FastAPI async/Depends (+5), Celery task design (+4). These are frameworks where the baseline produces working-but-naive code and the skill adds production patterns.
+**Biggest impact:** ZeroMQ socket patterns (+10), ASP.NET DI lifetimes (+8), Apalis job design (+7), Flask factory pattern (+6), FastAPI async/Depends (+5), Celery task design (+4). These are frameworks where the baseline produces working-but-naive code and the skill adds production patterns.
 
-**Already strong baselines (Δ=0):** Next.js Server Components, React useMemo patterns, Vue 3 Composition API. Sonnet already knows modern frontend idioms.
-
-**Previously failed (resolved):** Apalis (+7), MUI (0), RabbitMQ (+2), Tailwind (-1) — fixed by increasing timeout to 600s and piping scorer/differ prompts via stdin to avoid Windows command-line length limits. Axum, NestJS, ZeroMQ — intermittent claude CLI init errors, resolved with retry logic.
+**Already strong baselines (Δ=0):** Next.js, React, Vue 3, NestJS, MUI. Sonnet already knows modern frontend idioms.
 
 ### SQL results (22 cases across 5 dialects)
 

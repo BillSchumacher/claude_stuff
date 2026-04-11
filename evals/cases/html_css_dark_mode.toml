@@ -1,0 +1,33 @@
+[case]
+id = "html_css_dark_mode_001"
+name = "HTML/CSS: dashboard with dark mode"
+description = "Tests dark mode, logical properties, container queries, modern CSS features"
+plugins = ["skill-orchestration", "html-css"]
+expected_skills = ["html-css"]
+
+[prompt]
+text = """
+Build an HTML/CSS admin dashboard layout with a sidebar navigation,
+a main content area with stat cards, and a table. Support dark mode
+that follows system preferences. Use only vanilla HTML and CSS.
+"""
+
+[rubric]
+criteria = [
+    "Dark mode uses prefers-color-scheme media query or class-based toggle with CSS custom properties",
+    "All colors defined as custom properties on :root, overridden in dark mode",
+    "Uses Grid for the page layout (sidebar + main) and Flexbox for 1D alignment",
+    "Uses logical properties (margin-inline, padding-block) instead of physical",
+    "Includes prefers-reduced-motion media query for animations",
+    "Uses aspect-ratio for consistent card/media sizing",
+    "Low specificity selectors — single class preferred, no !important",
+]
+
+[checks]
+scripts = []
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5
+timeout_seconds = 600

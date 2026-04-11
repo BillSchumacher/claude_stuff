@@ -1,0 +1,33 @@
+[case]
+id = "html_css_responsive_page_001"
+name = "HTML/CSS: responsive product page"
+description = "Tests semantic HTML, responsive images, Grid layout, custom properties, fluid typography"
+plugins = ["skill-orchestration", "html-css"]
+expected_skills = ["html-css"]
+
+[prompt]
+text = """
+Build an HTML/CSS product listing page that works on mobile, tablet,
+and desktop. Include a header with navigation, a grid of product cards
+with images and prices, and a footer. Use only vanilla HTML and CSS.
+"""
+
+[rubric]
+criteria = [
+    "Includes DOCTYPE, charset utf-8, viewport meta tag",
+    "Uses CSS Grid with auto-fill/minmax for responsive card layout (no media queries needed)",
+    "Uses CSS custom properties (variables) for colors, spacing, and radii",
+    "Uses clamp() for fluid typography or spacing",
+    "Images have width/height attributes (CLS prevention) and loading='lazy'",
+    "Uses rem/em for typography (not px)",
+    "No unnecessary wrapper divs — uses semantic elements",
+]
+
+[checks]
+scripts = []
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5
+timeout_seconds = 600

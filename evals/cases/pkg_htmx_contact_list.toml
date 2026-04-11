@@ -1,0 +1,34 @@
+[case]
+id = "pkg_htmx_contact_list_001"
+name = "htmx: CRUD contact list"
+description = "Tests HTML fragments, hx-target, hx-swap, CSRF headers, form handling"
+plugins = ["skill-orchestration", "htmx"]
+expected_skills = ["htmx"]
+
+[prompt]
+text = """
+Build a Flask app with htmx for managing contacts. Include a contact
+list page where users can add, edit, and delete contacts inline without
+full page reloads. Each contact has a name, email, and phone number.
+"""
+
+[rubric]
+criteria = [
+    "Endpoints return HTML fragments (not full pages) for htmx requests",
+    "Detects HX-Request header to return fragment vs full page for direct navigation",
+    "Sets explicit hx-target on every htmx element (not relying on default)",
+    "Uses hx-swap='outerHTML' for edit/delete (replacing the row) and 'beforeend' for adding",
+    "Includes CSRF token via hx-headers on body or htmx:configRequest",
+    "Puts hx-post on the form element, not the submit button",
+    "Uses hx-confirm on delete actions",
+    "Uses hx-delete for delete (correct HTTP verb), not hx-post",
+]
+
+[checks]
+scripts = []
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 1.0
+timeout_seconds = 600

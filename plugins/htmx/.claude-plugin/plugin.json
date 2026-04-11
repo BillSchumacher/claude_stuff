@@ -1,0 +1,8 @@
+{
+  "name": "htmx",
+  "description": "htmx best practices: HTML fragments, hx-target/swap, CSRF headers, HX-Trigger events, progressive enhancement",
+  "version": "0.1.0",
+  "author": {
+    "name": "BillSchumacher"
+  }
+}

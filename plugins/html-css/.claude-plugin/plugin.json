@@ -1,0 +1,8 @@
+{
+  "name": "html-css",
+  "description": "HTML/CSS best practices: semantic markup, responsive images, CSS custom properties, Grid/Flexbox, fluid typography, dark mode",
+  "version": "0.1.0",
+  "author": {
+    "name": "BillSchumacher"
+  }
+}

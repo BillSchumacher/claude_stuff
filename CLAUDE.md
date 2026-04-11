@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 Two things in one repo:
 
 1. **Claude Code plugin marketplace** — `.claude-plugin/marketplace.json` lists 17 plugins under `plugins/`. Each plugin contains skills as `plugins/<plugin>/skills/<skill>/SKILL.md` with YAML frontmatter. Owner: `BillSchumacher`.
-2. **Evaluation framework** — Python 3.12 (Pipenv, stdlib only). Runs `claude -p` twice per test case (baseline vs with-skill), captures the full message stream, then scores via Opus 4.6 rubric judge, automated check scripts, and before/after diffs. Results are TSVs in `results/`. Currently 170 eval cases.
+2. **Evaluation framework** — Python 3.12 (Pipenv, stdlib only). Runs `claude -p` twice per test case (baseline vs with-skill), captures the full message stream, then scores via Opus 4.6 rubric judge, automated check scripts, and before/after diffs. Results are TSVs in `results/`. Currently 179 eval cases.
 
 ## Plugins
 
@@ -31,7 +31,7 @@ Two things in one repo:
 
 ```bash
 pipenv install --dev
-pipenv run python -m src.cli list                         # list test cases (170)
+pipenv run python -m src.cli list                         # list test cases (179)
 pipenv run python -m src.cli run                          # run all (~2-3 hours)
 pipenv run python -m src.cli run --cases "security_*"     # glob filter
 pipenv run python -m src.cli report --run-id <ID>         # view a past run
@@ -40,7 +40,7 @@ pipenv run python -m src.cli new-plugin my-plugin \       # scaffold a plugin
 pipenv run pytest tests/ -v                               # unit tests (18)
 ```
 
-Full suite is 170 cases at ~2 min each. Use `run_in_background: true` when running from Claude Code.
+Full suite is 179 cases at ~2 min each. Use `run_in_background: true` when running from Claude Code.
 
 ## Plugin marketplace layout
 

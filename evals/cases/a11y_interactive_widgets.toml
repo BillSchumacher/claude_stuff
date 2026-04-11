@@ -1,0 +1,35 @@
+[case]
+id = "a11y_interactive_widgets_001"
+name = "Accessibility: tabs and modal dialog"
+description = "Tests ARIA dialog pattern, tabs pattern, keyboard navigation, focus trap"
+plugins = ["skill-orchestration", "accessibility"]
+expected_skills = ["accessibility"]
+
+[prompt]
+text = """
+Build an HTML page with a tabbed settings panel (General, Privacy,
+Notifications tabs) and a "Delete Account" button that opens a
+confirmation modal dialog. Include the necessary JavaScript for
+interactivity.
+"""
+
+[rubric]
+criteria = [
+    "Tabs use role='tablist', role='tab', role='tabpanel' with aria-selected and aria-controls",
+    "Arrow keys navigate between tabs; Tab key moves into the panel content",
+    "Modal uses dialog element or role='dialog' with aria-modal='true' and aria-labelledby",
+    "Modal traps focus inside when open (Tab cycles within, Escape closes)",
+    "Focus returns to the trigger button when modal closes",
+    "Uses aria-expanded on any disclosure/toggle elements",
+    "Does not use ARIA roles on elements that already have the semantics (no role='button' on button)",
+    "Respects prefers-reduced-motion for any transitions/animations",
+]
+
+[checks]
+scripts = []
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 1.0
+timeout_seconds = 600

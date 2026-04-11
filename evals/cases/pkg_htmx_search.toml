@@ -1,0 +1,33 @@
+[case]
+id = "pkg_htmx_search_001"
+name = "htmx: live search with lazy loading"
+description = "Tests hx-trigger modifiers, hx-indicator, hx-push-url, lazy loading"
+plugins = ["skill-orchestration", "htmx"]
+expected_skills = ["htmx"]
+
+[prompt]
+text = """
+Build an htmx-powered product search page with a Flask backend. Include
+a search input that filters results as the user types, infinite scroll
+for loading more results, and a loading indicator. Products have a name,
+price, and category.
+"""
+
+[rubric]
+criteria = [
+    "Search input uses hx-trigger with delay modifier for debounce (e.g., 'input changed delay:300ms')",
+    "Uses hx-indicator to show a loading spinner during requests",
+    "Infinite scroll uses hx-trigger='revealed' on a sentinel element with hx-swap='beforeend' or similar",
+    "Uses hx-push-url to update the URL with search parameters for shareable links",
+    "Returns HTML fragments, not JSON",
+    "Server endpoint returns partial results for htmx requests, full page for direct navigation",
+]
+
+[checks]
+scripts = []
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5
+timeout_seconds = 600

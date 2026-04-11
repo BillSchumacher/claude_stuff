@@ -1,0 +1,33 @@
+[case]
+id = "a11y_semantic_structure_001"
+name = "Accessibility: semantic page structure"
+description = "Tests landmark elements, heading hierarchy, lists, skip nav, lang attribute"
+plugins = ["skill-orchestration", "accessibility"]
+expected_skills = ["accessibility"]
+
+[prompt]
+text = """
+Build an HTML page for a company website with a navigation bar, a hero
+section, a features list with 3 feature cards, a testimonials section,
+and a footer with contact info and social links.
+"""
+
+[rubric]
+criteria = [
+    "Uses semantic landmarks: header, nav, main, footer (not just divs)",
+    "Heading hierarchy does not skip levels (h1 -> h2 -> h3, not h1 -> h3)",
+    "Uses ul/ol for the features list and navigation links (not div stacks)",
+    "Uses button for actions and a for navigation (not div onclick)",
+    "Includes a skip navigation link as the first focusable element",
+    "Sets lang attribute on the html element",
+    "Uses figure/figcaption for any captioned images",
+]
+
+[checks]
+scripts = []
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5
+timeout_seconds = 600

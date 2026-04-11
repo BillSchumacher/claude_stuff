@@ -1,0 +1,34 @@
+[case]
+id = "html_css_modern_features_001"
+name = "HTML/CSS: blog with modern CSS"
+description = "Tests CSS nesting, :has(), container queries, oklch colors, picture element"
+plugins = ["skill-orchestration", "html-css"]
+expected_skills = ["html-css"]
+
+[prompt]
+text = """
+Build an HTML/CSS blog page with article cards that show a featured
+image, title, excerpt, author avatar, and reading time. Cards should
+adapt their layout based on their container width. Use modern CSS
+features. Include a print stylesheet.
+"""
+
+[rubric]
+criteria = [
+    "Uses CSS nesting (native) for component styles",
+    "Uses container queries (@container) so cards adapt to container width not viewport",
+    "Uses :has() selector for conditional styling (e.g., card with image vs without)",
+    "Uses oklch() or color-mix() for color definitions",
+    "Uses picture element with WebP/AVIF sources and fallback for article images",
+    "Includes @media print with hidden nav, avoid break-inside on cards",
+    "Script tags use defer or type='module' (not bare script src)",
+]
+
+[checks]
+scripts = []
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5
+timeout_seconds = 600

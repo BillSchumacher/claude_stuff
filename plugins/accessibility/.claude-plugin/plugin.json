@@ -1,0 +1,8 @@
+{
+  "name": "accessibility",
+  "description": "HTML accessibility: semantic elements, WCAG 2.2 AA compliance, ARIA patterns, keyboard navigation, color contrast",
+  "version": "0.1.0",
+  "author": {
+    "name": "BillSchumacher"
+  }
+}

@@ -313,6 +313,24 @@
       "source": "./plugins/tailwind",
       "description": "Tailwind CSS best practices: utility-first, responsive design, dark mode, custom theme, component extraction",
       "version": "0.1.0"
+    },
+    {
+      "name": "htmx",
+      "source": "./plugins/htmx",
+      "description": "htmx best practices: HTML fragments, hx-target/swap, CSRF headers, HX-Trigger events, progressive enhancement",
+      "version": "0.1.0"
+    },
+    {
+      "name": "accessibility",
+      "source": "./plugins/accessibility",
+      "description": "HTML accessibility: semantic elements, WCAG 2.2 AA compliance, ARIA patterns, keyboard navigation, color contrast",
+      "version": "0.1.0"
+    },
+    {
+      "name": "html-css",
+      "source": "./plugins/html-css",
+      "description": "HTML/CSS best practices: semantic markup, responsive images, CSS custom properties, Grid/Flexbox, fluid typography, dark mode",
+      "version": "0.1.0"
     }
   ]
 }

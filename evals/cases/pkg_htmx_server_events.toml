@@ -1,0 +1,33 @@
+[case]
+id = "pkg_htmx_server_events_001"
+name = "htmx: multi-region updates with HX-Trigger"
+description = "Tests HX-Trigger response headers, OOB swaps, status code control flow, polling"
+plugins = ["skill-orchestration", "htmx"]
+expected_skills = ["htmx"]
+
+[prompt]
+text = """
+Build an htmx-powered task management app with a Flask backend. Include
+a task list, a form to add tasks, a task count badge in the header, and
+a background job status indicator that polls for completion. When a task
+is added, the list and count should both update without refreshing.
+"""
+
+[rubric]
+criteria = [
+    "Uses HX-Trigger response header to fire events that update the task count badge",
+    "Task count badge listens with hx-trigger='tasksChanged from:body' to refresh itself",
+    "Polling for job status uses hx-trigger='every 2s' or similar interval",
+    "Server returns 286 status to stop polling when job completes",
+    "Uses 204 for fire-and-forget actions (not empty 200 which clears target)",
+    "Form adds task and both list and count update (via HX-Trigger or hx-swap-oob)",
+]
+
+[checks]
+scripts = []
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 1.0
+timeout_seconds = 600

@@ -1,0 +1,34 @@
+[case]
+id = "a11y_form_validation_001"
+name = "Accessibility: accessible form with validation"
+description = "Tests labels, fieldset/legend, error association, aria-invalid, focus management"
+plugins = ["skill-orchestration", "accessibility"]
+expected_skills = ["accessibility"]
+
+[prompt]
+text = """
+Build an HTML registration form with fields for name, email, password,
+and password confirmation. Include client-side validation that shows
+error messages when fields are invalid. Group the password fields together.
+"""
+
+[rubric]
+criteria = [
+    "Every input has a programmatically associated label (label for=id, not just placeholder)",
+    "Password fields are grouped in a fieldset with a legend",
+    "Error messages use aria-describedby to associate with their input",
+    "Invalid inputs have aria-invalid='true' set",
+    "Error messages use role='alert' for immediate announcement",
+    "Submit button is a button element (not div or a)",
+    "Focus moves to the first error field after failed submission",
+    "Visible focus indicators on all interactive elements",
+]
+
+[checks]
+scripts = []
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5
+timeout_seconds = 600
