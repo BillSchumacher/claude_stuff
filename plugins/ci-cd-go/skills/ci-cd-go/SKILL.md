@@ -1,6 +1,6 @@
 ---
 name: ci-cd-go
-description: "Go CI/CD: module caching, go test -coverprofile, golangci-lint, govulncheck"
+description: "Applies when creating or modifying CI/CD pipelines for Go projects. Covers module caching, go test -coverprofile, golangci-lint, and govulncheck."
 ---
 
 # Go CI/CD

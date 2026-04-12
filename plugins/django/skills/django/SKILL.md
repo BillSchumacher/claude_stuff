@@ -1,6 +1,6 @@
 ---
 name: django
-description: "Django best practices: ORM optimization, middleware, security, caching, migrations, async views"
+description: "Applies when building or reviewing Django applications. Covers ORM optimization, middleware, security, caching, migrations, and async views."
 ---
 
 # Django

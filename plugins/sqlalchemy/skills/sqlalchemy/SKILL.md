@@ -1,6 +1,6 @@
 ---
 name: sqlalchemy
-description: "SQLAlchemy best practices: session lifecycle, eager loading, connection pooling, 2.0 style, Alembic"
+description: "Applies when building or reviewing SQLAlchemy data layers. Covers session lifecycle, eager loading, connection pooling, 2.0 style, and Alembic migrations."
 ---
 
 # SQLAlchemy

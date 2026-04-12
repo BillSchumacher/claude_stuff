@@ -1,6 +1,6 @@
 ---
 name: asp-net
-description: "ASP.NET Core best practices: DI lifecycle, middleware pipeline, configuration, EF Core, health checks"
+description: "Applies when building or reviewing ASP.NET Core applications. Covers DI lifecycle, middleware pipeline, configuration, EF Core, and health checks."
 ---
 
 # ASP.NET Core

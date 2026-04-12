@@ -1,6 +1,6 @@
 ---
 name: axum
-description: "Axum best practices: extractors, error handling, tower middleware, shared state, testing"
+description: "Applies when building or reviewing Axum web services. Covers extractors, error handling, tower middleware, shared state, and testing."
 ---
 
 # Axum

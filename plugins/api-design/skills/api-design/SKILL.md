@@ -1,6 +1,6 @@
 ---
 name: api-design
-description: Use when designing, adding, or modifying any HTTP/REST endpoint, API resource, or web service contract. Enforces resource-oriented URLs, OpenAPI 3.1 specs, RFC 9457 problem details, pagination, idempotency, and versioning rules from Google AIP, Microsoft Azure REST Guidelines, and OpenAPI standards.
+description: Applies when designing, adding, or modifying any HTTP/REST endpoint, API resource, or web service contract. Enforces resource-oriented URLs, OpenAPI 3.1 specs, RFC 9457 problem details, pagination, idempotency, and versioning rules from Google AIP, Microsoft Azure REST Guidelines, and OpenAPI standards.
 ---
 
 # API Contract Design

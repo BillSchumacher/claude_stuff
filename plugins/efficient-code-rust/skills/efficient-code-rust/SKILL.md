@@ -1,6 +1,6 @@
 ---
 name: efficient-code-rust
-description: Use when writing or reviewing Rust code. Applies the core efficient-code principles with Rust-specific rules around Vec::with_capacity, String vs &str, iterator chains as zero-cost abstractions, Box/Rc/Arc tradeoffs, bounds-check elision, format! allocations, release-build discipline, and clippy perf lints.
+description: Applies when writing or reviewing Rust code. Extends the core efficient-code principles with Rust-specific rules around Vec::with_capacity, String vs &str, iterator chains as zero-cost abstractions, Box/Rc/Arc tradeoffs, bounds-check elision, format! allocations, release-build discipline, and clippy perf lints.
 ---
 
 # Efficient Code — Rust

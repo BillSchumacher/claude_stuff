@@ -1,0 +1,37 @@
+[case]
+id = "fixture_python_review_001"
+name = "Python app: code review"
+description = "Review a Flask app with security, efficiency, and quality issues"
+plugins = ["skill-orchestration", "secure-coding", "efficient-code", "efficient-code-python", "python-style", "observability"]
+expected_skills = ["secure-coding", "efficient-code", "python-style"]
+
+[fixtures]
+source = "evals/fixtures/python-app"
+
+[prompt]
+text = """
+Review app.py and identify all issues. Prioritize by severity.
+"""
+
+[rubric]
+criteria = [
+    "Identifies SQL injection vulnerabilities in query construction",
+    "Identifies hardcoded secrets (API key, secret key)",
+    "Identifies MD5 usage for password hashing as insecure",
+    "Identifies pickle deserialization as a remote code execution risk",
+    "Identifies path traversal in the file serving endpoint",
+    "Identifies O(n^2) duplicate detection in task_report",
+    "Identifies string concatenation in loop in task_report",
+    "Identifies missing input validation on endpoints",
+    "Identifies debug=True in production as a security issue",
+    "Identifies print() logging instead of structured logging",
+]
+
+[checks]
+scripts = ["evals/checks/has_threat_model.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 1.0
+timeout_seconds = 600

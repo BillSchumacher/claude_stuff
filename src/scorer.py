@@ -2,10 +2,10 @@
 
 import json
 import re
-from typing import Iterator
+from typing import Callable
 
-from src.config import RunResult, ScoreRow
-from src.runner import run_claude_json
+from src.config import RunResult, ScoreRow, ROOT
+from src.runner import run_claude, _ISOLATION_SETTINGS
 
 JUDGE_SYSTEM_PROMPT = (
     "You are an evaluation judge. You will be given a task prompt, "
@@ -75,20 +75,32 @@ def score_output(
     case_id: str,
     variant: str,
     *,
-    model: str = "opus",
-) -> list[ScoreRow]:
-    """Score a single output against the rubric."""
+    model: str = "sonnet",
+    on_judge_message: Callable[[str, dict], None] | None = None,
+) -> tuple[list[ScoreRow], str, list[dict], str]:
+    """Score a single output against the rubric.
+
+    on_judge_message: optional callback for live streaming of judge messages.
+    Returns (score_rows, raw_judge_response, judge_messages, command).
+    """
     prompt = build_judge_prompt(task_prompt, output, criteria)
+    judge_plugin = ROOT / "plugins" / "code-judge"
     cmd = [
-        "claude", "-p",
-        "--disable-slash-commands",
-        "--output-format", "json",
+        "claude",
+        "--verbose",
+        "--output-format", "stream-json",
         "--model", model,
+        "--plugin-dir", str(judge_plugin.resolve()),
         "--append-system-prompt", JUDGE_SYSTEM_PROMPT,
+        "--settings", _ISOLATION_SETTINGS,
+        "-p", prompt,
     ]
-    raw = run_claude_json(cmd, stdin_text=prompt)
+
+    phase = f"score:{variant}"
+    cb = (lambda msg: on_judge_message(phase, msg)) if on_judge_message else None
+    raw, messages = run_claude(cmd, on_message=cb)
     scores = parse_judge_response(raw)
-    return [
+    score_rows = [
         ScoreRow(
             case_id=case_id,
             variant=variant,
@@ -98,6 +110,7 @@ def score_output(
         )
         for s in scores
     ]
+    return score_rows, raw, messages, " ".join(cmd)
 
 
 def enrich_with_written_files(result: RunResult) -> str:
@@ -126,14 +139,41 @@ def score_pair(
     baseline: RunResult,
     criteria: list[str],
     *,
-    model: str = "opus",
-) -> Iterator[ScoreRow]:
-    """Score both variants of a case, yielding ScoreRows."""
-    yield from score_output(
+    model: str = "sonnet",
+    on_judge_message: Callable[[str, dict], None] | None = None,
+) -> dict:
+    """Score both variants of a case.
+
+    Returns dict with 'rows' (list[ScoreRow]) and 'judge_runs' (list of judge
+    execution records for saving to the DB).
+    """
+    rows = []
+    judge_runs = []
+
+    bl_rows, bl_raw, bl_msgs, bl_cmd = score_output(
         task_prompt, enrich_with_written_files(baseline), criteria,
         baseline.case_id, baseline.variant, model=model,
+        on_judge_message=on_judge_message,
     )
-    yield from score_output(
+    rows.extend(bl_rows)
+    judge_runs.append({
+        "variant": "judge:score:baseline",
+        "raw_output": bl_raw,
+        "messages": bl_msgs,
+        "command": bl_cmd,
+    })
+
+    sk_rows, sk_raw, sk_msgs, sk_cmd = score_output(
         task_prompt, enrich_with_written_files(with_skill), criteria,
         with_skill.case_id, with_skill.variant, model=model,
+        on_judge_message=on_judge_message,
     )
+    rows.extend(sk_rows)
+    judge_runs.append({
+        "variant": "judge:score:with_skill",
+        "raw_output": sk_raw,
+        "messages": sk_msgs,
+        "command": sk_cmd,
+    })
+
+    return {"rows": rows, "judge_runs": judge_runs}

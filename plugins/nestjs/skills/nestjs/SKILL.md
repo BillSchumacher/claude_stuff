@@ -1,6 +1,6 @@
 ---
 name: nestjs
-description: "NestJS best practices: modules, DI, pipes/guards/interceptors, DTOs, exception filters, testing"
+description: "Applies when building or reviewing NestJS applications. Covers modules, DI, pipes/guards/interceptors, DTOs, exception filters, and testing."
 ---
 
 # NestJS

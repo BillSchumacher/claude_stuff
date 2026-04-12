@@ -1,6 +1,6 @@
 ---
 name: react-native
-description: "React Native best practices: FlatList, navigation, platform-specific code, performance, native modules"
+description: "Applies when building or reviewing React Native mobile applications. Covers FlatList, navigation, platform-specific code, performance, and native modules."
 ---
 
 # React Native

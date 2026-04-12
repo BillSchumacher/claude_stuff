@@ -1,0 +1,34 @@
+[case]
+id = "fixture_python_security_001"
+name = "Python app: fix security vulnerabilities"
+description = "Fix all security vulnerabilities in a Flask app"
+plugins = ["skill-orchestration", "secure-coding"]
+expected_skills = ["secure-coding"]
+
+[fixtures]
+source = "evals/fixtures/python-app"
+
+[prompt]
+text = """
+Fix all security vulnerabilities in app.py. Make the changes directly to the file.
+"""
+
+[rubric]
+criteria = [
+    "Replaces string-concatenated SQL with parameterized queries",
+    "Removes or externalizes hardcoded secrets",
+    "Replaces MD5 password hashing with bcrypt, argon2, or scrypt",
+    "Removes or secures the pickle deserialization endpoint",
+    "Fixes path traversal in file serving endpoint",
+    "Adds input validation on user-facing endpoints",
+    "Disables debug mode or guards it with environment variable",
+]
+
+[checks]
+scripts = ["evals/checks/has_threat_model.py", "evals/checks/threat_model_before_code.py", "evals/checks/no_sql_injection.py", "evals/checks/no_hardcoded_secrets.py", "evals/checks/no_weak_crypto.py", "evals/checks/no_path_traversal.py", "evals/checks/no_unsafe_deserialization.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 1.0
+timeout_seconds = 600

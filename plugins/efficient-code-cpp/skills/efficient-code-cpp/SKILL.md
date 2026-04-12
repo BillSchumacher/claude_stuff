@@ -1,6 +1,6 @@
 ---
 name: efficient-code-cpp
-description: Use when writing or reviewing C++ code. Applies the core efficient-code principles with C++-specific STL container choices, copy/move semantics, reserve discipline, virtual dispatch cost, string_view, RVO, lambda capture gotchas, and compiler optimization flags.
+description: Applies when writing or reviewing C++ code. Extends the core efficient-code principles with C++-specific STL container choices, copy/move semantics, reserve discipline, virtual dispatch cost, string_view, RVO, lambda capture gotchas, and compiler optimization flags.
 ---
 
 # Efficient Code — C++

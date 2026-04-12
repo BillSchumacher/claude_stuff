@@ -1,6 +1,6 @@
 ---
 name: sql-mysql
-description: "MySQL-specific SQL: InnoDB, utf8mb4, AUTO_INCREMENT, ON DUPLICATE KEY, covering indexes, ONLY_FULL_GROUP_BY"
+description: "Applies when writing or reviewing MySQL queries and schemas. Covers InnoDB, utf8mb4, AUTO_INCREMENT, ON DUPLICATE KEY, covering indexes, and ONLY_FULL_GROUP_BY."
 ---
 
 # MySQL

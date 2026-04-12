@@ -1,6 +1,6 @@
 ---
 name: sql
-description: Dialect-neutral SQL best practices: query performance, schema design, naming conventions, transactions, migrations, anti-patterns
+description: Applies when writing or reviewing SQL in any dialect. Covers query performance, schema design, naming conventions, transactions, migrations, and anti-patterns.
 ---
 
 # SQL Best Practices

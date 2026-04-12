@@ -1,6 +1,6 @@
 ---
 name: html-css
-description: "HTML/CSS best practices: semantic markup, responsive images, CSS custom properties, Grid/Flexbox, fluid typography, dark mode"
+description: "Applies when writing or reviewing HTML and CSS. Covers semantic markup, responsive images, CSS custom properties, Grid/Flexbox, fluid typography, and dark mode."
 ---
 
 # HTML / CSS

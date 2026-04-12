@@ -1,6 +1,6 @@
 ---
 name: efficient-code-typescript
-description: Use when writing or reviewing TypeScript code. Applies the core efficient-code principles with TypeScript-specific rules around type erasure, const enum vs enum emit cost, decorator overhead, tsc target impact, and the JS runtime gotchas that all TS code inherits.
+description: Applies when writing or reviewing TypeScript code. Extends the core efficient-code principles with TypeScript-specific rules around type erasure, const enum vs enum emit cost, decorator overhead, tsc target impact, and the JS runtime gotchas that all TS code inherits.
 ---
 
 # Efficient Code — TypeScript

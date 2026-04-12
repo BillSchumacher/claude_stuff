@@ -1,6 +1,6 @@
 ---
 name: efficient-code-c
-description: Use when writing or reviewing C code. Applies the core efficient-code principles with C-specific stdlib helpers (memcpy/memmove/bsearch/qsort), pass-by-value copies, strict aliasing, VLA/alloca danger, restrict, signed overflow UB, and LTO/perf flag discipline.
+description: Applies when writing or reviewing C code. Extends the core efficient-code principles with C-specific stdlib helpers (memcpy/memmove/bsearch/qsort), pass-by-value copies, strict aliasing, VLA/alloca danger, restrict, signed overflow UB, and LTO/perf flag discipline.
 ---
 
 # Efficient Code — C

@@ -1,0 +1,29 @@
+[case]
+id = "cicd_frozen_lockfile_001"
+name = "CI/CD: reproducible dependency installation"
+description = "Tests whether CI pipeline uses frozen/locked dependency installs"
+plugins = ["skill-orchestration", "ci-cd"]
+expected_skills = ["ci-cd"]
+
+[prompt]
+text = """
+Create a GitHub Actions CI workflow for a Node.js project that runs
+tests, linting, and builds on pull requests. The project uses npm
+and has a package-lock.json.
+"""
+
+[rubric]
+criteria = [
+    "Uses npm ci instead of npm install for deterministic builds",
+    "Caches dependencies for faster builds",
+    "Runs linting before tests for fast feedback",
+    "Includes a build step to verify compilation",
+]
+
+[checks]
+scripts = ["evals/checks/has_frozen_lockfile.py", "evals/checks/has_dependency_caching.py", "evals/checks/has_ci_linting.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

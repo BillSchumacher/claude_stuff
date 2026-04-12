@@ -1,0 +1,34 @@
+[case]
+id = "fixture_python_feature_001"
+name = "Python app: add pagination"
+description = "Add pagination to list endpoint in a Flask app"
+plugins = ["skill-orchestration", "api-design", "secure-coding"]
+expected_skills = ["api-design"]
+
+[fixtures]
+source = "evals/fixtures/python-app"
+
+[prompt]
+text = """
+Add cursor-based or offset/limit pagination to the GET /tasks endpoint
+in app.py. The response should include the total count and a way to
+fetch the next page. Make the changes directly to the file.
+"""
+
+[rubric]
+criteria = [
+    "Adds pagination parameters (limit, offset or cursor) to the tasks endpoint",
+    "Response includes total count or next page indicator",
+    "SQL query uses LIMIT and OFFSET (or keyset pagination)",
+    "Does not break existing functionality",
+    "Uses parameterized queries for the pagination values",
+]
+
+[checks]
+scripts = ["evals/checks/has_threat_model.py", "evals/checks/has_pagination.py", "evals/checks/no_sql_injection.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 1.0
+timeout_seconds = 600

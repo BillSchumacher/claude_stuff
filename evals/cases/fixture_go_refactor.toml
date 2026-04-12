@@ -1,0 +1,33 @@
+[case]
+id = "fixture_go_refactor_001"
+name = "Go app: review and correct code quality"
+description = "Review a Go HTTP server for code quality issues, then fix them"
+plugins = ["skill-orchestration", "secure-coding", "efficient-code", "efficient-code-go"]
+expected_skills = ["efficient-code", "efficient-code-go"]
+
+[fixtures]
+source = "evals/fixtures/go-app"
+
+[prompt]
+text = """
+Review main.go for code quality issues — duplicated logic, inefficient
+patterns, poor structure. Then edit the file to fix the problems you find.
+"""
+
+[rubric]
+criteria = [
+    "Extracts duplicated rows-to-map scanning into a reusable helper",
+    "Replaces repeated SQL string concatenation with parameterized queries",
+    "Replaces string concatenation in loop with strings.Builder",
+    "Replaces nested loop category dedup with a map-based approach",
+    "Consolidates error handling patterns across handlers",
+]
+
+[checks]
+scripts = ["evals/checks/has_threat_model.py", "evals/checks/has_complexity_analysis.py", "evals/checks/no_string_concat_loop_go.py", "evals/checks/no_sorted_for_minmax.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 1.0
+timeout_seconds = 600

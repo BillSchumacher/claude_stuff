@@ -1,6 +1,6 @@
 ---
 name: efficient-code-python
-description: Use when writing or reviewing Python code. Applies the core efficient-code principles with CPython-specific stdlib helpers, idioms, and parser/interpreter gotchas (attribute lookup costs, LOAD_FAST vs LOAD_GLOBAL, immutable-string copy, generator vs list, GIL-bound CPU loops).
+description: Applies when writing or reviewing Python code. Extends the core efficient-code principles with CPython-specific stdlib helpers, idioms, and parser/interpreter gotchas (attribute lookup costs, LOAD_FAST vs LOAD_GLOBAL, immutable-string copy, generator vs list, GIL-bound CPU loops).
 ---
 
 # Efficient Code — Python

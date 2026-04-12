@@ -1,0 +1,30 @@
+[case]
+id = "sdlc_observability_logging_001"
+name = "Observability: structured logging over print"
+description = "Tests whether the agent uses structured logging instead of print() in production services"
+plugins = ["skill-orchestration", "observability"]
+expected_skills = ["observability"]
+
+[prompt]
+text = """
+Write a Python web service that processes webhook events. It should
+receive POST requests with JSON payloads, validate them, process
+the event, and return appropriate responses. Include logging for
+debugging and monitoring.
+"""
+
+[rubric]
+criteria = [
+    "Uses a structured logging library (logging, structlog) instead of print()",
+    "Includes trace/request correlation in log messages",
+    "Logs at appropriate levels (INFO for normal flow, ERROR for failures)",
+    "Does not log sensitive data (tokens, passwords, full request bodies)",
+]
+
+[checks]
+scripts = ["evals/checks/no_print_logging.py", "evals/checks/no_secret_logging.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

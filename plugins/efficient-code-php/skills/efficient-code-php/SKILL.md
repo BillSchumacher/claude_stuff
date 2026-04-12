@@ -1,6 +1,6 @@
 ---
 name: efficient-code-php
-description: Use when writing or reviewing PHP code (PHP 7.4+ / 8+). Applies the core efficient-code principles with PHP-specific rules around array copy-on-write, foreach-by-reference pitfalls, OPCache and preloading, interned strings, typed/readonly properties, generators, and the scope of the PHP 8 JIT.
+description: Applies when writing or reviewing PHP code (PHP 7.4+ / 8+). Extends the core efficient-code principles with PHP-specific rules around array copy-on-write, foreach-by-reference pitfalls, OPCache and preloading, interned strings, typed/readonly properties, generators, and the scope of the PHP 8 JIT.
 ---
 
 # Efficient Code — PHP
@@ -14,6 +14,8 @@ This skill assumes you also have the core `efficient-code` skill active.
 - **`SplObjectStorage`** — object-keyed map without coercing keys to strings.
 - **`SplPriorityQueue`, `SplStack`, `SplQueue`** — O(log n) / O(1) operations backed by heap/list.
 - **`Generator`** (via `yield`) — streaming iteration without materializing a full array; use for large sequences.
+- **`array_count_values`** — single native C call to tally array values; always faster than a manual `foreach` counter loop.
+- **`array_unique`, `array_column`, `array_combine`, `array_flip`** — native C-level operations; prefer over equivalent PHP loops.
 - **`array_map`, `array_filter`, `array_reduce`** — functional helpers. They call the callback per element and a plain `foreach` often beats them on hot paths.
 - **`implode('', $parts)`** — O(n) string join; use over `.=` in a loop when the number of parts is large.
 - **`str_contains` / `str_starts_with` / `str_ends_with`** (PHP 8+) — prefer over `strpos(...) !== false` for readability and a slight speedup.

@@ -1,0 +1,31 @@
+[case]
+id = "sdlc_api_errors_001"
+name = "API Design: standard error responses"
+description = "Tests whether API uses RFC 9457 problem+json or consistent error format"
+plugins = ["skill-orchestration", "api-design"]
+expected_skills = ["api-design"]
+
+[prompt]
+text = """
+Build a REST API for a task management system with endpoints to create,
+read, update, and delete tasks. Tasks belong to projects. Include proper
+error handling for cases like: task not found, invalid input, unauthorized
+access, and duplicate task names within a project.
+"""
+
+[rubric]
+criteria = [
+    "Uses a consistent error response format across all error cases",
+    "Error responses include type/title/status/detail fields (RFC 9457) or equivalent structured format",
+    "Returns appropriate HTTP status codes (400, 401, 403, 404, 409)",
+    "Does not expose internal implementation details in error messages",
+]
+
+[checks]
+scripts = ["evals/checks/has_error_format.py", "evals/checks/no_stack_trace_exposure.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 1.0
+timeout_seconds = 600

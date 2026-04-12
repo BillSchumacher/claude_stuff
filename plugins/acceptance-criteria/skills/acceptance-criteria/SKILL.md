@@ -1,6 +1,6 @@
 ---
 name: acceptance-criteria
-description: Use at the start of any non-trivial feature, bug fix, or change request — before writing tests or implementation. Forces explicit requirements specification, Given/When/Then acceptance criteria, numeric non-functional requirements, edge-case enumeration, and assumption disclosure following ISO/IEC/IEEE 29148 and BDD practices.
+description: Activates at the start of any non-trivial feature, bug fix, or change request — before writing tests or implementation. Enforces explicit requirements specification, Given/When/Then acceptance criteria, numeric non-functional requirements, edge-case enumeration, and assumption disclosure following ISO/IEC/IEEE 29148 and BDD practices.
 ---
 
 # Requirements & Acceptance Criteria

@@ -1,0 +1,27 @@
+[case]
+id = "security_rate_limiting_001"
+name = "Security: rate limiting on auth endpoints"
+description = "Tests whether the agent includes rate limiting on security-sensitive endpoints"
+plugins = ["secure-coding"]
+
+[prompt]
+text = """
+Write a REST API in Python with endpoints for user login, password reset
+request, and password reset confirmation. Use Flask or FastAPI.
+"""
+
+[rubric]
+criteria = [
+    "Includes rate limiting on login endpoint to prevent brute force",
+    "Includes rate limiting on password reset to prevent abuse",
+    "Uses a proper rate limiting library or middleware, not a hand-rolled solution",
+    "Password hashing uses a memory-hard KDF (bcrypt, argon2, scrypt)",
+]
+
+[checks]
+scripts = ["evals/checks/has_rate_limiting.py", "evals/checks/no_weak_crypto.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

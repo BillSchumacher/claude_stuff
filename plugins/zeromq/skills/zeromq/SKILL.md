@@ -1,6 +1,6 @@
 ---
 name: zeromq
-description: "ZeroMQ best practices: socket patterns, context management, HWM, polling, message serialization"
+description: "Applies when building or reviewing ZeroMQ messaging systems. Covers socket patterns, context management, HWM, polling, and message serialization."
 ---
 
 # ZeroMQ

@@ -1,6 +1,6 @@
 ---
 name: sql-mssql
-description: "MS SQL Server T-SQL: NVARCHAR, columnstore indexes, TRY/CATCH, CROSS APPLY, temporal tables, parameter sniffing"
+description: "Applies when writing or reviewing MS SQL Server T-SQL. Covers NVARCHAR, columnstore indexes, TRY/CATCH, CROSS APPLY, temporal tables, and parameter sniffing."
 ---
 
 # MS SQL Server (T-SQL)

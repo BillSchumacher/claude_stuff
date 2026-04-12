@@ -1,6 +1,6 @@
 ---
 name: secure-coding
-description: Use when designing or implementing any feature, fix, or refactor that touches user input, authentication, authorization, secrets, cryptography, file/network I/O, deserialization, dependencies, error handling, or logging. Enforces actionable rules from OWASP Top 10:2025, ASVS 5.0, OWASP Proactive Controls 2024, NIST SSDF (SP 800-218 / 800-218A), and NIST CSF 2.0.
+description: Always applies for any task involving code, design, or business decisions.
 ---
 
 # Secure Coding
@@ -56,7 +56,61 @@ Treat each rule as a hard constraint, not a suggestion. If a rule conflicts with
   - Set security headers: `Content-Security-Policy`, `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `Referrer-Policy: no-referrer-when-downgrade`, `Strict-Transport-Security`.
   - Change or remove default credentials and accounts.
   - *(Top 10 A02/A05, Proactive C5, SSDF PW.9)*
-- **Threat-model before implementing security-sensitive features**: auth, payments, file upload, IPC, deserialization, crypto, multi-tenant data access. *(Top 10 A04 Insecure Design, Proactive C4, SSDF PW.1)*
+- **Threat-model while designing, reviewing, and before implementing or fixing features**: *(Top 10 A04 Insecure Design, Proactive C4, SSDF PW.1)*
+
+## Threat model
+
+Before writing or modifying code, produce a threat model. Scale the depth to the task.
+
+### Quick threat model (default)
+
+Use for single endpoints, bug fixes, small features, refactors, and reviews. Output before any code changes:
+
+```
+## Threat Model
+
+**Assets:** What is being protected (user data, credentials, files, etc.)
+**Trust boundaries:** Where untrusted input enters the system
+**Threats:**
+- [Threat] — [Impact] — [Mitigation]
+- [Threat] — [Impact] — [Mitigation]
+**Assumptions:** Security assumptions the implementation relies on
+```
+
+### Full STRIDE analysis
+
+Use when the task involves any of: *(Microsoft SDL, OWASP Threat Modeling Cheat Sheet, NIST SP 800-154)*
+- New authentication or authorization systems
+- Payment processing, financial transactions, or PCI-scoped data
+- Multi-tenant architecture or data isolation boundaries
+- File upload/download with user-controlled content
+- API gateways, proxies, or services that broker trust between systems
+- Infrastructure changes (network boundaries, secrets management, IAM policies)
+- Deserialization of untrusted data or plugin/extension systems
+
+Output the full analysis before any code changes:
+
+```
+## Threat Model — STRIDE Analysis
+
+**System:** One-line description of what is being built or changed
+**Data flow:** [Entry point] → [Processing] → [Storage/Output]
+
+| Category | Threat | Component | Impact | Likelihood | Mitigation |
+|----------|--------|-----------|--------|------------|------------|
+| **S**poofing | [Identity spoofing vector] | [Where] | [H/M/L] | [H/M/L] | [Control] |
+| **T**ampering | [Data modification vector] | [Where] | [H/M/L] | [H/M/L] | [Control] |
+| **R**epudiation | [Deniability vector] | [Where] | [H/M/L] | [H/M/L] | [Control] |
+| **I**nfo Disclosure | [Data leak vector] | [Where] | [H/M/L] | [H/M/L] | [Control] |
+| **D**enial of Service | [Availability vector] | [Where] | [H/M/L] | [H/M/L] | [Control] |
+| **E**levation of Priv | [Privilege escalation vector] | [Where] | [H/M/L] | [H/M/L] | [Control] |
+
+**Trust boundaries:** Where untrusted input crosses into trusted zones
+**Assets at risk:** Ranked by sensitivity
+**Residual risks:** Threats accepted or deferred, with justification
+```
+
+Skip STRIDE categories that genuinely don't apply — an empty row is noise. Focus on threats with High impact or High likelihood first.
 
 ## Error handling & logging
 

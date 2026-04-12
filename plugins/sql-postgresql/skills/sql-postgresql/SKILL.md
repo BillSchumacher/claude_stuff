@@ -1,6 +1,6 @@
 ---
 name: sql-postgresql
-description: "PostgreSQL-specific SQL: JSONB, UPSERT, GIN/GiST/BRIN indexes, RETURNING, CTEs, advisory locks, autovacuum"
+description: "Applies when writing or reviewing PostgreSQL queries and schemas. Covers JSONB, UPSERT, GIN/GiST/BRIN indexes, RETURNING, CTEs, advisory locks, and autovacuum."
 ---
 
 # PostgreSQL

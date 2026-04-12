@@ -1,6 +1,6 @@
 ---
 name: apalis
-description: "Apalis best practices: job definition, storage backends, retry strategies, scheduling, monitoring"
+description: "Applies when building or reviewing Apalis job processing systems. Covers job definition, storage backends, retry strategies, scheduling, and monitoring."
 ---
 
 # Apalis

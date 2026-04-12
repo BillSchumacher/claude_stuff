@@ -1,0 +1,34 @@
+[case]
+id = "fixture_js_security_001"
+name = "JavaScript app: fix security vulnerabilities"
+description = "Fix all security vulnerabilities in an Express app"
+plugins = ["skill-orchestration", "secure-coding"]
+expected_skills = ["secure-coding"]
+
+[fixtures]
+source = "evals/fixtures/javascript-app"
+
+[prompt]
+text = """
+Fix all security vulnerabilities in app.js. Make the changes directly to the file.
+"""
+
+[rubric]
+criteria = [
+    "Replaces string-concatenated SQL with parameterized queries",
+    "Removes or externalizes hardcoded secrets",
+    "Replaces MD5/SHA-256 password hashing with bcrypt, argon2, or scrypt",
+    "Fixes command injection in backup endpoint (uses execFile or spawn, not exec with string)",
+    "Fixes path traversal in file serving",
+    "Adds authentication check to admin endpoint",
+    "Removes stack trace exposure from error responses",
+]
+
+[checks]
+scripts = ["evals/checks/has_threat_model.py", "evals/checks/no_sql_injection.py", "evals/checks/no_hardcoded_secrets.py", "evals/checks/no_weak_crypto.py", "evals/checks/no_command_injection.py", "evals/checks/no_path_traversal.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 1.0
+timeout_seconds = 600

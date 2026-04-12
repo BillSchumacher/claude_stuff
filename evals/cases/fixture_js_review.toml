@@ -1,0 +1,37 @@
+[case]
+id = "fixture_js_review_001"
+name = "JavaScript app: code review"
+description = "Review an Express app with security, efficiency, and quality issues"
+plugins = ["skill-orchestration", "secure-coding", "efficient-code", "efficient-code-javascript"]
+expected_skills = ["secure-coding", "efficient-code", "efficient-code-javascript"]
+
+[fixtures]
+source = "evals/fixtures/javascript-app"
+
+[prompt]
+text = """
+Review app.js and identify all issues. Prioritize by severity.
+"""
+
+[rubric]
+criteria = [
+    "Identifies SQL injection in query construction",
+    "Identifies hardcoded secrets (API_SECRET, JWT_SECRET, DB password)",
+    "Identifies MD5 for auth tokens and SHA-256 for passwords as insecure",
+    "Identifies command injection in the backup endpoint",
+    "Identifies path traversal in file serving",
+    "Identifies Array.shift() in loop as O(n^2)",
+    "Identifies nested loop deduplication as O(n^2)",
+    "Identifies missing authentication on admin endpoint",
+    "Identifies stack trace exposure in error responses",
+    "Identifies no IDOR protection on orders endpoint",
+]
+
+[checks]
+scripts = ["evals/checks/has_threat_model.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 1.0
+timeout_seconds = 600

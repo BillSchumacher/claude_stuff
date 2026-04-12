@@ -1,6 +1,6 @@
 ---
 name: ci-cd-python
-description: "Python CI/CD: pip/pipenv/poetry/uv caching, pytest-cov coverage, ruff linting, mypy type checking, pip-audit"
+description: "Applies when creating or modifying CI/CD pipelines for Python projects. Covers pip/pipenv/poetry/uv caching, pytest-cov coverage, ruff linting, mypy type checking, and pip-audit."
 ---
 
 # Python CI/CD

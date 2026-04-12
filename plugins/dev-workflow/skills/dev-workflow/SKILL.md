@@ -1,6 +1,6 @@
 ---
 name: dev-workflow
-description: Use when implementing any feature, bugfix, or refactor that involves writing code. Enforces TDD with Gherkin scenarios (Given/When/Then), code quality verification, and disciplined git workflow.
+description: Applies when implementing any feature, bugfix, or refactor that involves writing code. Enforces TDD with Gherkin scenarios (Given/When/Then), code quality verification, and disciplined git workflow.
 ---
 
 ## Planning & Execution

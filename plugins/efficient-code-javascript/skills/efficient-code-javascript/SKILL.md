@@ -1,6 +1,6 @@
 ---
 name: efficient-code-javascript
-description: Use when writing or reviewing JavaScript (Node.js or browser) code. Applies the core efficient-code principles with JS-specific primitives (Map/Set over arrays, TypedArrays), V8 hidden classes, monomorphic call sites, holey arrays, array method costs, closure capture, and for-loop vs forEach gotchas.
+description: Applies when writing or reviewing JavaScript (Node.js or browser) code. Extends the core efficient-code principles with JS-specific primitives (Map/Set over arrays, TypedArrays), V8 hidden classes, monomorphic call sites, holey arrays, array method costs, closure capture, and for-loop vs forEach gotchas.
 ---
 
 # Efficient Code — JavaScript

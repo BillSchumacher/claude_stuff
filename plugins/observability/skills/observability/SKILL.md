@@ -1,6 +1,6 @@
 ---
 name: observability
-description: Use when implementing any service, handler, background worker, or I/O boundary that will run in production. Enforces OpenTelemetry instrumentation (spans, attributes, exception recording), structured stdout logging with trace correlation, and SLI/SLO discipline from OpenTelemetry semantic conventions, Google SRE Workbook, and 12-Factor App.
+description: Applies when implementing any service, handler, background worker, or I/O boundary that will run in production. Enforces OpenTelemetry instrumentation (spans, attributes, exception recording), structured stdout logging with trace correlation, and SLI/SLO discipline from OpenTelemetry semantic conventions, Google SRE Workbook, and 12-Factor App.
 ---
 
 # Observability & Instrumentation

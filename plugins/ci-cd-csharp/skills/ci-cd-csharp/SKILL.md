@@ -1,6 +1,6 @@
 ---
 name: ci-cd-csharp
-description: "C#/.NET CI/CD: NuGet caching, coverlet coverage, dotnet format, Roslyn analyzers"
+description: "Applies when creating or modifying CI/CD pipelines for C#/.NET projects. Covers NuGet caching, coverlet coverage, dotnet format, and Roslyn analyzers."
 ---
 
 # C# / .NET CI/CD

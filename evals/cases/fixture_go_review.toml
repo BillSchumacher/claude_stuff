@@ -1,0 +1,37 @@
+[case]
+id = "fixture_go_review_001"
+name = "Go app: code review"
+description = "Review a Go HTTP server with security, efficiency, and quality issues"
+plugins = ["skill-orchestration", "secure-coding", "efficient-code", "efficient-code-go"]
+expected_skills = ["secure-coding", "efficient-code", "efficient-code-go"]
+
+[fixtures]
+source = "evals/fixtures/go-app"
+
+[prompt]
+text = """
+Review main.go and identify all issues. Prioritize by severity.
+"""
+
+[rubric]
+criteria = [
+    "Identifies SQL injection in query construction",
+    "Identifies hardcoded secrets (API key, DB password)",
+    "Identifies MD5 for password hashing as insecure",
+    "Identifies command injection in backup handler (sh -c with user input)",
+    "Identifies path traversal in file handler",
+    "Identifies string concatenation in loop (report builder)",
+    "Identifies sort.Slice just to find minimum price",
+    "Identifies nested loop for category deduplication",
+    "Identifies missing authentication on admin endpoint",
+    "Identifies unchecked errors (ignored error returns)",
+]
+
+[checks]
+scripts = ["evals/checks/has_threat_model.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 1.0
+timeout_seconds = 600

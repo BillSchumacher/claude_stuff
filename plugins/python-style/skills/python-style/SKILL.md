@@ -1,6 +1,6 @@
 ---
 name: python-style
-description: Use when writing or modifying Python code. Enforces PEP 8 conventions, type annotations, Google-style docstrings, functional patterns over classes, and memory-efficient streaming approaches.
+description: Applies when writing or modifying Python code. Enforces PEP 8 conventions, type annotations, Google-style docstrings, functional patterns over classes, and memory-efficient streaming approaches.
 ---
 
 When writing Python code:

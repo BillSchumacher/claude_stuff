@@ -42,6 +42,7 @@ class RunResult(NamedTuple):
     model: str
     timestamp: str
     messages: list[dict]  # full stream-json messages for workflow analysis
+    command: str = ""  # the claude command used to run this variant
 
 
 class ScoreRow(TypedDict):

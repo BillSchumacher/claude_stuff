@@ -1,6 +1,6 @@
 ---
 name: ci-cd-cpp
-description: "C/C++ CI/CD: ccache, gcov/lcov coverage, cppcheck/clang-tidy, sanitizers (ASan/UBSan)"
+description: "Applies when creating or modifying CI/CD pipelines for C/C++ projects. Covers ccache, gcov/lcov coverage, cppcheck/clang-tidy, and sanitizers (ASan/UBSan)."
 ---
 
 # C / C++ CI/CD

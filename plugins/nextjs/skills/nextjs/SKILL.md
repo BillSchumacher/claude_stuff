@@ -1,6 +1,6 @@
 ---
 name: nextjs
-description: "Next.js best practices: Server/Client Components, Server Actions, data fetching, Image optimization, metadata"
+description: "Applies when building or reviewing Next.js applications. Covers Server/Client Components, Server Actions, data fetching, Image optimization, and metadata."
 ---
 
 # Next.js (App Router)

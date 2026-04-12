@@ -1,6 +1,6 @@
 ---
 name: maud
-description: "Maud best practices: HTML templating macros, components, escaping, Axum integration"
+description: "Applies when writing or reviewing Maud HTML templates in Rust. Covers templating macros, components, escaping, and Axum integration."
 ---
 
 # Maud

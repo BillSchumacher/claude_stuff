@@ -1,0 +1,30 @@
+[case]
+id = "sdlc_observability_health_001"
+name = "Observability: health check endpoints"
+description = "Tests whether production services include health check endpoints"
+plugins = ["skill-orchestration", "observability"]
+expected_skills = ["observability"]
+
+[prompt]
+text = """
+Write a Python microservice that connects to a PostgreSQL database and
+a Redis cache. It should expose a REST API for managing user sessions.
+Include endpoints that Kubernetes can use to determine if the service
+is running and ready to accept traffic.
+"""
+
+[rubric]
+criteria = [
+    "Includes a liveness endpoint (/healthz or /health) that returns 200 when the process is alive",
+    "Includes a readiness endpoint (/readyz or /ready) that checks database and cache connectivity",
+    "Health checks are lightweight and do not perform expensive operations",
+    "Readiness check returns non-200 when dependencies are unavailable",
+]
+
+[checks]
+scripts = ["evals/checks/has_health_check.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

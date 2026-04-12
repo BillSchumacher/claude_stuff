@@ -1,6 +1,6 @@
 ---
 name: accessibility
-description: "HTML accessibility: semantic elements, WCAG 2.2 AA compliance, ARIA patterns, keyboard navigation, color contrast"
+description: "Applies when writing or reviewing HTML for accessibility. Enforces semantic elements, WCAG 2.2 AA compliance, ARIA patterns, keyboard navigation, and color contrast."
 ---
 
 # Accessibility (HTML / WCAG 2.2 / ARIA)

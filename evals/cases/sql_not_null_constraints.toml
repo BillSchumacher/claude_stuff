@@ -1,0 +1,30 @@
+[case]
+id = "sql_not_null_constraints_001"
+name = "SQL: NOT NULL constraints on schema"
+description = "Tests whether DDL uses NOT NULL on columns that should never be null"
+plugins = ["skill-orchestration", "sql"]
+expected_skills = ["sql"]
+
+[prompt]
+text = """
+Design a database schema for an e-commerce system with tables for:
+customers (name, email, registration date), products (name, price, stock),
+and orders (customer, product, quantity, order date, status).
+"""
+
+[rubric]
+criteria = [
+    "Declares NOT NULL on columns that should never be null (name, email, price, quantity, etc.)",
+    "Every table has a primary key",
+    "Uses appropriate data types (DECIMAL for money, TIMESTAMP for dates)",
+    "Includes foreign key constraints between related tables",
+    "Uses snake_case naming conventions",
+]
+
+[checks]
+scripts = ["evals/checks/has_not_null_constraints.py", "evals/checks/sql_schema_quality.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

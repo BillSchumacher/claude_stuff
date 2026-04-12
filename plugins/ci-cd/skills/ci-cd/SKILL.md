@@ -1,6 +1,6 @@
 ---
 name: ci-cd
-description: Language-neutral CI/CD pipeline best practices: dependency caching, code coverage, fast feedback, security scanning, reproducible builds
+description: Applies when creating or modifying CI/CD pipelines in any language. Covers dependency caching, code coverage, fast feedback, security scanning, and reproducible builds.
 ---
 
 # CI/CD Pipeline Best Practices

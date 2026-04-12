@@ -1,6 +1,6 @@
 ---
 name: ci-cd-php
-description: "PHP CI/CD: composer caching, phpunit coverage, phpstan/psalm analysis, composer audit"
+description: "Applies when creating or modifying CI/CD pipelines for PHP projects. Covers composer caching, phpunit coverage, phpstan/psalm analysis, and composer audit."
 ---
 
 # PHP CI/CD

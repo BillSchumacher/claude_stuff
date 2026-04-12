@@ -1,12 +1,11 @@
 ---
 name: efficient-code
-description: Use whenever writing, reviewing, or refactoring code that processes collections, loops, recursion, files, or strings — in ANY language. Enforces data-structure selection, Big-O awareness, space complexity, and profile-before-optimize discipline. Language-neutral; pair with a language-specific efficiency skill (e.g., efficient-code-python) when one is loaded for the language you are using — those cover stdlib idioms plus syntax/parser/compiler-level gotchas that the core skill cannot.
+description: Applies whenever writing, reviewing, or refactoring code that processes collections, loops, recursion, files, or strings — in any language. Enforces data-structure selection, Big-O awareness, space complexity, and profile-before-optimize discipline. Language-neutral; pairs with a language-specific efficiency skill (e.g., efficient-code-python) when one is loaded — those cover stdlib idioms plus syntax/parser/compiler-level gotchas that the core skill cannot.
 ---
 
 # Efficient Code (language-neutral)
 
-Apply these rules to every function that processes more than a handful of items, touches files, or loops. The goal is to avoid accidental quadratic-time behavior and unnecessary memory pressure while keeping the code simple.
-
+Create a complexity analysis report of the code you are writing, reviewing, or refactoring, BEFORE making any changes. 
 These are **principles**. The exact primitive name and the exact syntax cost vary by language — consult the language-specific efficiency skill for your stack if one is loaded. That skill will cover stdlib helpers, idiomatic patterns, **and** syntax/parser/compiler gotchas (e.g., a language where `for` is faster than `forEach`, or where a boxed type allocates, or where a slice grows via amortized copy).
 
 ## Choose the right data structure
@@ -67,6 +66,49 @@ You don't need to memorize the implementations, but you should recognize when a 
 - Stream files — don't `readAll` unless you actually need random access.
 - Watch for hidden allocations: string splits, regex captures, map-then-collect pipelines, autoboxing, closure captures.
 - When building a large structure, pre-size it if the size is known so the underlying buffer doesn't grow by repeated reallocation.
+
+## Complexity analysis report
+
+Before writing or modifying code that processes collections, produce a complexity analysis. Scale the depth to the task.
+
+### When writing new code
+
+Evaluate implementation options before choosing one:
+
+```
+## Complexity Analysis
+
+**Problem:** One-line description of the operation
+**Input size:** Expected n (or unknown)
+
+| Approach | Time | Space | Trade-off |
+|----------|------|-------|-----------|
+| [Naive/brute force] | O(n²) | O(1) | Simple but quadratic |
+| [Recommended] | O(n) | O(n) | Linear with hash set |
+| [Alternative] | O(n log n) | O(1) | Sort-based, no extra memory |
+
+**Selected:** [Which and why — consider input size, memory constraints, code simplicity]
+```
+
+Include at least the naive approach and the recommended approach. Skip this for trivial operations (single lookups, constant-time calls).
+
+### When reviewing or refactoring existing code
+
+Identify current complexity and propose improvements:
+
+```
+## Complexity Analysis
+
+| Location | Current | Issue | Suggested | Improvement |
+|----------|---------|-------|-----------|-------------|
+| [func:line] | O(n²) | [nested loop with linear scan] | O(n) with hash set | [n·m → n+m] |
+| [func:line] | O(n log n) | [sort just to find min] | O(n) with single pass | [log n factor removed] |
+| [func:line] | O(n²) | [string += in loop] | O(n) with Builder/join | [quadratic alloc → linear] |
+
+**Priority:** Fix [highest impact] first — dominates runtime for n > [threshold]
+```
+
+Focus on operations where the complexity class is wrong (O(n²) when O(n) is possible), not micro-optimizations within the same class.
 
 ## Profile before optimizing
 

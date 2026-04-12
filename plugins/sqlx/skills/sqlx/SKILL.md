@@ -1,6 +1,6 @@
 ---
 name: sqlx
-description: "SQLx best practices: compile-time queries, connection pooling, transactions, migrations, testing"
+description: "Applies when building or reviewing SQLx database code in Rust. Covers compile-time queries, connection pooling, transactions, migrations, and testing."
 ---
 
 # SQLx

@@ -1,6 +1,6 @@
 ---
 name: rabbitmq
-description: "RabbitMQ best practices: exchanges, durable queues, acknowledgments, dead letters, publisher confirms"
+description: "Applies when building or reviewing RabbitMQ messaging systems. Covers exchanges, durable queues, acknowledgments, dead letters, and publisher confirms."
 ---
 
 # RabbitMQ

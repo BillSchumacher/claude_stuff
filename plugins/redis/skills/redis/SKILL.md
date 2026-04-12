@@ -1,6 +1,6 @@
 ---
 name: redis
-description: "Redis best practices: connection pooling, pipelining, data structures, TTL, memory management, pub/sub"
+description: "Applies when integrating or reviewing Redis usage. Covers connection pooling, pipelining, data structures, TTL, memory management, and pub/sub."
 ---
 
 # Redis

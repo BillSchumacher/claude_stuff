@@ -1,6 +1,6 @@
 ---
 name: efficient-code-go
-description: Use when writing or reviewing Go code. Applies the core efficient-code principles with Go-specific rules around slice growth and leaks, strings.Builder, interface boxing, escape analysis, defer cost, range-copies, sync.Pool for transient buffers, and pprof discipline.
+description: Applies when writing or reviewing Go code. Extends the core efficient-code principles with Go-specific rules around slice growth and leaks, strings.Builder, interface boxing, escape analysis, defer cost, range-copies, sync.Pool for transient buffers, and pprof discipline.
 ---
 
 # Efficient Code — Go

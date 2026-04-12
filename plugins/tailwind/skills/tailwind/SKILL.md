@@ -1,6 +1,6 @@
 ---
 name: tailwind
-description: "Tailwind CSS best practices: utility-first, responsive design, dark mode, custom theme, component extraction"
+description: "Applies when styling with Tailwind CSS. Covers utility-first patterns, responsive design, dark mode, custom themes, and component extraction."
 ---
 
 # Tailwind CSS

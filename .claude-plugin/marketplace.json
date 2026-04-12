@@ -331,6 +331,12 @@
       "source": "./plugins/html-css",
       "description": "HTML/CSS best practices: semantic markup, responsive images, CSS custom properties, Grid/Flexbox, fluid typography, dark mode",
       "version": "0.1.0"
+    },
+    {
+      "name": "code-judge",
+      "source": "./plugins/code-judge",
+      "description": "Structured code quality assessment grounded in ISO/IEC 25010:2023, OWASP Top 10:2025, CWE Top 25, NIST SP 800-218, and algorithmic complexity analysis",
+      "version": "0.1.0"
     }
   ]
 }

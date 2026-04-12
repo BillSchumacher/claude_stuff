@@ -1,6 +1,6 @@
 ---
 name: efficient-code-csharp
-description: Use when writing or reviewing C# / .NET code. Applies the core efficient-code principles with C#-specific primitives (Span/Memory/ArrayPool, StringBuilder), struct-vs-class allocation, boxing pitfalls, LINQ materialization, ValueTask, ref structs, JIT tiering, and BenchmarkDotNet discipline.
+description: Applies when writing or reviewing C# / .NET code. Extends the core efficient-code principles with C#-specific primitives (Span/Memory/ArrayPool, StringBuilder), struct-vs-class allocation, boxing pitfalls, LINQ materialization, ValueTask, ref structs, JIT tiering, and BenchmarkDotNet discipline.
 ---
 
 # Efficient Code — C#

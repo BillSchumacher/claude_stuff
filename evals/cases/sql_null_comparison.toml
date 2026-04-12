@@ -1,0 +1,31 @@
+[case]
+id = "sql_null_comparison_001"
+name = "SQL: correct NULL comparisons"
+description = "Tests whether SQL uses IS NULL instead of = NULL"
+plugins = ["skill-orchestration", "sql"]
+expected_skills = ["sql"]
+
+[prompt]
+text = """
+Write SQL queries for an employee database:
+1. Find employees who have no manager assigned
+2. Find departments where the budget has not been set
+3. Update employees to remove their phone number (set to null) where they have opted out
+4. Find all projects where the deadline is set and the status is not 'completed'
+"""
+
+[rubric]
+criteria = [
+    "Uses IS NULL (not = NULL) to check for null values",
+    "Uses IS NOT NULL (not != NULL or <> NULL) to check for non-null values",
+    "Uses COALESCE or NULLIF where appropriate for null handling",
+    "Correctly distinguishes between NULL checks and empty string checks",
+]
+
+[checks]
+scripts = ["evals/checks/no_equals_null_sql.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

@@ -1,6 +1,6 @@
 ---
 name: sql-oracle
-description: "Oracle-specific SQL: NUMBER/VARCHAR2, MERGE, PL/SQL bulk ops, partitioning, SQL Plan Management"
+description: "Applies when writing or reviewing Oracle SQL and PL/SQL. Covers NUMBER/VARCHAR2, MERGE, bulk operations, partitioning, and SQL Plan Management."
 ---
 
 # Oracle

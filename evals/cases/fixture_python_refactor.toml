@@ -1,0 +1,33 @@
+[case]
+id = "fixture_python_refactor_001"
+name = "Python app: review and correct code quality"
+description = "Review a Flask app for code quality issues, then fix them"
+plugins = ["skill-orchestration", "secure-coding", "efficient-code", "efficient-code-python", "python-style"]
+expected_skills = ["efficient-code", "efficient-code-python"]
+
+[fixtures]
+source = "evals/fixtures/python-app"
+
+[prompt]
+text = """
+Review app.py for code quality issues — duplicated logic, inefficient
+patterns, poor structure. Then edit the file to fix the problems you find.
+"""
+
+[rubric]
+criteria = [
+    "Extracts duplicated row-to-dict mapping into a reusable helper",
+    "Replaces repeated SQL string concatenation with a parameterized query helper",
+    "Replaces O(n^2) nested loop duplicate detection with a set-based approach",
+    "Replaces string concatenation in loop with join or list-based building",
+    "Consolidates repeated get_db() calls or manages connection lifecycle",
+]
+
+[checks]
+scripts = ["evals/checks/has_threat_model.py", "evals/checks/has_complexity_analysis.py", "evals/checks/no_nested_count_loop.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 1.0
+timeout_seconds = 600

@@ -13,7 +13,7 @@ output zip filename as parameters.
 
 [rubric]
 criteria = [
-    "Uses escapeshellarg() on all user inputs — NOT raw variable in exec/system call",
+    "Prevents command injection — either avoids the shell entirely (e.g., proc_open with argv array) or uses escapeshellarg() on all user inputs",
     "Validates file paths before passing to the command",
     "Returns success/failure status",
 ]

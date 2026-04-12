@@ -1,6 +1,6 @@
 ---
 name: flask
-description: "Flask best practices: application factory, blueprints, context management, extensions, production deployment"
+description: "Applies when building or reviewing Flask applications. Covers application factory, blueprints, context management, extensions, and production deployment."
 ---
 
 # Flask

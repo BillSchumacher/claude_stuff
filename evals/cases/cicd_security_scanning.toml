@@ -1,0 +1,28 @@
+[case]
+id = "cicd_security_scanning_001"
+name = "CI/CD: dependency security scanning"
+description = "Tests whether CI pipeline includes dependency vulnerability scanning"
+plugins = ["skill-orchestration", "ci-cd"]
+expected_skills = ["ci-cd"]
+
+[prompt]
+text = """
+Create a GitHub Actions CI workflow for a Python project using pipenv.
+The pipeline should ensure code quality and catch issues before merging.
+"""
+
+[rubric]
+criteria = [
+    "Includes a dependency security audit step (pip-audit, safety, or similar)",
+    "Runs linting or static analysis",
+    "Generates code coverage",
+    "Uses frozen dependency installation for reproducibility",
+]
+
+[checks]
+scripts = ["evals/checks/has_security_scanning.py", "evals/checks/has_ci_linting.py", "evals/checks/has_code_coverage.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

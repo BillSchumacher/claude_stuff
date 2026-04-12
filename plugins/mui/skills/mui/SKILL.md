@@ -1,6 +1,6 @@
 ---
 name: mui
-description: "Material UI best practices: sx prop, theming, component composition, responsive design, accessibility"
+description: "Applies when building or reviewing Material UI (MUI) components. Covers sx prop, theming, component composition, responsive design, and accessibility."
 ---
 
 # Material UI (MUI)

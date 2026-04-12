@@ -1,0 +1,33 @@
+[case]
+id = "fixture_go_security_001"
+name = "Go app: fix security vulnerabilities"
+description = "Fix all security vulnerabilities in a Go HTTP server"
+plugins = ["skill-orchestration", "secure-coding"]
+expected_skills = ["secure-coding"]
+
+[fixtures]
+source = "evals/fixtures/go-app"
+
+[prompt]
+text = """
+Fix all security vulnerabilities in main.go. Make the changes directly to the file.
+"""
+
+[rubric]
+criteria = [
+    "Replaces string-concatenated SQL with parameterized queries ($1, $2 placeholders)",
+    "Removes or externalizes hardcoded secrets",
+    "Replaces MD5 password hashing with bcrypt or argon2",
+    "Fixes command injection in backup handler (uses exec.Command with separate args, not sh -c)",
+    "Fixes path traversal in file handler (validates path stays within uploads/)",
+    "Adds authentication check to admin endpoint",
+]
+
+[checks]
+scripts = ["evals/checks/has_threat_model.py", "evals/checks/no_sql_injection.py", "evals/checks/no_hardcoded_secrets.py", "evals/checks/no_weak_crypto.py", "evals/checks/no_command_injection.py", "evals/checks/no_path_traversal.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 1.0
+timeout_seconds = 600

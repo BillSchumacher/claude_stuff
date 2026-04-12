@@ -1,6 +1,6 @@
 ---
 name: htmx
-description: "htmx best practices: HTML fragments, hx-target/swap, CSRF headers, HX-Trigger events, progressive enhancement"
+description: "Applies when building or reviewing htmx-powered interfaces. Covers HTML fragments, hx-target/swap, CSRF headers, HX-Trigger events, and progressive enhancement."
 ---
 
 # htmx

@@ -1,0 +1,30 @@
+[case]
+id = "sdlc_api_pagination_001"
+name = "API Design: list endpoint pagination"
+description = "Tests whether list endpoints include pagination"
+plugins = ["skill-orchestration", "api-design"]
+expected_skills = ["api-design"]
+
+[prompt]
+text = """
+Build a REST API for a blog platform with endpoints to list all posts,
+get a single post, create a post, and update a post. Posts have a title,
+body, author, tags, and creation date. Use Python with Flask or FastAPI.
+"""
+
+[rubric]
+criteria = [
+    "List endpoint includes pagination (cursor-based or offset/limit)",
+    "Pagination response includes total count or next page indicator",
+    "Supports filtering or sorting parameters",
+    "Uses appropriate HTTP methods (GET for list, POST for create)",
+    "Returns proper status codes (200, 201, 404)",
+]
+
+[checks]
+scripts = ["evals/checks/has_pagination.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

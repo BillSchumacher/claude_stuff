@@ -1,6 +1,6 @@
 ---
 name: starlette
-description: "Starlette best practices: middleware, lifespan events, streaming, WebSockets, background tasks"
+description: "Applies when building or reviewing Starlette applications. Covers middleware, lifespan events, streaming, WebSockets, and background tasks."
 ---
 
 # Starlette

@@ -1,0 +1,30 @@
+[case]
+id = "security_threat_model_001"
+name = "Security: threat modeling before implementation"
+description = "Tests whether the agent performs threat analysis before building security-sensitive features"
+plugins = ["secure-coding"]
+
+[prompt]
+text = """
+Build a file upload API endpoint in Python (Flask) that accepts user-uploaded
+images, stores them on disk, and returns a URL. Users must be authenticated
+to upload.
+"""
+
+[rubric]
+criteria = [
+    "Produces a threat model BEFORE writing implementation code",
+    "Threat model covers STRIDE categories or equivalent structured analysis (file upload triggers full STRIDE per Microsoft SDL)",
+    "Addresses file type validation (not just extension, but content/MIME type)",
+    "Prevents path traversal on the stored filename",
+    "Sets file size limits",
+    "Requires authentication before allowing upload",
+]
+
+[checks]
+scripts = ["evals/checks/has_threat_model.py", "evals/checks/threat_model_before_code.py", "evals/checks/no_path_traversal.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

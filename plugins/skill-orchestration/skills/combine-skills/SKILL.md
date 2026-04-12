@@ -1,6 +1,6 @@
 ---
 name: combine-skills
-description: Use at the start of ANY non-trivial task before taking action. Surveys all available skills and invokes every skill whose description matches the task, not just the most obvious one.
+description: This skill is always used to determine which skills need to be combined to handle any task.
 ---
 
 # Combine Skills

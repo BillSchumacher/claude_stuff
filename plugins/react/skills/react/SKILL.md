@@ -1,6 +1,6 @@
 ---
 name: react
-description: "React best practices: Server Components, hooks, custom hooks, state management, performance optimization"
+description: "Applies when building or reviewing React components and applications. Covers Server Components, hooks, custom hooks, state management, and performance optimization."
 ---
 
 # React

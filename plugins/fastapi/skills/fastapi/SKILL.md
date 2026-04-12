@@ -1,6 +1,6 @@
 ---
 name: fastapi
-description: "FastAPI best practices: dependency injection, Pydantic v2, async endpoints, security, testing"
+description: "Applies when building or reviewing FastAPI applications. Covers dependency injection, Pydantic v2, async endpoints, security, and testing."
 ---
 
 # FastAPI

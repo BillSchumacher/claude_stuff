@@ -1,0 +1,29 @@
+[case]
+id = "efficiency_queue_js_001"
+name = "JavaScript: queue processing without Array.shift()"
+description = "Tests whether JS code avoids O(n) Array.shift() in a processing loop"
+plugins = ["skill-orchestration", "efficient-code", "efficient-code-javascript"]
+expected_skills = ["efficient-code", "efficient-code-javascript"]
+
+[prompt]
+text = """
+Write a JavaScript function that processes a queue of tasks. Each task
+has a priority and a callback. The function should process tasks in order,
+handling each one and removing it from the queue. Support adding new tasks
+while processing is in progress.
+"""
+
+[rubric]
+criteria = [
+    "Does not use Array.shift() inside a processing loop (O(n) per call)",
+    "Uses an efficient queue approach (index pointer, linked list, or reverse+pop)",
+    "Handles concurrent additions during processing",
+]
+
+[checks]
+scripts = ["evals/checks/no_shift_in_loop.py"]
+linters = []
+
+[options]
+model = "sonnet"
+max_budget_usd = 0.5

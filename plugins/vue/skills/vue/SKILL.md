@@ -1,6 +1,6 @@
 ---
 name: vue
-description: "Vue 3 best practices: Composition API, ref vs reactive, composables, Pinia, Vue Router"
+description: "Applies when building or reviewing Vue 3 applications. Covers Composition API, ref vs reactive, composables, Pinia, and Vue Router."
 ---
 
 # Vue 3

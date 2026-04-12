@@ -1,6 +1,6 @@
 ---
 name: celery
-description: "Celery best practices: task design, retry strategies, serialization, monitoring, rate limiting"
+description: "Applies when building or reviewing Celery task queues. Covers task design, retry strategies, serialization, monitoring, and rate limiting."
 ---
 
 # Celery

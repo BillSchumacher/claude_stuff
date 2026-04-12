@@ -1,6 +1,6 @@
 ---
 name: ci-cd-javascript
-description: "JavaScript/TypeScript CI/CD: npm/yarn/pnpm caching, jest/vitest coverage, eslint linting, tsc type checking"
+description: "Applies when creating or modifying CI/CD pipelines for JavaScript/TypeScript projects. Covers npm/yarn/pnpm caching, jest/vitest coverage, eslint linting, and tsc type checking."
 ---
 
 # JavaScript / TypeScript CI/CD

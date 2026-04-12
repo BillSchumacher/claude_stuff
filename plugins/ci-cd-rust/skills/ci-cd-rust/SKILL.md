@@ -1,6 +1,6 @@
 ---
 name: ci-cd-rust
-description: "Rust CI/CD: cargo/target caching, cargo-tarpaulin/llvm-cov coverage, clippy linting, cargo audit"
+description: "Applies when creating or modifying CI/CD pipelines for Rust projects. Covers cargo/target caching, cargo-tarpaulin/llvm-cov coverage, clippy linting, and cargo audit."
 ---
 
 # Rust CI/CD
