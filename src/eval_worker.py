@@ -7,7 +7,7 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
-from src.config import EVALS_DIR, ROOT
+from src.config import ROOT
 from src import results
 
 
@@ -62,12 +62,13 @@ def main(run_id: str, cases_pattern: str, model: str, budget: float,
     # Import here to avoid heavy imports at module level
     from src.cli import load_case, run_eval
     from src.runner import setup_child_cleanup
+    from src.run_manager import resolve_case_paths
 
     # Ensure all subprocess descendants die when this worker exits
     setup_child_cleanup()
 
     glob = cases_pattern or "*.toml"
-    case_paths = sorted(EVALS_DIR.glob(glob))
+    case_paths = resolve_case_paths(glob)
 
     started_at = datetime.now(timezone.utc).isoformat()
     results.create_run(

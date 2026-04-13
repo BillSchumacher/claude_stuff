@@ -102,6 +102,19 @@ def _kill_process_tree(pid: int) -> None:
             pass
 
 
+def resolve_case_paths(pattern: str) -> list:
+    """Resolve a (possibly comma-separated) glob pattern to sorted case paths."""
+    parts = [p.strip() for p in pattern.split(",") if p.strip()] or ["*.toml"]
+    seen = set()
+    paths = []
+    for part in parts:
+        for path in EVALS_DIR.glob(part):
+            if path not in seen:
+                seen.add(path)
+                paths.append(path)
+    return sorted(paths)
+
+
 def start_run(
     cases_pattern: str | None = None,
     model: str = "sonnet",
@@ -113,8 +126,7 @@ def start_run(
     Multiple runs can execute concurrently.
     """
     glob = cases_pattern or "*.toml"
-    case_paths = sorted(EVALS_DIR.glob(glob))
-    if not case_paths:
+    if not resolve_case_paths(glob):
         return None
 
     # Include model in run_id to avoid collisions between concurrent model runs

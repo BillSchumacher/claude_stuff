@@ -691,8 +691,21 @@ def _render_dashboard() -> str:
 
     # Group results by model
     by_model: dict[str, list[dict]] = {}
+    ran_ids_by_model: dict[str, set[str]] = {}
     for r in latest:
         by_model.setdefault(r["model"], []).append(r)
+        ran_ids_by_model.setdefault(r["model"], set()).add(r["case_id"])
+
+    # Cases from TOML files that have never been run for a given model
+    case_id_to_stem = {c["id"]: c["stem"] for c in eval_cases}
+    toml_case_ids = set(case_id_to_stem)
+    missing_by_model: dict[str, list[str]] = {
+        m: sorted(
+            case_id_to_stem[cid] + ".toml"
+            for cid in (toml_case_ids - ran_ids_by_model.get(m, set()))
+        )
+        for m in models
+    }
 
     # Compute stats per model
     def _model_stats(cases):
@@ -717,6 +730,16 @@ def _render_dashboard() -> str:
     for m in models:
         s = stats[m]
         u = usage_by_model.get(m, {})
+        missing = missing_by_model.get(m, [])
+        missing_csv = html.escape(",".join(missing), quote=True)
+        missing_btn = (
+            f'<div style="margin-top:0.75rem;">'
+            f'<button class="btn-secondary" '
+            f'style="padding:0.3rem 0.6rem;font-size:0.8rem;width:100%;" '
+            f'onclick="runMissing(\'{m}\', this.dataset.cases)" '
+            f'data-cases="{missing_csv}">'
+            f'Run {len(missing)} missing</button></div>'
+        ) if missing else ""
         usage_html = ""
         if u:
             total_in = (u.get("input_tokens") or 0) + (u.get("cache_read_tokens") or 0) + (u.get("cache_creation_tokens") or 0)
@@ -753,14 +776,16 @@ def _render_dashboard() -> str:
                 <span style="color:#8b949e;">Degraded:</span>
                 <span class="negative">{s["degraded"]}</span>
               </div>
+              {missing_btn}
               {usage_html}
             </div>"""
         else:
             cards += f"""
             <div style="flex:1;background:#161b22;border-radius:6px;padding:1rem;
-                        border:1px solid #30363d;opacity:0.6;">
-              <div style="font-size:1.2rem;font-weight:bold;margin-bottom:0.5rem;">{m.upper()}</div>
-              <div style="color:#8b949e;font-size:0.9rem;">No results yet</div>
+                        border:1px solid #30363d;">
+              <div style="font-size:1.2rem;font-weight:bold;margin-bottom:0.5rem;opacity:0.6;">{m.upper()}</div>
+              <div style="color:#8b949e;font-size:0.9rem;opacity:0.6;">No results yet</div>
+              {missing_btn}
               {usage_html}
             </div>"""
 
@@ -856,6 +881,18 @@ def _render_dashboard() -> str:
     <script>
     function runCase(stem, model) {{
       const body = 'cases=' + encodeURIComponent(stem) + '&model=' + encodeURIComponent(model);
+      fetch('/api/run', {{method:'POST', headers:{{'Content-Type':'application/x-www-form-urlencoded'}}, body:body}})
+        .then(r => r.json())
+        .then(d => {{
+          if (d.run_id) {{ window.scrollTo(0, 0); location.reload(); }}
+          else {{ alert(d.error || 'Failed to start'); }}
+        }});
+    }}
+    function runMissing(model, casesCsv) {{
+      if (!casesCsv) return;
+      const n = casesCsv.split(',').length;
+      if (!confirm('Run ' + n + ' missing case(s) for ' + model + '?')) return;
+      const body = 'cases=' + encodeURIComponent(casesCsv) + '&model=' + encodeURIComponent(model);
       fetch('/api/run', {{method:'POST', headers:{{'Content-Type':'application/x-www-form-urlencoded'}}, body:body}})
         .then(r => r.json())
         .then(d => {{
@@ -1274,8 +1311,12 @@ class Handler(BaseHTTPRequestHandler):
             params = parse_qs(body)
             cases = params.get("cases", [""])[0] or None
             model = params.get("model", ["sonnet"])[0]
-            if cases and "*" not in cases:
-                cases = cases + "*"
+            if cases:
+                parts = [p.strip() for p in cases.split(",") if p.strip()]
+                cases = ",".join(
+                    p if ("*" in p or p.endswith(".toml")) else p + "*"
+                    for p in parts
+                ) or None
             run_id = run_manager.start_run(
                 cases_pattern=cases, model=model, model_override=True,
             )
