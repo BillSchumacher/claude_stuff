@@ -363,6 +363,30 @@ def run_claude_json(
     return parsed.get("result", result.stdout)
 
 
+def _snapshot_plugins(plugin_dirs: list[Path], case_id: str, model: str) -> list[Path]:
+    """Copy plugins to an ephemeral dir so agent writes don't pollute the repo.
+
+    Claude CLI surfaces the --plugin-dir path to the agent via its system prompt,
+    and some agents (notably haiku on rust-oriented skills) decide to write their
+    implementation into that path rather than the cwd. Snapshotting keeps the
+    real plugin sources in the repo untouched.
+    """
+    if not plugin_dirs:
+        return []
+    timestamp = int(time.time() * 1000)
+    snapshot_root = (
+        Path(tempfile.gettempdir()) / "skill_eval"
+        / f"plugins_{case_id}_{model}_{timestamp}"
+    )
+    snapshot_root.mkdir(parents=True, exist_ok=True)
+    snapshots = []
+    for src in plugin_dirs:
+        dst = snapshot_root / src.name
+        shutil.copytree(src, dst)
+        snapshots.append(dst)
+    return snapshots
+
+
 def _make_workdir(
     case_id: str,
     variant: str,
@@ -427,7 +451,10 @@ def run_case(
     Returns (with_skill_result, baseline_result).
     """
     now = datetime.now(timezone.utc).isoformat()
-    plugin_dirs = [resolve_plugin_path(name) for name in plugins]
+    plugin_dirs = _snapshot_plugins(
+        [resolve_plugin_path(name) for name in plugins],
+        case_id, model,
+    )
 
     baseline_workdir = _make_workdir(
         case_id, "baseline", model=model, fixture_dir=fixture_dir,
