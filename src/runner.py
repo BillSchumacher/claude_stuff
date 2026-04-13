@@ -6,6 +6,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import threading
 import time
 from datetime import datetime, timezone
 from pathlib import Path
@@ -222,11 +223,16 @@ def run_claude(
     timeout_seconds: int = 300,
     cwd: str | None = None,
     on_message: Callable[[dict], None] | None = None,
+    stdin_text: str | None = None,
 ) -> tuple[str, list[dict]]:
     """Execute a claude command with stream-json output. Returns (response_text, messages).
 
     on_message: if provided, called with each parsed JSON message as it arrives
     (enables live streaming to the UI). Falls back to batch mode if not set.
+
+    stdin_text: if provided, pipe as stdin. Required for large prompts that
+    exceed the Windows CreateProcess 32KB command-line limit — pass `-p` in
+    cmd without a value and provide the prompt here instead.
 
     Retries once on non-zero exit (transient init failures, API errors).
     """
@@ -234,10 +240,14 @@ def run_claude(
         return _run_claude_streaming(
             cmd, timeout_seconds=timeout_seconds, cwd=cwd,
             on_message=on_message,
+            stdin_text=stdin_text,
         )
 
     for attempt in range(2):
-        result = _exec(cmd, timeout_seconds=timeout_seconds, cwd=cwd)
+        result = _exec(
+            cmd, timeout_seconds=timeout_seconds, cwd=cwd,
+            stdin_text=stdin_text,
+        )
         if result.returncode == 0:
             break
         if attempt == 0:
@@ -255,21 +265,43 @@ def _run_claude_streaming(
     timeout_seconds: int = 300,
     cwd: str | None = None,
     on_message: Callable[[dict], None],
+    stdin_text: str | None = None,
 ) -> tuple[str, list[dict]]:
-    """Run claude and stream each JSON message as it arrives."""
+    """Run claude and stream each JSON message as it arrives.
+
+    stdin_text: if provided, fed to the child's stdin in a background thread
+    so large prompts don't deadlock on a full pipe buffer before we drain stdout.
+    """
     env = {**os.environ, "CLAUDE_CODE_DISABLE_AUTO_MEMORY": "1"}
     proc = subprocess.Popen(
         cmd,
+        stdin=subprocess.PIPE if stdin_text is not None else subprocess.DEVNULL,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         cwd=cwd,
         env=env,
     )
 
+    if stdin_text is not None:
+        def _feed_stdin() -> None:
+            try:
+                assert proc.stdin is not None
+                proc.stdin.write(stdin_text.encode("utf-8"))
+            except (BrokenPipeError, OSError):
+                pass
+            finally:
+                try:
+                    if proc.stdin is not None:
+                        proc.stdin.close()
+                except OSError:
+                    pass
+        threading.Thread(target=_feed_stdin, daemon=True).start()
+
     messages = []
     result_text = ""
     deadline = time.time() + timeout_seconds
 
+    assert proc.stdout is not None
     try:
         for raw_line in proc.stdout:
             if time.time() > deadline:

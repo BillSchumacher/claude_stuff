@@ -128,10 +128,10 @@ def summarize_diff(
         "--model", model,
         "--plugin-dir", str(judge_plugin.resolve()),
         "--settings", _ISOLATION_SETTINGS,
-        "-p", prompt,
+        "-p",
     ]
     cb = (lambda msg: on_judge_message("diff", msg)) if on_judge_message else None
-    raw, messages = run_claude(cmd, on_message=cb)
+    raw, messages = run_claude(cmd, on_message=cb, stdin_text=prompt)
     return raw, messages, " ".join(cmd)
 
 

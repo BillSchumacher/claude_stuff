@@ -93,12 +93,12 @@ def score_output(
         "--plugin-dir", str(judge_plugin.resolve()),
         "--append-system-prompt", JUDGE_SYSTEM_PROMPT,
         "--settings", _ISOLATION_SETTINGS,
-        "-p", prompt,
+        "-p",
     ]
 
     phase = f"score:{variant}"
     cb = (lambda msg: on_judge_message(phase, msg)) if on_judge_message else None
-    raw, messages = run_claude(cmd, on_message=cb)
+    raw, messages = run_claude(cmd, on_message=cb, stdin_text=prompt)
     scores = parse_judge_response(raw)
     score_rows = [
         ScoreRow(
