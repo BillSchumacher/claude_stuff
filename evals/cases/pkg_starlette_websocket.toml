@@ -28,3 +28,4 @@ linters = []
 [options]
 model = "sonnet"
 max_budget_usd = 0.5
+timeout_seconds = 600
