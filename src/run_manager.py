@@ -57,15 +57,49 @@ def get_status() -> dict:
 
 
 def cancel(run_id: str | None = None) -> bool:
-    """Request cancellation. If run_id given, cancel that run; otherwise cancel all."""
+    """Request cancellation. If run_id given, cancel that run; otherwise cancel all.
+
+    Sets the cancel flag in the DB AND force-kills the worker process tree
+    so in-progress subprocesses (claude, dev servers, etc.) are terminated.
+    """
     if run_id:
-        return results.request_cancel(run_id)
-    actives = get_active_runs()
+        runs = [results.get_run_status(run_id)]
+        runs = [r for r in runs if r]
+    else:
+        runs = get_active_runs()
+
     cancelled = False
-    for active in actives:
-        if results.request_cancel(active["run_id"]):
+    for run in runs:
+        rid = run["run_id"]
+        pid = run.get("pid")
+        if results.request_cancel(rid):
             cancelled = True
+        if pid:
+            _kill_process_tree(pid)
+            results.update_run_status(rid, status="cancelled")
+            results.emit_event(rid, "status", {"status": "cancelled"})
     return cancelled
+
+
+def _kill_process_tree(pid: int) -> None:
+    """Forcefully terminate a process and all its descendants."""
+    if sys.platform == "win32":
+        # taskkill /T kills the process tree
+        try:
+            subprocess.run(
+                ["taskkill", "/F", "/T", "/PID", str(pid)],
+                capture_output=True, timeout=10,
+            )
+        except Exception:
+            pass
+    else:
+        import os
+        import signal
+        try:
+            # Kill the whole process group (we used start_new_session)
+            os.killpg(os.getpgid(pid), signal.SIGKILL)
+        except (ProcessLookupError, PermissionError):
+            pass
 
 
 def start_run(

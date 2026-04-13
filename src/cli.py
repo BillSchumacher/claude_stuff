@@ -157,6 +157,9 @@ def run_eval(
 
 def cmd_run(args: argparse.Namespace) -> int:
     """Execute evaluations."""
+    from src.runner import setup_child_cleanup
+    setup_child_cleanup()
+
     cases = discover_cases(args.cases)
     if not cases:
         print("No test cases found.", file=sys.stderr)

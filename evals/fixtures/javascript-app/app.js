@@ -199,6 +199,8 @@ app.get("/admin/users", function (req, res) {
   });
 });
 
-app.listen(3000, function () {
-  console.log("Server running on port 3000");
-});
+if (process.env.START_SERVER) {
+  app.listen(3000, function () {
+    console.log("Server running on port 3000");
+  });
+}

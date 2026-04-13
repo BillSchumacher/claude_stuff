@@ -61,6 +61,10 @@ def main(run_id: str, cases_pattern: str, model: str, budget: float,
          model_override: bool = False) -> int:
     # Import here to avoid heavy imports at module level
     from src.cli import load_case, run_eval
+    from src.runner import setup_child_cleanup
+
+    # Ensure all subprocess descendants die when this worker exits
+    setup_child_cleanup()
 
     glob = cases_pattern or "*.toml"
     case_paths = sorted(EVALS_DIR.glob(glob))

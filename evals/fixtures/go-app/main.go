@@ -38,8 +38,10 @@ func main() {
 	http.HandleFunc("/files/", fileHandler)
 	http.HandleFunc("/admin/users", adminUsersHandler)
 
-	log.Println("Server starting on :8080")
-	http.ListenAndServe(":8080", nil)
+	if os.Getenv("START_SERVER") != "" {
+		log.Println("Server starting on :8080")
+		http.ListenAndServe(":8080", nil)
+	}
 }
 
 func loginHandler(w http.ResponseWriter, r *http.Request) {

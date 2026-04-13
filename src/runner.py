@@ -4,6 +4,7 @@ import json
 import os
 import shutil
 import subprocess
+import sys
 import tempfile
 import time
 from datetime import datetime, timezone
@@ -19,6 +20,101 @@ _ISOLATION_SETTINGS = json.dumps({
     "autoMemoryEnabled": False,
     "claudeMdExcludes": ["C:/**", "/**"],
 })
+
+# Module-level handle for the Windows Job Object (kept alive for process lifetime).
+_job_handle = None
+
+
+def setup_child_cleanup() -> None:
+    """Ensure all subprocess descendants are killed when this process exits.
+
+    On Windows, uses a Job Object with KILL_ON_JOB_CLOSE so that every
+    descendant process (claude, flask, dev servers, etc.) is terminated
+    when the current Python process exits for any reason.
+    On Unix, relies on start_new_session in Popen calls.
+    """
+    global _job_handle
+    if _job_handle is not None:
+        return
+    if sys.platform != "win32":
+        return
+
+    import ctypes
+    from ctypes import wintypes
+
+    try:
+        kernel32 = ctypes.windll.kernel32
+        kernel32.CreateJobObjectW.restype = wintypes.HANDLE
+        kernel32.GetCurrentProcess.restype = wintypes.HANDLE
+        kernel32.AssignProcessToJobObject.argtypes = [wintypes.HANDLE, wintypes.HANDLE]
+        kernel32.AssignProcessToJobObject.restype = wintypes.BOOL
+        kernel32.SetInformationJobObject.argtypes = [
+            wintypes.HANDLE, ctypes.c_int, ctypes.c_void_p, wintypes.DWORD,
+        ]
+        kernel32.SetInformationJobObject.restype = wintypes.BOOL
+
+        class _BasicLimitInfo(ctypes.Structure):
+            _fields_ = [
+                ("PerProcessUserTimeLimit", ctypes.c_int64),
+                ("PerJobUserTimeLimit", ctypes.c_int64),
+                ("LimitFlags", ctypes.c_uint32),
+                ("MinimumWorkingSetSize", ctypes.c_size_t),
+                ("MaximumWorkingSetSize", ctypes.c_size_t),
+                ("ActiveProcessLimit", ctypes.c_uint32),
+                ("Affinity", ctypes.c_size_t),
+                ("PriorityClass", ctypes.c_uint32),
+                ("SchedulingClass", ctypes.c_uint32),
+            ]
+
+        class _IoCounters(ctypes.Structure):
+            _fields_ = [
+                ("ReadOperationCount", ctypes.c_uint64),
+                ("WriteOperationCount", ctypes.c_uint64),
+                ("OtherOperationCount", ctypes.c_uint64),
+                ("ReadTransferCount", ctypes.c_uint64),
+                ("WriteTransferCount", ctypes.c_uint64),
+                ("OtherTransferCount", ctypes.c_uint64),
+            ]
+
+        class _ExtendedLimitInfo(ctypes.Structure):
+            _fields_ = [
+                ("BasicLimitInformation", _BasicLimitInfo),
+                ("IoInfo", _IoCounters),
+                ("ProcessMemoryLimit", ctypes.c_size_t),
+                ("JobMemoryLimit", ctypes.c_size_t),
+                ("PeakProcessMemoryUsed", ctypes.c_size_t),
+                ("PeakJobMemoryUsed", ctypes.c_size_t),
+            ]
+
+        JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE = 0x2000
+        JOB_OBJECT_LIMIT_BREAKAWAY_OK = 0x0800
+        JobObjectExtendedLimitInformation = 9
+
+        job = kernel32.CreateJobObjectW(None, None)
+        if not job:
+            return
+
+        info = _ExtendedLimitInfo()
+        info.BasicLimitInformation.LimitFlags = (
+            JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE | JOB_OBJECT_LIMIT_BREAKAWAY_OK
+        )
+
+        if not kernel32.SetInformationJobObject(
+            job, JobObjectExtendedLimitInformation,
+            ctypes.byref(info), ctypes.sizeof(info),
+        ):
+            kernel32.CloseHandle(job)
+            return
+
+        current = kernel32.GetCurrentProcess()
+        if not kernel32.AssignProcessToJobObject(job, current):
+            kernel32.CloseHandle(job)
+            return
+
+        # Keep handle alive for the lifetime of the process — never close it.
+        _job_handle = job
+    except Exception:
+        pass
 
 
 def resolve_plugin_path(plugin_name: str) -> Path:
@@ -239,20 +335,23 @@ def _make_workdir(
     case_id: str,
     variant: str,
     *,
+    model: str = "",
     fixture_dir: Path | None = None,
 ) -> str:
     """Create a fresh isolated working directory for a variant run.
 
-    If fixture_dir is provided, copies its contents into the workdir and
-    initialises a git repo so the agent's changes can be diffed.
+    Directory name includes model and timestamp so concurrent runs with
+    different models do not collide.  If fixture_dir is provided, copies
+    its contents into the workdir and initialises a git repo.
     """
-    workdir = Path(tempfile.gettempdir()) / "skill_eval" / f"{case_id}_{variant}"
+    timestamp = int(time.time() * 1000)
+    name = f"{case_id}_{variant}_{model}_{timestamp}" if model else f"{case_id}_{variant}_{timestamp}"
+    workdir = Path(tempfile.gettempdir()) / "skill_eval" / name
     if workdir.exists():
         try:
             shutil.rmtree(workdir)
         except PermissionError:
-            # Windows file lock from a prior claude child process — use alternate dir
-            workdir = workdir.with_name(f"{case_id}_{variant}_{int(time.time())}")
+            workdir = workdir.with_name(f"{name}_{int(time.time())}")
     workdir.mkdir(parents=True, exist_ok=True)
 
     if fixture_dir and fixture_dir.is_dir():
@@ -298,7 +397,9 @@ def run_case(
     now = datetime.now(timezone.utc).isoformat()
     plugin_dirs = [resolve_plugin_path(name) for name in plugins]
 
-    baseline_workdir = _make_workdir(case_id, "baseline", fixture_dir=fixture_dir)
+    baseline_workdir = _make_workdir(
+        case_id, "baseline", model=model, fixture_dir=fixture_dir,
+    )
     baseline_cmd = build_command(
         prompt, model=model, max_budget_usd=max_budget_usd,
     )
@@ -314,7 +415,9 @@ def run_case(
         command=" ".join(baseline_cmd),
     )
 
-    skill_workdir = _make_workdir(case_id, "with_skill", fixture_dir=fixture_dir)
+    skill_workdir = _make_workdir(
+        case_id, "with_skill", model=model, fixture_dir=fixture_dir,
+    )
     skill_cmd = build_command(
         prompt, plugin_dirs=plugin_dirs, model=model, max_budget_usd=max_budget_usd,
     )
